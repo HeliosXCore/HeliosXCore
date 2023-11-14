@@ -4,8 +4,8 @@ HeliosXCore is a Superscalar Out-of-order RISC-V Processor Core.
 ## Directory Organization
 - **docs** - Project documents.
 - **ip** - IP Core.
-- **rtl** - CPU core code in verilog
-- **tb** - Test and Bench code.
+- **rtl** - CPU RTL source code.
+- **testbench** - Test and Bench code.
 
 ## Contribution
 HeliosXCore development is based on the pull request on Github. 
