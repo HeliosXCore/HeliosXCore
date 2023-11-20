@@ -60,7 +60,7 @@ rrf_freelistmanager 用于管理 RRF 中的 free 的 entries 和 Reorder Buffer�
 
 - `exrslt*`, `exdst*`, `kill_spec*`：来自五个执行单元的输出(ALU 1/2, Load/Store Unit, Branch unit, multipiler)。当 `exdsti` 等于 `opr` 并且 `opr_rdy` 和 `~kill_spec*` 都等于 0 时，src 被设置为 `exrslti`。
 
-- `src`, `resolved`：用来转发opr和opr rdy信号的，只要有可能，它们会将这些信号转发到对应的输出端口。
+- `src`, `resolved`：用来转发 opr 和 opr rdy 信号的，只要有可能，它们会将这些信号转发到对应的输出端口。
 
 ```verilog
 module src_manager
@@ -126,7 +126,152 @@ Figure 18 中展示了在保留站中一个 entry 的电路，橙色的方形表
 **ALU Reserved Station Entry:**
 
 ```verilog
+module rs_alu_ent
+  (
+   //Memory
+   input wire 			     clk,
+   input wire 			     reset,
+   input wire 			     busy,
+   input wire [`ADDR_LEN-1:0] 	     wpc,
+   input wire [`DATA_LEN-1:0] 	     wsrc1,
+   input wire [`DATA_LEN-1:0] 	     wsrc2,
+   input wire 			     wvalid1,
+   input wire 			     wvalid2,
+   input wire [`DATA_LEN-1:0] 	     wimm,
+   input wire [`RRF_SEL-1:0] 	     wrrftag,
+   input wire 			     wdstval,
+   input wire [`SRC_A_SEL_WIDTH-1:0] wsrc_a,
+   input wire [`SRC_B_SEL_WIDTH-1:0] wsrc_b,
+   input wire [`ALU_OP_WIDTH-1:0]    walu_op,
+   input wire [`SPECTAG_LEN-1:0]     wspectag,
+   input wire 			     we,
+   output wire [`DATA_LEN-1:0] 	     ex_src1,
+   output wire [`DATA_LEN-1:0] 	     ex_src2,
+   output wire 			     ready,
+   output reg [`ADDR_LEN-1:0] 	     pc,
+   output reg [`DATA_LEN-1:0] 	     imm,
+   output reg [`RRF_SEL-1:0] 	     rrftag,
+   output reg 			     dstval,
+   output reg [`SRC_A_SEL_WIDTH-1:0] src_a,
+   output reg [`SRC_B_SEL_WIDTH-1:0] src_b,
+   output reg [`ALU_OP_WIDTH-1:0]    alu_op,
+   output reg [`SPECTAG_LEN-1:0]     spectag,
+   //EXRSLT
+   input wire [`DATA_LEN-1:0] 	     exrslt1,
+   input wire [`RRF_SEL-1:0] 	     exdst1,
+   input wire 			     kill_spec1,
+   input wire [`DATA_LEN-1:0] 	     exrslt2,
+   input wire [`RRF_SEL-1:0] 	     exdst2,
+   input wire 			     kill_spec2,
+   input wire [`DATA_LEN-1:0] 	     exrslt3,
+   input wire [`RRF_SEL-1:0] 	     exdst3,
+   input wire 			     kill_spec3,
+   input wire [`DATA_LEN-1:0] 	     exrslt4,
+   input wire [`RRF_SEL-1:0] 	     exdst4,
+   input wire 			     kill_spec4,
+   input wire [`DATA_LEN-1:0] 	     exrslt5,
+   input wire [`RRF_SEL-1:0] 	     exdst5,
+   input wire 			     kill_spec5
+   );
 
+   reg [`DATA_LEN-1:0] 		     src1;
+   reg [`DATA_LEN-1:0] 		     src2;
+   reg 				     valid1;
+   reg 				     valid2;
+
+   wire [`DATA_LEN-1:0] 	     nextsrc1;
+   wire [`DATA_LEN-1:0] 	     nextsrc2;   
+   wire 			     nextvalid1;
+   wire 			     nextvalid2;
+   
+   assign ready = busy & valid1 & valid2;
+   assign ex_src1 = ~valid1 & nextvalid1 ?
+		    nextsrc1 : src1;
+   assign ex_src2 = ~valid2 & nextvalid2 ?
+		    nextsrc2 : src2;
+   
+   always @ (posedge clk) begin
+      if (reset) begin
+	 pc <= 0;
+	 imm <= 0;
+	 rrftag <= 0;
+	 dstval <= 0;
+	 src_a <= 0;
+	 src_b <= 0;
+	 alu_op <= 0;
+	 spectag <= 0;
+
+	 src1 <= 0;
+	 src2 <= 0;
+	 valid1 <= 0;
+	 valid2 <= 0;
+      end else if (we) begin
+	 pc <= wpc;
+	 imm <= wimm;
+	 rrftag <= wrrftag;
+	 dstval <= wdstval;
+	 src_a <= wsrc_a;
+	 src_b <= wsrc_b;
+	 alu_op <= walu_op;
+	 spectag <= wspectag;
+
+	 src1 <= wsrc1;
+	 src2 <= wsrc2;
+	 valid1 <= wvalid1;
+	 valid2 <= wvalid2;
+      end else begin // if (we)
+	 src1 <= nextsrc1;
+	 src2 <= nextsrc2;
+	 valid1 <= nextvalid1;
+	 valid2 <= nextvalid2;
+      end
+   end
+   
+   src_manager srcmng1(
+		       .opr(src1),
+		       .opr_rdy(valid1),
+		       .exrslt1(exrslt1),
+		       .exdst1(exdst1),
+		       .kill_spec1(kill_spec1),
+		       .exrslt2(exrslt2),
+		       .exdst2(exdst2),
+		       .kill_spec2(kill_spec2),
+		       .exrslt3(exrslt3),
+		       .exdst3(exdst3),
+		       .kill_spec3(kill_spec3),
+		       .exrslt4(exrslt4),
+		       .exdst4(exdst4),
+		       .kill_spec4(kill_spec4),
+		       .exrslt5(exrslt5),
+		       .exdst5(exdst5),
+		       .kill_spec5(kill_spec5),
+		       .src(nextsrc1),
+		       .resolved(nextvalid1)
+		       );
+
+   src_manager srcmng2(
+		       .opr(src2),
+		       .opr_rdy(valid2),
+		       .exrslt1(exrslt1),
+		       .exdst1(exdst1),
+		       .kill_spec1(kill_spec1),
+		       .exrslt2(exrslt2),
+		       .exdst2(exdst2),
+		       .kill_spec2(kill_spec2),
+		       .exrslt3(exrslt3),
+		       .exdst3(exdst3),
+		       .kill_spec3(kill_spec3),
+		       .exrslt4(exrslt4),
+		       .exdst4(exdst4),
+		       .kill_spec4(kill_spec4),
+		       .exrslt5(exrslt5),
+		       .exdst5(exdst5),
+		       .kill_spec5(kill_spec5),
+		       .src(nextsrc2),
+		       .resolved(nextvalid2)
+		       );
+   
+endmodule // rs_alu
 ```
 
 ### Allocate Unit and Issue Unit
@@ -199,12 +344,8 @@ endmodule
 
 上图展示了 `alloc_issue_ino` 的电路，它使用保留站作为 FIFO buffer 并实现顺序执行。在电路中仅有一个 `AllocPtr`。`IssuePtr` 指向下一条要被发射的指令，并根据保留站中的 busy vector 和 register AllocPtr 计算出。
 
+在代码中分支指令和 Load/Store 指令使用按序发射，ALU 指令使用的是使用 `oldest_finder` 去选择一条指令发射，乘法指令使用 `prioenc`(优先编码器)选择一条指令发射。 
+
 ### search_begin, search_end
 
-## Verilog Implemenation
-
-### Select and Wakeup
-
-- `src_manager`
-  
-  `src_manager` 用于管理源操作数的选择和解析
+`search_begin` 和 `search_end` 都实现作为优先编码器。然而，`search_begin` 优先处理低位，`search_end` 优先处理高位。这些模块被用于在 `alloc_issue_ino` 和 `storebuf` 中实现顺序执行。
