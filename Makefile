@@ -10,8 +10,10 @@ TESTBENCH ?= allocate_unit_tb
 VERILATOR := verilator
 
 # CFLAGS	:= -Wall 
-VFLAGS 	:= --trace --x-assign unique --x-initial unique -Wno-WIDTHTRUNC -Wno-WIDTHEXPAND
-PFLAGS	:= -GREQ_LEN=4 -GGRANT_LEN=2
+VIGNOREW 	:= -Wno-WIDTHTRUNC -Wno-WIDTHEXPAND
+VINCULDES	:= -Irtl/
+VFLAGS 		:= --trace --x-assign unique --x-initial unique $(VIGNOREW) $(VINCULDES)
+PFLAGS		:= -GREQ_LEN=4 -GGRANT_LEN=2
 
 .PHONY:
 
