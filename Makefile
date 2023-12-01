@@ -3,7 +3,7 @@ CXX		:= g++
 
 RTLD	?= rtl/core/SW
 RTLOBJD	:= build
-TESTBENCHD	:= testbench
+TESTBENCHD	:= testbench/verilator
 
 TEST 	  ?= AllocateUnit
 TESTBENCH ?= allocate_unit_tb
