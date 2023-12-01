@@ -24,7 +24,7 @@ module RSAluEntry(
     // Dispatch 指令的 ALU 操作码
     input wire [`ALU_OP_WIDTH-1: 0] write_alu_op_i,
     // Dispatch 指令是否写入
-    input wire we,
+    input wire we_i,
 
     // 执行前递的信号
     // 前五条指令执行前递的结果
@@ -45,7 +45,7 @@ module RSAluEntry(
     output wire [`DATA_LEN-1: 0] exe_op_1_o,
     output wire [`DATA_LEN-1: 0] exe_op_2_o,
     // 两个操作数是否已经准备好
-    output wire ready,
+    output wire ready_o,
     output reg [`ADDR_LEN-1: 0] exe_pc_o,
     output reg [`DATA_LEN-1: 0] exe_imm_o,
     output reg [`RRF_SEL-1: 0] exe_rrf_tag_o,
@@ -64,7 +64,7 @@ module RSAluEntry(
     reg [`DATA_LEN-1: 0] next_op_2;
 
     // 两个操作数已经准备好且保留站 entry 有数据
-    assign ready = busy_i & valid_1 & valid_2;
+    assign ready_o = busy_i & valid_1 & valid_2;
     assign exe_op_1_o = ~valid_1 & next_valid_1? next_op_1 : op_1;
     assign exe_op_2_o = ~valid_2 & next_valid_2? next_op_2 : op_2;
 
@@ -80,7 +80,7 @@ module RSAluEntry(
             exe_rrf_tag_o <= 0;
             exe_dst_val_o <= 0;
             exe_alu_op_o <= 0;
-        end else if(we)begin
+        end else if(we_i)begin
             exe_pc_o <= write_pc_i;
             exe_imm_o <= write_imm_i;
             exe_rrf_tag_o <= write_rrf_tag_i;
