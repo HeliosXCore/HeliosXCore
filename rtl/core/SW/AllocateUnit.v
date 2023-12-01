@@ -46,38 +46,38 @@ module AllocateUnit  #(
 		       parameter GRANT_LEN = 2
 		       )
    (
-    input wire [REQ_LEN-1:0] 	busy,
-    output wire 		en_1,
-    output wire 		en_2,
-    output wire [GRANT_LEN-1:0] free_entry_1,
-    output wire [GRANT_LEN-1:0] free_entry_2,
-    input wire [1:0] 		req_num,
-    output wire 		allocatable
+    input wire [REQ_LEN-1:0] 	busy_i,
+    output wire 		en_1_o,
+    output wire 		en_2_o,
+    output wire [GRANT_LEN-1:0] free_entry_1_o,
+    output wire [GRANT_LEN-1:0] free_entry_2_o,
+    input wire [1:0] 		req_num_i,
+    output wire 		allocatable_o
    );
    
    wire [REQ_LEN-1:0] 	       busy_mask;
    
    PriorityEncoder #(REQ_LEN, GRANT_LEN) priority_encoder_1
      (
-      .in(busy),
-      .out(free_entry_1),
-      .en(en_1)
+      .in(busy_i),
+      .out(free_entry_1_o),
+      .en(en_1_o)
       );
 
    MaskUnit #(REQ_LEN, GRANT_LEN) mask_unit
      (
-      .mask(free_entry_1),
-      .in(busy),
+      .mask(free_entry_1_o),
+      .in(busy_i),
       .out(busy_mask)
       );
    
    PriorityEncoder #(REQ_LEN, GRANT_LEN) priority_encoder_2
      (
-      .in(busy | busy_mask),
-      .out(free_entry_2),
-      .en(en_2)
+      .in(busy_i | busy_mask),
+      .out(free_entry_2_o),
+      .en(en_2_o)
       );
 
-   assign allocatable = (req_num > ({1'b0,en_1}+{1'b0,en_2})) ? 1'b0 : 1'b1;
+   assign allocatable_o = (req_num_i > ({1'b0,en_1_o}+{1'b0,en_2_o})) ? 1'b0 : 1'b1;
 endmodule
 `default_nettype wire
