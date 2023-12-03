@@ -1,0 +1,183 @@
+$date
+	Sat Dec  2 14:41:40 2023
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module ROB_tb $end
+$var wire 5 ! dst_arf_1_o [4:0] $end
+$var wire 6 " commit_ptr_o [5:0] $end
+$var wire 1 # arfwe_1_o $end
+$var reg 1 $ clk $end
+$var reg 6 % dp1_addr_i [5:0] $end
+$var reg 1 & dp1_i $end
+$var reg 5 ' dst_dp1_i [4:0] $end
+$var reg 6 ( ex_alu1_addr_i [5:0] $end
+$var reg 1 ) finish_ex_alu1_i $end
+$var reg 1 * isValid_dst_dp1_i $end
+$var reg 1 + reset $end
+$scope module dut $end
+$var wire 1 # arfwe_1_o $end
+$var wire 1 $ clk $end
+$var wire 6 , dp1_addr_i [5:0] $end
+$var wire 1 & dp1_i $end
+$var wire 5 - dst_arf_1_o [4:0] $end
+$var wire 5 . dst_dp1_i [4:0] $end
+$var wire 6 / ex_alu1_addr_i [5:0] $end
+$var wire 1 ) finish_ex_alu1_i $end
+$var wire 1 * isValid_dst_dp1_i $end
+$var wire 1 + reset $end
+$var wire 1 0 commit_1 $end
+$var reg 6 1 commit_ptr_o [5:0] $end
+$var reg 64 2 finish [63:0] $end
+$var reg 64 3 isValid_dst [63:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+bx 3
+bx 2
+bx 1
+x0
+b0 /
+b0 .
+bx -
+b0 ,
+1+
+0*
+0)
+b0 (
+b0 '
+0&
+b0 %
+0$
+x#
+bx "
+bx !
+$end
+#5
+0#
+00
+b0 2
+b0 "
+b0 1
+1$
+#10
+0$
+0+
+#15
+1$
+#20
+0$
+#25
+1$
+#30
+0$
+1&
+#35
+bx0xxx 3
+1$
+b11 %
+b11 ,
+#40
+0$
+1)
+#45
+b1000 2
+1$
+b11 (
+b11 /
+#50
+0$
+b101 '
+b101 .
+#55
+bx1xxx 3
+b0 2
+1$
+1*
+#60
+0$
+#65
+b1000 2
+1$
+#70
+0$
+#75
+b0 2
+1$
+#80
+0$
+b100 %
+b100 ,
+#85
+b1000 2
+bx11xxx 3
+1$
+#90
+0$
+b100 (
+b100 /
+#95
+b1000 2
+1$
+b110 '
+b110 .
+#100
+0$
+#105
+b11000 2
+1$
+#110
+0$
+#115
+b1000 2
+1$
+#120
+0$
+#125
+b11000 2
+1$
+#130
+0$
+#135
+b1000 2
+1$
+#140
+0$
+#145
+b11000 2
+1$
+#150
+0$
+#155
+b1000 2
+1$
+#160
+0$
+#165
+b11000 2
+1$
+#170
+0$
+#175
+b1000 2
+1$
+#180
+0$
+#185
+b11000 2
+1$
+#190
+0$
+#195
+b1000 2
+1$
+#200
