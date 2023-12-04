@@ -10,7 +10,6 @@ module Rrf(
   // 源寄存器对应的rrftag
   input wire [`RRF_SEL-1:0] rs1_rrftag_i,
   input wire [`RRF_SEL-1:0] rs2_rrftag_i,
-
   //根据源寄存器对应的rrftag读取到的rrf.data域
   output wire [`DATA_LEN-1:0] rs1_rrfdata_o,
   output wire [`DATA_LEN-1:0] rs2_rrfdata_o,
