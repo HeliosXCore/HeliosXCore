@@ -14,7 +14,7 @@ S_0x125e04970 .scope module, "ROB_tb" "ROB_tb" 3 2;
  .timescale 0 0;
 v0x600000030ab0_0 .net "arfwe_1_o", 0 0, L_0x6000019300e0;  1 drivers
 v0x600000030b40_0 .var "clk", 0 0;
-v0x600000030bd0_0 .net "commit_ptr_o", 5 0, v0x6000000303f0_0;  1 drivers
+v0x600000030bd0_0 .net "commit_ptr_1_o", 5 0, v0x6000000303f0_0;  1 drivers
 v0x600000030c60_0 .var "dp1_addr_i", 5 0;
 v0x600000030cf0_0 .var "dp1_i", 0 0;
 v0x600000030d80_0 .net "dst_arf_1_o", 4 0, L_0x600001930070;  1 drivers
@@ -33,7 +33,7 @@ S_0x125e04ae0 .scope module, "dut" "ROB" 3 17, 4 2 0, S_0x125e04970;
     .port_info 5 /INPUT 6 "ex_alu1_addr_i";
     .port_info 6 /INPUT 5 "dst_dp1_i";
     .port_info 7 /INPUT 1 "isValid_dst_dp1_i";
-    .port_info 8 /OUTPUT 6 "commit_ptr_o";
+    .port_info 8 /OUTPUT 6 "commit_ptr_1_o";
     .port_info 9 /OUTPUT 1 "arfwe_1_o";
     .port_info 10 /OUTPUT 5 "dst_arf_1_o";
 L_0x600001930070 .functor BUFZ 5, L_0x6000003300a0, C4<00000>, C4<00000>, C4<00000>;
@@ -46,7 +46,7 @@ v0x6000000301b0_0 .net *"_ivl_7", 1 0, L_0x128068010;  1 drivers
 v0x600000030240_0 .net "arfwe_1_o", 0 0, L_0x6000019300e0;  alias, 1 drivers
 v0x6000000302d0_0 .net "clk", 0 0, v0x600000030b40_0;  1 drivers
 v0x600000030360_0 .net "commit_1", 0 0, L_0x600000330000;  1 drivers
-v0x6000000303f0_0 .var "commit_ptr_o", 5 0;
+v0x6000000303f0_0 .var "commit_ptr_1_o", 5 0;
 v0x600000030480_0 .net "dp1_addr_i", 5 0, v0x600000030c60_0;  1 drivers
 v0x600000030510_0 .net "dp1_i", 0 0, v0x600000030cf0_0;  1 drivers
 v0x6000000305a0 .array "dst", 63 0, 4 0;

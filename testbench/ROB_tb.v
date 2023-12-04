@@ -9,7 +9,7 @@ module ROB_tb();
     reg [`REG_SEL-1:0] dst_dp1_i;
     reg isValid_dst_dp1_i;
 
-    wire [`ROB_SEL-1:0] commit_ptr_o;
+    wire [`ROB_SEL-1:0] commit_ptr_1_o;
     wire arfwe_1_o;
     wire [`REG_SEL-1:0] dst_arf_1_o;
 
@@ -23,7 +23,7 @@ module ROB_tb();
         .ex_alu1_addr_i(ex_alu1_addr_i),
         .dst_dp1_i(dst_dp1_i),
         .isValid_dst_dp1_i(isValid_dst_dp1_i),
-        .commit_ptr_o(commit_ptr_o),
+        .commit_ptr_1_o(commit_ptr_1_o),
         .arfwe_1_o(arfwe_1_o),
         .dst_arf_1_o(dst_arf_1_o)
     );

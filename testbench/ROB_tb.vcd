@@ -9,7 +9,7 @@ $timescale
 $end
 $scope module ROB_tb $end
 $var wire 5 ! dst_arf_1_o [4:0] $end
-$var wire 6 " commit_ptr_o [5:0] $end
+$var wire 6 " commit_ptr_1_o [5:0] $end
 $var wire 1 # arfwe_1_o $end
 $var reg 1 $ clk $end
 $var reg 6 % dp1_addr_i [5:0] $end
@@ -31,7 +31,7 @@ $var wire 1 ) finish_ex_alu1_i $end
 $var wire 1 * isValid_dst_dp1_i $end
 $var wire 1 + reset $end
 $var wire 1 0 commit_1 $end
-$var reg 6 1 commit_ptr_o [5:0] $end
+$var reg 6 1 commit_ptr_1_o [5:0] $end
 $var reg 64 2 finish [63:0] $end
 $var reg 64 3 isValid_dst [63:0] $end
 $upscope $end
