@@ -16,5 +16,5 @@ module SrcOprManager(
 		rrf_valid_i ? rrf_data_i:
 		arf_rrftag_i;
 	  // 表明src是否已经就绪，即src中已经是data了，而不是rrftag
-   assign rdy = src_eq_zero_i | (~arf_busy_i | rrf_valid_i);
+   assign rdy_o = src_eq_zero_i | ~arf_busy_i | rrf_valid_i;
 endmodule
