@@ -1,4 +1,4 @@
-`include "constants.vh"
+`include "Consts.v"
 `default_nettype none
 module pipeline_if
   (
