@@ -1,9 +1,7 @@
 #pragma once
 #include <verilated.h>
 #include <verilated_vcd_c.h>
-#include <iostream>
 #include <memory>
-#include <assert.h>
 #include <fmt/core.h>
 
 #define MAX_SIM_TIME 300
