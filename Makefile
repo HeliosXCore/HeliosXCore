@@ -1,7 +1,7 @@
 CXX		:= g++
 
 
-RTLD	?= rtl/core/SW
+RTLD	?= rtl/core/SWU
 RTLOBJD	:= build
 TESTBENCHD	:= testbench/verilator
 

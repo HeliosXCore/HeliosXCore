@@ -1,5 +1,5 @@
-`include "consts/Consts.vh"
-`include "consts/ALU.vh"
+`include "consts/Consts.v"
+`include "consts/ALU.v"
 
 module RSAluEntry(
     input wire clk_i,
@@ -99,6 +99,7 @@ module RSAluEntry(
         end
     end
 
+    // 用于维护第一个操作数是否准备好
     SourceManager source_manager_1(
         .src_i(op_1),
         .src_ready_i(valid_1),
@@ -119,6 +120,7 @@ module RSAluEntry(
         .resolved_o(next_valid_1)
     );
 
+    // 用于维护第二个操作数是否准备好
     SourceManager source_manager_2(
         .src_i(op_2),
         .src_ready_i(valid_2),
