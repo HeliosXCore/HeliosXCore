@@ -130,19 +130,19 @@ module RSAlu(
 
     assign select_write_signal_0_1 = we_1_i && (write_addr_1_i == 0);
     assign select_write_signal_0_2 = we_2_i && (write_addr_2_i == 0);
-    assign select_write_signal_1_1 = we_1_i && (write_addr_2_i == 1);
+    assign select_write_signal_1_1 = we_1_i && (write_addr_1_i == 1);
     assign select_write_signal_1_2 = we_2_i && (write_addr_2_i == 1);
-    assign select_write_signal_2_1 = we_1_i && (write_addr_2_i == 2);
+    assign select_write_signal_2_1 = we_1_i && (write_addr_1_i == 2);
     assign select_write_signal_2_2 = we_2_i && (write_addr_2_i == 2);
-    assign select_write_signal_3_1 = we_1_i && (write_addr_2_i == 3);
+    assign select_write_signal_3_1 = we_1_i && (write_addr_1_i == 3);
     assign select_write_signal_3_2 = we_2_i && (write_addr_2_i == 3);
-    assign select_write_signal_4_1 = we_1_i && (write_addr_2_i == 4);
+    assign select_write_signal_4_1 = we_1_i && (write_addr_1_i == 4);
     assign select_write_signal_4_2 = we_2_i && (write_addr_2_i == 4);
-    assign select_write_signal_5_1 = we_1_i && (write_addr_2_i == 5);
+    assign select_write_signal_5_1 = we_1_i && (write_addr_1_i == 5);
     assign select_write_signal_5_2 = we_2_i && (write_addr_2_i == 5);
-    assign select_write_signal_6_1 = we_1_i && (write_addr_2_i == 6);
+    assign select_write_signal_6_1 = we_1_i && (write_addr_1_i == 6);
     assign select_write_signal_6_2 = we_2_i && (write_addr_2_i == 6);
-    assign select_write_signal_7_1 = we_1_i && (write_addr_2_i == 7);
+    assign select_write_signal_7_1 = we_1_i && (write_addr_1_i == 7);
     assign select_write_signal_7_2 = we_2_i && (write_addr_2_i == 7);
 
     // 8 个保留站 Entry
