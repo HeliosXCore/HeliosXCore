@@ -1,6 +1,6 @@
-`include "constants.vh"
+`include "Consts.v"
 `include "rv32_opcodes.vh"
-`include "alu_ops.vh"
+`include "ALU.v"
 
 `default_nettype none
 module decoder(
