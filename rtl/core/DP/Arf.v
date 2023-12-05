@@ -1,4 +1,5 @@
 `include "../../consts/Consts.v"
+`include "../../consts/ram_syn.v"
 module Arf (
     input wire  clk,
     input wire  reset,
@@ -113,6 +114,7 @@ module rename_table(
 
   assign rs2_arf_rrftag_o = {arf_rrftag5[rs2_i],arf_rrftag4[rs2_i],arf_rrftag3[rs2_i],arf_rrftag2[rs2_i],arf_rrftag1[rs2_i],arf_rrftag0[rs2_i]};
 
+  // clear arf busy
   always @(posedge clk)begin
 	if(reset)begin
 	  arf_busy <= 0;
@@ -130,16 +132,14 @@ module rename_table(
 	   arf_rrftag3 <= 0;
 	   arf_rrftag4 <= 0;
 	   arf_rrftag5 <= 0;
-	 end else if(completed_we_i) begin
-	   if(dst_en_setbusy_i) begin
+	 end else if(dst_en_setbusy_i) begin
 		 arf_busy[dst_num_setbusy_i] <= 1;
-		 arf_rrftag0 <= dst_rrftag_setbusy_i[0];
-		 arf_rrftag1 <= dst_rrftag_setbusy_i[1];
-		 arf_rrftag2 <= dst_rrftag_setbusy_i[2];
-		 arf_rrftag3 <= dst_rrftag_setbusy_i[3];
-		 arf_rrftag4 <= dst_rrftag_setbusy_i[4];
-		 arf_rrftag5 <= dst_rrftag_setbusy_i[5];
+		 arf_rrftag0[dst_num_setbusy_i] <= dst_rrftag_setbusy_i[0];
+		 arf_rrftag1[dst_num_setbusy_i] <= dst_rrftag_setbusy_i[1];
+		 arf_rrftag2[dst_num_setbusy_i] <= dst_rrftag_setbusy_i[2];
+		 arf_rrftag3[dst_num_setbusy_i] <= dst_rrftag_setbusy_i[3];
+		 arf_rrftag4[dst_num_setbusy_i] <= dst_rrftag_setbusy_i[4];
+		 arf_rrftag5[dst_num_setbusy_i] <= dst_rrftag_setbusy_i[5];
 	   end
 	 end 
-   end
 endmodule

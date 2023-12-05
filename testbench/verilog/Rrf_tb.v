@@ -2,8 +2,8 @@
 `include "../../rtl/consts/Consts.v"
 
 module Rrf_tb;
-  reg clk_i;
-  reg reset_i;
+  reg clk;
+  reg reset;
 
 
   reg [`RRF_SEL-1:0] rs1_rrftag_i;
@@ -26,8 +26,8 @@ module Rrf_tb;
 
 
   Rrf rrf(
-	.clk(clk_i),
-	.reset(reset_i),
+	.clk(clk),
+	.reset(reset),
 	
 	.rs1_rrftag_i(rs1_rrftag_i),
 	.rs2_rrftag_i(rs2_rrftag_i),
@@ -50,7 +50,7 @@ module Rrf_tb;
   );
 
   initial begin
-	clk_i = 0;
+	clk = 0;
 	// 测试写
 	forward_rrf_we_i = 1'b1;
 	forward_rrftag_i = `RRF_SEL'b0;
@@ -63,7 +63,7 @@ module Rrf_tb;
 
 
   always
-	#20 clk_i = ~clk_i;
+	#20 clk = ~clk;
 
 
   initial begin
@@ -71,9 +71,9 @@ module Rrf_tb;
   end
 
   initial begin
-	forever @(posedge clk_i) #3 begin
+	forever @(posedge clk) #3 begin
 	  $display("forward_rrf_we_i=%h\t, forward_rrftag_i=%h\t, forward_rrfdata_i=%h\t, allocate_rrf_en_i=%h\t, allocate_rrftag_i=%h\t",
-		clk_i,forward_rrf_we_i,forward_rrftag_i,forward_rrfdata_i,allocate_rrf_en_i,allocate_rrftag_i);
+		clk,forward_rrf_we_i,forward_rrftag_i,forward_rrfdata_i,allocate_rrf_en_i,allocate_rrftag_i);
 	end
   end
 

@@ -33,6 +33,7 @@ module Arf_tb;
 	.rs1_arf_data_o(rs1_arf_data_o),
 	.rs2_arf_data_o(rs2_arf_data_o),
 	.rs1_arf_busy_o(rs1_arf_busy_o),
+	.rs2_arf_busy_o(rs2_arf_busy_o),
 	.rs1_arf_rrftag_o(rs1_arf_rrftag_o),
 	.rs2_arf_rrftag_o(rs2_arf_rrftag_o),
 
@@ -47,13 +48,45 @@ module Arf_tb;
   );
 
   initial begin
-	clk_i = 0;
-
+	clk = 0;
+	rs1_i = 0;
+	rs2_i = 0;
+	completed_dst_num_i = 0;
+	from_rrfdata_i = 0;
+	completed_dst_rrftag_i = 0;
+	completed_we_i = 0;
+	dst_num_setbusy_i = 0;
+	dst_rrftag_setbusy_i = 0;
+	dst_en_setbusy_i = 0;
+	#20 reset = 1;
+	#40 reset = 0;
+	dst_num_setbusy_i = `REG_SEL'd1;
+	dst_rrftag_setbusy_i = `RRF_SEL'd12;
+	dst_en_setbusy_i = 1;
+	#40 
+	dst_num_setbusy_i = `REG_SEL'd2;
+	dst_rrftag_setbusy_i = `RRF_SEL'd13;
+	dst_en_setbusy_i = 1;
+	#40 
+	completed_we_i = 1;
+	completed_dst_num_i = `REG_SEL'd1;
+	from_rrfdata_i = `DATA_LEN'd14;
+	completed_dst_rrftag_i = `RRF_SEL'd12;
+	#40 completed_we_i = 1;
+	completed_dst_num_i = `REG_SEL'd2;
+	from_rrfdata_i = `DATA_LEN'd15;
+	completed_dst_rrftag_i = `RRF_SEL'd13;
+	#40 completed_we_i = 1;
+	completed_dst_num_i = `REG_SEL'd2;
+	from_rrfdata_i = `DATA_LEN'd16;
+	completed_dst_rrftag_i = `RRF_SEL'd12;
+	#40 rs1_i = `REG_SEL'd1;
+	rs2_i = `REG_SEL'd2;
   end
 
 
   always
-	#20 clk_i = ~clk_i;
+	#20 clk = ~clk;
 
 
   initial begin
@@ -61,9 +94,9 @@ module Arf_tb;
   end
 
   initial begin
-	forever @(posedge clk_i) #3 begin
-	  $display("forward_rrf_we_i=%h\t, forward_rrftag_i=%h\t, forward_rrfdata_i=%h\t, allocate_rrf_en_i=%h\t, allocate_rrftag_i=%h\t",
-		clk_i,forward_rrf_we_i,forward_rrftag_i,forward_rrfdata_i,allocate_rrf_en_i,allocate_rrftag_i);
+	forever @(posedge clk) #3 begin
+	  $display("reset = %h\t, rs1_i=%h\t, rs2_i=%h\t, rs1_arf_data_o=%h\t, rs2_arf_data_o=%h\t, rs1_arf_busy_o=%h\t, rs2_arf_busy_o=%h\t, rs1_arf_rrftag_o=%h\t, rs2_arf_rrftag_o=%h\t, completed_dst_num_i=%h\t, from_rrfdata_i=%h\t, completed_dst_rrftag_i=%h\t, completed_we_i=%h\t, dst_num_setbusy_i=%h\t, dst_rrftag_setbusy_i=%h\t, dst_en_setbusy_i\t",
+		reset,rs1_i, rs2_i,rs1_arf_data_o,rs2_arf_data_o,rs1_arf_busy_o,rs2_arf_busy_o,rs1_arf_rrftag_o,rs2_arf_rrftag_o,completed_dst_num_i,from_rrfdata_i,completed_dst_rrftag_i,completed_we_i,dst_num_setbusy_i,dst_rrftag_setbusy_i,dst_en_setbusy_i);
 	end
   end
 

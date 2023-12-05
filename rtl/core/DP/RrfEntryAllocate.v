@@ -1,5 +1,6 @@
 `include "../../consts/Consts.v"
 
+// 暂时不考虑分支预测的话，每个时钟周期都会分配一个rrf entry
 module RrfEntryAllocate(
   input wire clk,
   input wire reset,
@@ -28,7 +29,7 @@ module RrfEntryAllocate(
 
   always @(posedge clk)begin
 	if(reset)begin
-	  freenum_o <= 0;
+	  freenum_o <= `RRF_NUM;
 	  rrfptr_o <= 0;
 	  nextrrfcyc_o <= 0;
 	end else if(stall_dp_i) begin
