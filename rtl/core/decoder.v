@@ -1,5 +1,5 @@
 `include "Consts.v"
-`include "rv32_opcodes.vh"
+`include "rv32_opcodes.v"
 `include "ALU.v"
 
 `default_nettype none
