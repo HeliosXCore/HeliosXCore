@@ -228,9 +228,40 @@ class VRSAluTb : public VerilatorTb<VRSAlu> {
         }
     }
 
+    // 发射许多指令
+    void issue_many_inst() {}
+
+    // 发射一条带 RRF TAG 的指令
+    void issue_inst_with_rrf_tag() {
+        if (sim_time == 200) {
+            dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 7, 8,
+                     0x80000010, 5, 2, 1, 5);
+        } else if (sim_time == 210) {
+            // 此时指令应该没有准备好
+            ASSERT(dut->busy_vector_o == (1 << 5),
+                   "Error busy_vector_o = {} in {}", dut->busy_vector_o,
+                   sim_time);
+            ASSERT(dut->ready_o == 0, "Error ready_o = {} in {}", dut->ready_o,
+                   sim_time);
+            // 屏蔽写使能
+            disable_write_port(0);
+            // 执行前递
+            dut->exe_result_1_dst_i = 8;
+            dut->exe_result_1_i = 0xC;
+        } else if (sim_time == 220) {
+            // 发射指令
+            issue_inst(5);
+        } else if (sim_time == 230) {
+            // 验证指令是否发射成功
+            verify_issue_inst(0x7, 0xC, 0x80000010, 5, 2, 1, 5);
+        }
+    }
+
     void verilfy() override {
         single_inst_issue_test();
         two_inst_issue_test();
+        issue_many_inst();
+        issue_inst_with_rrf_tag();
     }
 };
 
