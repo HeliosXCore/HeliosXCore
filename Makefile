@@ -24,7 +24,8 @@ MACRO_FLAGS := -CFLAGS -DFMT_HEADER_ONLY
 
 sim: 
 	@mkdir -p $(RTLOBJD)
-	@$(VERILATOR) $(CFLAGS) $(VFLAGS) -cc $(RTLD)/$(TEST).v $(LDFLAGS) $(MODULES) --exe $(TESTBENCHD)/$(TESTBENCH).cpp --exe $(IFLGAS) --exe $(MACRO_FLAGS) -Mdir $(RTLOBJD)
+	@$(VERILATOR) $(CFLAGS) $(VFLAGS) -cc $(RTLD)/$(TEST).v $(LDFLAGS) $(MODULES) \
+		--exe $(TESTBENCHD)/$(TESTBENCH).cpp $(IFLGAS) $(MACRO_FLAGS) -Mdir $(RTLOBJD)
 	@make -C $(RTLOBJD) -f V$(TEST).mk V$(TEST)
 	@./$(RTLOBJD)/V$(TEST) +verilator+rand+reset+2
 

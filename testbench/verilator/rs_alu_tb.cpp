@@ -61,7 +61,7 @@ class VRSAluTb : public VerilatorTb<VRSAlu> {
    public:
     VRSAluTb() : VerilatorTb<VRSAlu>() {}
 
-    void simple_verify_allocate_rs_0() {
+    void simple_verify_rs_0() {
         dut->reset_i = 0;
         if (sim_time == 50) {
             // 写入一条指令
@@ -70,7 +70,7 @@ class VRSAluTb : public VerilatorTb<VRSAlu> {
             // 写入 0 号保留站项
             dut->write_addr_1_i = 0;
             // 写入指令地址
-            dut->write_addr_1_i = 0x80000000;
+            dut->write_pc_1_i = 0x80000000;
             // 写入两条有效的操作数
             dut->write_op_1_1_i = 0x000000FF;
             dut->write_op_1_2_i = 0x000000EF;
@@ -83,12 +83,21 @@ class VRSAluTb : public VerilatorTb<VRSAlu> {
             dut->write_dst_1_i = 0x1;
         } else if (sim_time == 60) {
             // 下一个时钟周期
-            fmt::println("Busy Vector: {}", dut->busy_vector_o);
             assert(dut->busy_vector_o == 0x1);
+            assert(dut->ready_o == 0x1);
+
+            // 此时对第一条指令进行发射
+            dut->issue_addr_i = 0x0;
+            dut->clear_busy_i = 1;
+        } else if (sim_time == 0x70) {
+            // 验证是否发射成功
+            assert(dut->busy_vector_o == 0x0);
+            assert(dut->exe_op_1_o == 0x000000FF);
+            assert(dut->exe_op_2_o == 0x000000EF);
         }
     }
 
-    void verilfy() override { simple_verify_allocate_rs_0(); }
+    void verilfy() override { simple_verify_rs_0(); }
 };
 
 int main(int argc, char **argv, char **env) {
