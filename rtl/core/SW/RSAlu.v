@@ -1,5 +1,5 @@
-`include "consts/Consts.v"
-`include "consts/ALU.v"
+`include "consts/Consts.vh"
+`include "consts/ALU.vh"
 
 module RSAlu(
     input wire clk_i,

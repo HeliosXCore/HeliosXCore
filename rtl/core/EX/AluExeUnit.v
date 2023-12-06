@@ -1,5 +1,5 @@
-`include "consts/ALU.v"
-`include "consts/Consts.v"
+`include "consts/ALU.vh"
+`include "consts/Consts.vh"
 
 module AluExeUnit(
    input wire clk_i,
@@ -21,9 +21,9 @@ module AluExeUnit(
 
    always @ (posedge clk_i) begin
       if (reset_i) begin
-	 busy <= 0;
+	      busy <= 0;
       end else begin
-	 busy <= issue_i;
+	      busy <= issue_i;
       end
    end
 
