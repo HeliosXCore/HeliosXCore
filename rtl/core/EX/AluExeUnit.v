@@ -1,6 +1,8 @@
-module ALU(
-   input wire clk,
-   input wire reset,
+`include "consts/ALU.v"
+
+module AluExeUnit(
+   input wire clk_i,
+   input wire reset_i,
    input wire if_write_rrf_i,
    input wire [ALU_OP_WIDTH-1:0]   alu_op_i,
    input wire [DATA_LEN-1:0] src1_i,
