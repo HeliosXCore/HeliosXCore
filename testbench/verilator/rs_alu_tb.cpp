@@ -50,11 +50,6 @@ void VerilatorTb<VRSAlu>::initialize_signal() {
 }
 
 template <>
-void VerilatorTb<VRSAlu>::tick() {
-    dut->clk_i ^= 1;
-}
-
-template <>
 vluint64_t VerilatorTb<VRSAlu>::get_clk() {
     return dut->clk_i;
 }
@@ -63,13 +58,8 @@ class VRSAluTb : public VerilatorTb<VRSAlu> {
    public:
     enum class OperandType { VALUE, RRFTAG };
 
-    bool busy_vector[8];
-
-    VRSAluTb() : VerilatorTb<VRSAlu>() {
-        for (int i = 0; i < 8; i++) {
-            busy_vector[i] = false;
-        }
-    }
+    VRSAluTb(uint64_t clock, uint64_t start_time, uint64_t end_time)
+        : VerilatorTb<VRSAlu>(clock, start_time, end_time) {}
 
     // 派发指令通过选择发送给第一个 write_port 或者第二个 write_port
     void dispatch(uint8_t dispatch_port, OperandType op_1_type,
@@ -189,6 +179,7 @@ class VRSAluTb : public VerilatorTb<VRSAlu> {
                    dut->busy_vector_o);
             verify_issue_inst(0x000000FF, 0x000000EF, 0x80000000, 0x0, 0x1, 1,
                               1);
+            initialize_signal();
         }
     }
 
@@ -225,6 +216,7 @@ class VRSAluTb : public VerilatorTb<VRSAlu> {
         } else if (sim_time == 130) {
             // 验证第二条指令发射是否成功
             verify_issue_inst(0x9, 0xA, 0x80000008, 7, 3, 1, 7);
+            initialize_signal();
         }
     }
 
@@ -232,7 +224,7 @@ class VRSAluTb : public VerilatorTb<VRSAlu> {
     void issue_many_inst() {}
 
     // 发射一条带 RRF TAG 的指令
-    void issue_inst_with_rrf_tag() {
+    void issue_inst_with_rrf_tag_test() {
         if (sim_time == 200) {
             dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 7, 8,
                      0x80000010, 5, 2, 1, 5);
@@ -254,14 +246,17 @@ class VRSAluTb : public VerilatorTb<VRSAlu> {
         } else if (sim_time == 230) {
             // 验证指令是否发射成功
             verify_issue_inst(0x7, 0xC, 0x80000010, 5, 2, 1, 5);
+            initialize_signal();
         }
     }
 
-    void verilfy() override {
+    void verify_dut() override {
+        // 单指令发射测试
         single_inst_issue_test();
+        // 两条指令同时发射测试
         two_inst_issue_test();
-        issue_many_inst();
-        issue_inst_with_rrf_tag();
+        // 发射一条带 RRF TAG 的指令
+        issue_inst_with_rrf_tag_test();
     }
 };
 
@@ -269,9 +264,7 @@ int main(int argc, char **argv, char **env) {
     srand(time(NULL));
     Verilated::commandArgs(argc, argv);
 
-    // std::shared_ptr<VerilatorTb<VRSAlu>> tb =
-    //     std::make_shared<VerilatorTb<VRSAlu>>();
-    std::shared_ptr<VRSAluTb> tb = std::make_shared<VRSAluTb>();
+    std::shared_ptr<VRSAluTb> tb = std::make_shared<VRSAluTb>(5, 50, 1000);
 
     tb->run("rs_alu.vcd");
 }
