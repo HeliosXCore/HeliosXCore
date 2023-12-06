@@ -21,9 +21,9 @@ module AluExeUnit(
 
    always @ (posedge clk_i) begin
       if (reset_i) begin
-	 busy <= 0;
+	      busy <= 0;
       end else begin
-	 busy <= issue_i;
+	      busy <= issue_i;
       end
    end
 
