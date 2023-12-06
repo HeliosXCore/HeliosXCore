@@ -21,14 +21,15 @@ module ARF (
     input wire [`REG_SEL-1:0]   com_dst2_data_i,    
     input wire [`RRF_SEL-1:0]   com_dst2_renamed_i,
     input wire  com_dst2_we_i,
-
-    input wire [`REG_SEL-1:0]   tagbusy1_addr_i,                 //目的逻辑寄存器1，并设置其busy位
+    //目的逻辑寄存器1，并设置其busy位
+    input wire [`REG_SEL-1:0]   tagbusy1_addr_i,                 
     input wire  tagbusy1_we_i,
 
     input wire [`REG_SEL-1:0]   tagbusy2_addr_i,              
     input wire  tagbusy2_we_i,
 
-    input wire [`RRF_SEL-1:0]   settag1_i,                      //dst1_renamed.在读写端口冲突时,提供冲突物理寄存器地址,用于设置其忙状态  来自rrf_freelistmanager模块
+    //dst1_renamed.在读写端口冲突时,提供冲突物理寄存器地址,用于设置其忙状态  来自rrf_freelistmanager模块
+    input wire [`RRF_SEL-1:0]   settag1_i,                     
     
     input wire [`RRF_SEL-1:0]   settag2_i,                      
 
@@ -78,7 +79,7 @@ module ARF (
 
 
 
-endmodule
+endmodule  //ARF
 
 
 module renaming_table (
