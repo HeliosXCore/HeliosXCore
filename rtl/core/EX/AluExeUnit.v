@@ -1,5 +1,5 @@
-`include "consts/ALU.v"
-`include "consts/Consts.v"
+`include "consts/ALU.vh"
+`include "consts/Consts.vh"
 
 module AluExeUnit(
    input wire clk_i,
