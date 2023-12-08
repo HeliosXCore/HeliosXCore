@@ -24,7 +24,7 @@ module ROB_tb();
     reg 			  finish_ex_alu2_i;
     reg [`RRF_SEL-1:0] 	  finish_ex_alu2_addr_i;
     reg 			  finish_ex_mul_i;
-    reg [`RRF_SEL-1:0] 	  finish_exfin_mul_addr_i;
+    reg [`RRF_SEL-1:0] 	  finish_ex_mul_addr_i;
     reg 			  finish_ex_ldst_i;
     reg [`RRF_SEL-1:0] 	  finish_ex_ldst_addr_i;
     reg 			  finish_ex_branch_i;
@@ -74,7 +74,7 @@ module ROB_tb();
         .finish_ex_alu2_i(finish_ex_alu2_i),
         .finish_ex_alu2_addr_i(finish_ex_alu2_addr_i),
         .finish_ex_mul_i(finish_ex_mul_i),
-        .finish_exfin_mul_addr_i(finish_exfin_mul_addr_i),
+        .finish_ex_mul_addr_i(finish_ex_mul_addr_i),
         .finish_ex_ldst_i(finish_ex_ldst_i),
         .finish_ex_ldst_addr_i(finish_ex_ldst_addr_i),
         .finish_ex_branch_i(finish_ex_branch_i),
@@ -139,6 +139,7 @@ module ROB_tb();
             dst_dp1_i[dp1_addr_i] = 1;                
 
         #5 finish_ex_alu1_i = 1;
+            finish_ex_alu1_addr_i = dp1_addr_i;
 
 
         #100 $stop;
