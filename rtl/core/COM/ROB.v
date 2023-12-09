@@ -21,6 +21,7 @@ module ROB (
     input wire finish_ex_alu1_i,                                    //alu1单元是否执行完成
     input wire [`RRF_SEL-1:0] finish_ex_alu1_addr_i,                       //alu1执行完成的指令在ROB的地址
     input wire 			  finish_ex_alu2_i,
+    
     input wire [`RRF_SEL-1:0] 	  finish_ex_alu2_addr_i,
     input wire 			  finish_ex_mul_i,
     input wire [`RRF_SEL-1:0] 	  finish_ex_mul_addr_i,
