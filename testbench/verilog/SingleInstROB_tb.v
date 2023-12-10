@@ -51,7 +51,7 @@ module tb_ROB;
     finish_ex_alu1_addr_i = 0;
 
       initial begin
-                $dumpfile("ROB_tb.vcd");    //生成的vcd文件名称
+                $dumpfile("SingROB_tb.vcd");    //生成的vcd文件名称
                 $dumpvars(0, ROB_tb);       //要记录的信号  0代表所有
             end
 

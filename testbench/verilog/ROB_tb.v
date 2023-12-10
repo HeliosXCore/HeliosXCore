@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 `include "consts/Consts.v"
 module ROB_tb();
-    reg clk;
-    reg reset;
+    reg clk_i;
+    reg reset_i;
     reg 			  dp1_i;                                     //是否发射
     reg [`RRF_SEL-1:0] 	  dp1_addr_i;                        //第一条发射的指令在ROB的地址
     reg [`INSN_LEN-1:0] 	  pc_dp1_i;
@@ -51,8 +51,8 @@ module ROB_tb();
 
     // 实例化ROB
     ROB dut (
-        .clk(clk),
-        .reset(reset),
+        .clk_i(clk_i),
+        .reset_i(reset_i),
         .dp1_i(dp1_i),
         .dp1_addr_i(dp1_addr_i),
         .pc_dp1_i(pc_dp1_i),
@@ -101,8 +101,8 @@ module ROB_tb();
     );
 
     initial begin
-        clk = 0;
-        forever #5 clk = ~clk;
+        clk_i = 0;
+        forever #5 clk_i = ~clk_i;
     end
 
     initial begin
@@ -111,7 +111,7 @@ module ROB_tb();
             end
  
     initial begin
-        reset = 1;
+        reset_i = 1;
         dp1_i = 0;
         dp1_addr_i = 0;
         pc_dp1_i = 0;
@@ -131,7 +131,7 @@ module ROB_tb();
         isbranch_dp2_i = 0;
 
 
-        #10 reset = 0; 
+        #10 reset_i = 0; 
 
 
         #20 dp1_i = 1;
