@@ -48,3 +48,7 @@ format:
 clean:
 	@rm -rf build
 	@rm *.vcd
+
+lint:
+	@verilator --lint-only -Irtl $(MODULES) $(RTLD)/$(TEST).v
+	@verilator --lint-only -Irtl rtl/core/EX/AluExeUnit.v

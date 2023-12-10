@@ -6,7 +6,6 @@ module PriorityEncoder #(
     output reg  [GRANT_LEN-1:0] out,
     output reg                  en
 );
-
     integer i;
     always @(*) begin
         en  = 0;
