@@ -4,14 +4,13 @@
 #include <memory>
 #include <fmt/core.h>
 
-#define MAX_SIM_TIME 300
-#define VERIF_START_TIME 50
-
 template <class DUT>
 class VerilatorTb {
    public:
     vluint64_t sim_time;
     vluint64_t posedge_cnt;
+    vluint64_t cur_cycle;
+    vluint64_t next_cycle;
     uint64_t clock;
     uint64_t start_time;
     uint64_t end_time;
@@ -77,7 +76,7 @@ class VerilatorTb {
     virtual void run(std::string vcd_filename) {
         Verilated::traceEverOn(true);
         m_trace = std::make_shared<VerilatedVcdC>();
-        dut->trace(m_trace.get(), 99);
+        dut->trace(m_trace.get(), 1024);
         open_trace(vcd_filename);
         execute();
 
