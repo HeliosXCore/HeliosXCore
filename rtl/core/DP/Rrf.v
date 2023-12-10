@@ -3,8 +3,8 @@
 
 // 重命名寄存器
 module Rrf(
-  input wire clk,
-  input wire reset,
+  input wire clk_i,
+  input wire reset_i,
 
   // 读rrf
   // 源寄存器对应的rrftag
@@ -47,8 +47,8 @@ module Rrf(
 
 
   // 写执行部件的前递结果
-  always @(posedge clk) begin
-	if(reset) begin
+  always @(posedge clk_i) begin
+	if(reset_i) begin
 	  rrf_valid <= 0;
 	end else if(forward_rrf_we_i) begin
 	  rrf_data[forward_rrftag_i] <= forward_rrfdata_i;
@@ -58,7 +58,7 @@ module Rrf(
 
   
   // 当为目的寄存器分配了空闲rrf entry后，需要更新
-  always @(posedge clk) begin
+  always @(posedge clk_i) begin
 	if(allocate_rrf_en_i)begin
 	  rrf_valid[allocate_rrftag_i] <= 1'b0;
 	end

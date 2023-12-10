@@ -2,8 +2,8 @@
 
 // 暂时不考虑分支预测的话，每个时钟周期都会分配一个rrf entry
 module RrfEntryAllocate(
-  input wire clk,
-  input wire reset,
+  input wire clk_i,
+  input wire reset_i,
 
   // COM阶段提交的指令的数量
   input wire [1:0] com_inst_num_i,
@@ -27,8 +27,8 @@ module RrfEntryAllocate(
   // TODO:在DP阶段stall以后，这里难道还是可以正常赋值吗？
   assign dst_rename_rrftag_o = rrfptr_o;
 
-  always @(posedge clk)begin
-	if(reset)begin
+  always @(posedge clk_i)begin
+	if(reset_i)begin
 	  freenum_o <= `RRF_NUM;
 	  rrfptr_o <= 0;
 	  nextrrfcyc_o <= 0;

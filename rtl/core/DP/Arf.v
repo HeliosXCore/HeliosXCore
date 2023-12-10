@@ -1,8 +1,8 @@
 `include "../../consts/Consts.v"
-`include "../../consts/ram_syn.v"
+`include "SynRam.v"
 module Arf (
-    input wire  clk,
-    input wire  reset,
+    input wire  clk_i,
+    input wire  reset_i,
 
 	// 读源寄存器
     input wire [`REG_SEL-1:0]   rs1_i,
@@ -34,10 +34,10 @@ module Arf (
 );
 
 // arf data的实现
-  ram_sync_4r2w
+  SynRam_4r2w
      #(`REG_SEL, `DATA_LEN, `REG_NUM)
-  arf_data (
-	.clk(clk),
+  ARFData (
+	.clk_i(clk_i),
 	.raddr1(rs1_i),
 	.raddr2(rs2_i),
 	.raddr3(),
@@ -54,9 +54,9 @@ module Arf (
 	.we2()
   );
 
-  rename_table re_tb(
-	.clk(clk),
-	.reset(reset),
+  RenameTable re_tb(
+	.clk_i(clk_i),
+	.reset_i(reset_i),
 	.rs1_i(rs1_i),
 	.rs2_i(rs2_i),
 	.rs1_arf_busy_o(rs1_arf_busy_o),
@@ -73,9 +73,9 @@ module Arf (
   
 endmodule
 
-module rename_table(
-  input wire clk,
-  input wire reset,
+module RenameTable(
+  input wire clk_i,
+  input wire reset_i,
 
   // 根据源寄存器编号读取arf.busy和arf.rrftag
   input wire [`REG_SEL-1:0] rs1_i,
@@ -115,8 +115,8 @@ module rename_table(
   assign rs2_arf_rrftag_o = {arf_rrftag5[rs2_i],arf_rrftag4[rs2_i],arf_rrftag3[rs2_i],arf_rrftag2[rs2_i],arf_rrftag1[rs2_i],arf_rrftag0[rs2_i]};
 
   // clear arf busy
-  always @(posedge clk)begin
-	if(reset)begin
+  always @(posedge clk_i)begin
+	if(reset_i)begin
 	  arf_busy <= 0;
 	end else if(completed_we_i) begin
 	  if(completed_dst_rrftag_i == {arf_rrftag5[completed_dst_num_i],arf_rrftag4[completed_dst_num_i],arf_rrftag3[completed_dst_num_i],arf_rrftag2[completed_dst_num_i],arf_rrftag1[completed_dst_num_i],arf_rrftag0[completed_dst_num_i]}) begin
@@ -124,8 +124,8 @@ module rename_table(
 	 end
    end 
  end
-   always @(posedge clk) begin
-	 if(reset)begin
+   always @(posedge clk_i) begin
+	 if(reset_i)begin
 	   arf_rrftag0 <= 0;
 	   arf_rrftag1 <= 0;
 	   arf_rrftag2 <= 0;

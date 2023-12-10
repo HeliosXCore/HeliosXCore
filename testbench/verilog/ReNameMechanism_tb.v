@@ -1,9 +1,9 @@
 `include "../../rtl/consts/Consts.v"
-`include "../../rtl/consts/ram_syn.v"
+`include "../../rtl/core/DP/SynRam.v"
 `timescale 1ns / 1ps
 module ReNameMechanism_tb;
-    reg clk;
-    reg   reset;
+    reg clk_i;
+    reg   reset_i;
 	
 	reg [`REG_SEL-1:0] rs1_decoder_out_arf_in;
 	reg [`REG_SEL-1:0] rs2_decoder_out_arf_in;
@@ -24,8 +24,8 @@ module ReNameMechanism_tb;
 	
 	wire [`RRF_SEL-1:0] allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in;
   Arf arf(
-	.clk(clk),
-	.reset(reset),
+	.clk_i(clk_i),
+	.reset_i(reset_i),
 
 	.rs1_i(rs1_decoder_out_arf_in),
 	.rs2_i(rs2_decoder_out_arf_in),
@@ -61,8 +61,8 @@ module ReNameMechanism_tb;
   
 
   Rrf rrf(
-	.clk(clk),
-	.reset(reset),
+	.clk_i(clk_i),
+	.reset_i(reset_i),
 	
 	.rs1_rrftag_i(rs1_arf_rrftag_arf_out_srcopmanagerANDrrf_in),
 	.rs2_rrftag_i(rs2_arf_rrftag_arf_out_srcopmanagerANDrrf_in),
@@ -95,7 +95,7 @@ module ReNameMechanism_tb;
 	.rrf_data_i(rs1_rrfdata_rrf_out_srcopmanager_in),
 	.src_eq_zero_i(src_eq_zero_decoder_out_srcopmanager_in),
 	.src_o(src_srcopmanager_out_srcmanager_in),
-	.rdy_o(rdy_srcopmanager_out_srcmanager_in)
+	.ready_o(rdy_srcopmanager_out_srcmanager_in)
   );
 
 
@@ -108,8 +108,8 @@ module ReNameMechanism_tb;
   wire nextrrfcyc_o;
   
   RrfEntryAllocate rrf_alloc(
-	.clk(clk),
-	.reset(reset),
+	.clk_i(clk_i),
+	.reset_i(reset_i),
 	.com_inst_num_i(com_inst_num_rob_out_RrfEntryAllocate_in),
 	.stall_dp_i(stall_dp_i),
 	.rrf_allocatable_o(rrf_allocatable_o),
@@ -123,8 +123,8 @@ module ReNameMechanism_tb;
 
 
   initial begin
-	clk = 0;
-	reset = 0;
+	clk_i = 0;
+	reset_i = 0;
 	rs1_decoder_out_arf_in = 0;
 	rs2_decoder_out_arf_in = 0;
 
@@ -145,8 +145,8 @@ module ReNameMechanism_tb;
 	com_inst_num_rob_out_RrfEntryAllocate_in = 0;
 	stall_dp_i = 0;
 
-	#20 reset = 1;
-	#40 reset = 0;
+	#20 reset_i = 1;
+	#40 reset_i = 0;
 	src_eq_zero_decoder_out_srcopmanager_in = 1;
 	#40 dstnum_setbusy_decoder_out_arf_in = 1;
 	dst_en_setbusy_decoder_out_arf_in = 1;
@@ -178,7 +178,7 @@ module ReNameMechanism_tb;
   end
   
   always
-	#20 clk = ~clk;
+	#20 clk_i = ~clk_i;
 
 
   initial begin
@@ -186,7 +186,7 @@ module ReNameMechanism_tb;
   end
 
   initial begin
-	forever @(posedge clk) #3 begin
+	forever @(posedge clk_i) #3 begin
 	  $display("rs1_decoder_out_arf_in=%h\t, rs2_decoder_out_arf_in=%h\t, completed_dstnum_rob_out_arf_in=%h\t, completed_dst_rrftag_rob_out_arfANDrrf_in=%h\t, completed_we_rob_out_arf_in=%h\t, dstnum_setbusy_decoder_out_arf_in=%h\t, dst_en_setbusy_decoder_out_arf_in=%h\t, allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in=%h\t, forward_rrf_we_alu_out_rrf_in=%h\t, forward_rrftag_RsAlu_out_rrf_in=%h\t, forward_rrfdata_alu_out_rrf_in=%h\t, allocate_rrf_en_i=%h\t, src_eq_zero_decoder_out_srcopmanager_in=%h\t, src_srcopmanager_out_srcmanager_in=%h\t, rdy_srcopmanager_out_srcmanager_in=%h\t, com_inst_num_rob_out_RrfEntryAllocate_in=%h\t, stall_dp_i=%h\t, rrf_allocatable_o=%h\t, freenum_RrfEntryAllocate_out_rob_in=%h\t, rrfptr_RrfEntryAllocate_out_rob_in=%h\t, nextrrfcyc_o=%h\t",rs1_decoder_out_arf_in, rs2_decoder_out_arf_in, completed_dstnum_rob_out_arf_in, completed_dst_rrftag_rob_out_arfANDrrf_in, completed_we_rob_out_arf_in, dstnum_setbusy_decoder_out_arf_in, dst_en_setbusy_decoder_out_arf_in, allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in, forward_rrf_we_alu_out_rrf_in, forward_rrftag_RsAlu_out_rrf_in, forward_rrfdata_alu_out_rrf_in, allocate_rrf_en_i, src_eq_zero_decoder_out_srcopmanager_in, src_srcopmanager_out_srcmanager_in, rdy_srcopmanager_out_srcmanager_in, com_inst_num_rob_out_RrfEntryAllocate_in, stall_dp_i, rrf_allocatable_o, freenum_RrfEntryAllocate_out_rob_in, rrfptr_RrfEntryAllocate_out_rob_in, nextrrfcyc_o);
 	end
   end

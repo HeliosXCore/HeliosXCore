@@ -2,7 +2,7 @@
 `include "../../rtl/consts/Consts.v"
 
 module SrcOprManager_tb;
-  reg clk;
+  reg clk_i;
 
   reg arf_busy_i;
   reg [`DATA_LEN-1:0] arf_data_i;
@@ -25,7 +25,7 @@ module SrcOprManager_tb;
   );
 
   initial begin
-	clk = 0;
+	clk_i = 0;
 	#20	arf_busy_i = 0;
 	arf_data_i = `DATA_LEN'd2;
 	arf_rrftag_i = 0;
@@ -44,14 +44,14 @@ module SrcOprManager_tb;
   end
 
   always
-	#20 clk = ~clk;
+	#20 clk_i = ~clk_i;
 
   initial begin
 	#500 $stop;
   end
 
   initial begin
-	forever @(posedge clk) #3 begin
+	forever @(posedge clk_i) #3 begin
 	  $display("arf_busy_i=%h\t, arf_data_i=%h\t,arf_rrftag_i=%h\t, rrf_valid_i=%h\t, rrf_data_i=%h\t, src_eq_zero_i=%h\t, src_o=%h\t ,rdy_o=%h\t",
 		arf_busy_i,arf_data_i,arf_rrftag_i,rrf_valid_i,rrf_data_i,src_eq_zero_i,src_o,rdy_o);
 	end
