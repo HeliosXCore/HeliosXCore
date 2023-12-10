@@ -90,6 +90,7 @@ module RSAlu(
     wire exe_dst_val [0: `ALU_ENT_NUM-1];
     wire [`ALU_OP_WIDTH-1: 0] exe_alu_op [0: `ALU_ENT_NUM-1];
 
+
     // 用于做保留站指令的排序
     reg [`ALU_ENT_NUM-1:0] 	      sort_bit;
 

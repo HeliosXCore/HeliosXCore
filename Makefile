@@ -5,11 +5,13 @@ RTLD	?= rtl/core/SW
 RTLOBJD	:= build
 TESTBENCHD	:= testbench/verilator
 
-TEST 	  ?= RSAlu
-MODULES   ?= $(RTLD)/SourceManager.v $(RTLD)/RSAluEntry.v
-TESTBENCH ?= rs_alu_tb
+TEST 	  ?= SwUnit
+MODULES   ?= $(RTLD)/SourceManager.v $(RTLD)/RSAluEntry.v \
+			$(RTLD)/RSAlu.v $(RTLD)/OldestFinder.v \
+			$(RTLD)/AllocateUnit.v
+TESTBENCH ?= swunit_tb
 VERILATOR := verilator
-WAVE 	  := rs_alu.vcd
+WAVE 	  := swunit.vcd
 
 # CFLAGS	:= -Wall 
 VIGNOREW 	:= -Wno-WIDTHTRUNC -Wno-WIDTHEXPAND
@@ -25,6 +27,7 @@ MACRO_FLAGS := -CFLAGS -DFMT_HEADER_ONLY
 sim: 
 	@mkdir -p $(RTLOBJD)
 	@$(VERILATOR) $(CFLAGS) $(VFLAGS) -cc $(RTLD)/$(TEST).v $(LDFLAGS) $(MODULES) \
+		--public \
 		--exe $(TESTBENCHD)/$(TESTBENCH).cpp $(IFLGAS) $(MACRO_FLAGS) -Mdir $(RTLOBJD)
 	@make -C $(RTLOBJD) -f V$(TEST).mk V$(TEST)
 	@./$(RTLOBJD)/V$(TEST) +verilator+rand+reset+2

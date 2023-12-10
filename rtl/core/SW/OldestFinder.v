@@ -64,7 +64,7 @@ module OldestFinder4 #(
 
 endmodule
 
-module OldestFinder8 #(
+module OldestFinder #(
     parameter ENTLEN = 3,
     parameter VALLEN = 8
 )(
