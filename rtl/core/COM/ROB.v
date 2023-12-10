@@ -1,7 +1,7 @@
-// `include "../../consts/Consts.v"
+`include "consts/Consts.v"
 module ROB (
-    input wire clk,
-    input wire reset,
+    input wire clk_i,
+    input wire reset_i,
     input wire 			  dp1_i,                                     //是否发射
     input wire [`RRF_SEL-1:0] 	  dp1_addr_i,                        //第一条发射的指令在ROB的地址
     input wire [`INSN_LEN-1:0] 	  pc_dp1_i,
@@ -21,7 +21,7 @@ module ROB (
     input wire finish_ex_alu1_i,                                    //alu1单元是否执行完成
     input wire [`RRF_SEL-1:0] finish_ex_alu1_addr_i,                       //alu1执行完成的指令在ROB的地址
     input wire 			  finish_ex_alu2_i,
-    
+
     input wire [`RRF_SEL-1:0] 	  finish_ex_alu2_addr_i,
     input wire 			  finish_ex_mul_i,
     input wire [`RRF_SEL-1:0] 	  finish_ex_mul_addr_i,
@@ -100,7 +100,7 @@ module ROB (
     assign jmpaddr_combranch_o =( ~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ?jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
 
     // 收到prmiss信号时清空valid位
-    // always @(posedge clk) begin
+    // always @(posedge clk_i) begin
     //     if (prmiss_i) begin
     //         valid[dispatch_ptr_i:commit_ptr_1_o] <= 0;
     //         commit_ptr_1_o <= dispatch_ptr_i; 
@@ -108,8 +108,8 @@ module ROB (
     // end
 
 
-    always @(posedge clk ) begin
-        if(reset) begin
+    always @(posedge clk_i ) begin
+        if(reset_i) begin
             commit_ptr_1_o <= 0;
             valid <= 0;
             finish <= 0;
@@ -148,7 +148,7 @@ module ROB (
         end
     end
 
-    always @(posedge clk ) begin
+    always @(posedge clk_i ) begin
         if(dp1_i) begin
             // 分配ROB entry
             valid[dp1_addr_i] <= 1'b1;
