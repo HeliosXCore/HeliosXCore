@@ -22,7 +22,12 @@ IFLGAS		:= -CFLAGS -I../testbench/verilator -CFLAGS -I../3rd-party/fmt/include
 LDFLAGS		:= -LDFLAGS ../3rd-party/fmt/build/libfmt.a
 MACRO_FLAGS := -CFLAGS -DFMT_HEADER_ONLY
 
-.PHONY: sim wave clean
+# Format
+VFormater := verible-verilog-format
+FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
+VSRC 	  := $(shell find rtl -name "*.v")
+
+.PHONY: sim wave clean format
 
 sim: 
 	@mkdir -p $(RTLOBJD)
@@ -34,6 +39,11 @@ sim:
 
 wave: sim
 	@gtkwave $(WAVE)
+
+format:
+	@for file in $(VSRC); do \
+		$(VFormater) --inplace $(FormatFlags) $$file; \
+	done
 
 clean:
 	@rm -rf build
