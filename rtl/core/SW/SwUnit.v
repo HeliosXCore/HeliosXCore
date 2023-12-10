@@ -117,8 +117,8 @@ module SwUnit(
     assign alu_rs_allocate_entry_2 = alu_allocate_en_2? free_alu_entry_2 : 0;
 
     // 写使能信号，TODO：更多条件
-    assign we_1 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_1 & (dp_req_alu_num_i >= 2'd1);
-    assign we_2 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_2 & (dp_req_alu_num_i == 2'd2);
+    assign we_1 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_1 & (dp_req_alu_num_i >= 2'd1) & alu_allocatable;
+    assign we_2 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_2 & (dp_req_alu_num_i == 2'd2) & alu_allocatable;
 
     assign alu_issue_addr = alu_issue_entry;
     // alu_clear_busy 信号，用于清空保留站的 busy 位

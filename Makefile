@@ -14,7 +14,7 @@ VERILATOR := verilator
 WAVE 	  := swunit.vcd
 
 # CFLAGS	:= -Wall 
-VIGNOREW 	:= -Wno-WIDTHTRUNC -Wno-WIDTHEXPAND
+VIGNOREW 	:= 
 VINCULDES	:= -Irtl/
 VFLAGS 		:= --trace --x-assign unique --x-initial unique $(VIGNOREW) $(VINCULDES)
 PFLAGS		:= -GREQ_LEN=4 -GGRANT_LEN=2
