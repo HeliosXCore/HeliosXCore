@@ -160,7 +160,7 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
             dut->stall_dp_i = 0;
             dut->kill_dp_i = 0;
             disable_next_rrf_cycle();
-            // 分配一个 entry
+            // 分配两个 entry
             dut->dp_req_alu_num_i = 2;
 
             // 输出分配的 entry
@@ -205,21 +205,89 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
             //              dut->rootp->SwUnit__DOT__alu_entry_value);
             // fmt::println("ALU issue addr: {}",
             //              dut->rootp->SwUnit__DOT__alu_issue_addr);
-            ASSERT(dut->rootp->SwUnit__DOT__exe_alu_ready_o == 3,
-                   "Wrong alu ready signal!");
+
+            // 第二周期发射第一条指令
+            ASSERT(dut->rootp->exe_alu_ready_o == 3, "Wrong alu ready signal!");
             ASSERT(dut->exe_alu_op_1_o == 3, "Wrong output alu op1 signal {}!",
                    dut->exe_alu_op_1_o);
             ASSERT(dut->exe_alu_op_2_o == 4, "Wrong output alu op2 signal {}!",
                    dut->exe_alu_op_2_o);
         } else if (sim_time == 120) {
+            // 第三周期发射第二条指令
             ASSERT(dut->exe_alu_op_1_o == 5, "Wrong output alu op signal!");
             ASSERT(dut->exe_alu_op_2_o == 6, "Wrong output alu op signal!");
+        }
+    }
+
+    void triple_inst_issue_test() {
+        if (sim_time == 200) {
+            dut->reset_i = 0;
+            dut->stall_dp_i = 0;
+            dut->kill_dp_i = 0;
+            disable_next_rrf_cycle();
+            // 分配两个 entry
+            dut->dp_req_alu_num_i = 2;
+
+            // 输出分配的 entry
+            // 检查分配 entry 编号
+            ASSERT(dut->rootp->SwUnit__DOT__alu_allocate_en_1 == 1,
+                   "Wrong allocate enable signal!");
+            ASSERT(dut->rootp->SwUnit__DOT__free_alu_entry_1 == 0,
+                   "Wrong allocate entry singal {}!",
+                   dut->rootp->SwUnit__DOT__free_alu_entry_1);
+            ASSERT(dut->rootp->SwUnit__DOT__alu_allocate_en_2 == 1,
+                   "Wrong allocate enable signal!");
+            ASSERT(dut->rootp->SwUnit__DOT__free_alu_entry_2 == 1,
+                   "Wrong allocate entry singal {}!",
+                   dut->rootp->SwUnit__DOT__free_alu_entry_2);
+
+            // 发射两条条指令，两条指令的第二个操作数均为 RRFTag = 1
+            // 第一条指令的 RRF Tag 为 5
+            dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 7, 1,
+                     0x80000008, 5, 1, 1);
+            // 第二条指令的 RRF Tag 为 6
+            dispatch(1, OperandType::VALUE, OperandType::RRFTAG, 8, 1,
+                     0x8000000C, 6, 1, 2);
+
+            ASSERT(dut->dp_valid_1_1_i == 1,
+                   "Wrong dispatch write valid signal!");
+            ASSERT(dut->dp_valid_1_2_i == 0,
+                   "Wrong dispatch write valid signal!");
+            ASSERT(dut->dp_valid_2_1_i == 1,
+                   "Wrong dispatch write valid signal!");
+            ASSERT(dut->dp_valid_2_2_i == 0,
+                   "Wrong dispatch write valid signal!");
+            ASSERT(dut->rootp->SwUnit__DOT__alu_clear_busy == 0,
+                   "Wrong alu clear busy signal {}!",
+                   dut->rootp->SwUnit__DOT__alu_clear_busy);
+        } else if (sim_time == 210) {
+            dut->dp_req_alu_num_i = 1;
+            // 发射第三条指令
+            dispatch(0, OperandType::VALUE, OperandType::VALUE, 9, 10,
+                     0x80000008, 7, 1, 1);
+        } else if (sim_time == 220) {
+            dut->dp_req_alu_num_i = 0;
+            ASSERT(dut->exe_alu_ready_o == 4, "Wrong alu ready signal {}!",
+                   dut->exe_alu_ready_o);
+            ASSERT(dut->exe_alu_op_1_o == 9, "Wrong output alu op signal!");
+            ASSERT(dut->exe_alu_op_2_o == 10, "Wrong output alu op signal!");
+
+            // 执行前递
+            dut->exe_result_1_dst_i = 1;
+            dut->exe_result_1_i = 11;
+        } else if (sim_time == 230) {
+            ASSERT(dut->exe_alu_op_1_o == 7, "Wrong output alu op signal!");
+            ASSERT(dut->exe_alu_op_2_o == 11, "Wrong output alu op signal!");
+        } else if (sim_time == 240) {
+            ASSERT(dut->exe_alu_op_1_o == 8, "Wrong output alu op signal!");
+            ASSERT(dut->exe_alu_op_2_o == 11, "Wrong output alu op signal!");
         }
     }
 
     void verify_dut() override {
         single_inst_issue_test();
         double_inst_issue_test();
+        triple_inst_issue_test();
     }
 };
 
