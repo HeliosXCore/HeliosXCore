@@ -50,53 +50,56 @@ module SwUnit(
     input wire [`RRF_SEL-1: 0]      exe_result_4_dst_i,
     input wire [`RRF_SEL-1: 0]      exe_result_5_dst_i,
 
-    output reg [`DATA_LEN-1: 0]     exe_alu_op_1_o,
-    output reg [`DATA_LEN-1: 0]     exe_alu_op_2_o,
-    output reg [`ADDR_LEN-1: 0]     exe_alu_pc_o,   
-    output reg [`DATA_LEN-1: 0]     exe_alu_imm_o,
-    output reg [`RRF_SEL-1: 0]      exe_alu_rrf_tag_o,
-    output reg                      exe_alu_dst_val_o,
-    output reg [`ALU_OP_WIDTH-1: 0] exe_alu_op_o
+    output wire [`DATA_LEN-1: 0]     exe_alu_op_1_o,
+    output wire [`DATA_LEN-1: 0]     exe_alu_op_2_o,
+    output wire [`ADDR_LEN-1: 0]     exe_alu_pc_o,   
+    output wire [`DATA_LEN-1: 0]     exe_alu_imm_o,
+    output wire [`RRF_SEL-1: 0]      exe_alu_rrf_tag_o,
+    output wire                      exe_alu_dst_val_o,
+    output wire [`ALU_OP_WIDTH-1: 0] exe_alu_op_o,
+    output wire [`ALU_ENT_NUM-1: 0]  exe_alu_ready_o
 );
 
-    wire [`ALU_ENT_NUM-1: 0] busy_alu_vector; 
+    // wire [`ALU_ENT_NUM-1: 0] busy_alu_vector; 
     wire alu_allocatable;
     wire alu_allocate_en_1;
     wire alu_allocate_en_2;
     // 传递给 Allocator 的信号
-    wire [`ALU_ENT_SEL: 0] free_alu_entry_1;
-    wire [`ALU_ENT_SEL: 0] free_alu_entry_2;
+    wire [`ALU_ENT_SEL-1: 0] free_alu_entry_1;
+    wire [`ALU_ENT_SEL-1: 0] free_alu_entry_2;
 
     // 提取出前 ALU_ENT_SEL 位的 ALU 指令地址
-    wire [`ALU_ENT_SEL-1: 0] alu_allocate_entry_1;
-    wire [`ALU_ENT_SEL-1: 0] alu_allocate_entry_2; 
+    // wire [`ALU_ENT_SEL-1: 0] alu_allocate_entry_1;
+    // wire [`ALU_ENT_SEL-1: 0] alu_allocate_entry_2; 
 
     wire [`ALU_ENT_SEL-1: 0] alu_rs_allocate_entry_1;
     wire [`ALU_ENT_SEL-1: 0] alu_rs_allocate_entry_2;
 
     wire [`ALU_ENT_SEL-1: 0] alu_issue_addr;
     wire alu_clear_busy;
+    wire alu_issue_enable;
+
     wire we_1;
     wire we_2;
 
     reg [`ALU_ENT_NUM-1: 0] alu_busy_vector;
     wire [`ALU_ENT_NUM*(`RRF_SEL+2)-1: 0] alu_history_vector;
 
-    wire [`DATA_LEN-1: 0] exe_alu_op_1;
-    wire [`DATA_LEN-1: 0] exe_alu_op_2;
-    wire [`ADDR_LEN-1: 0] exe_alu_pc;   
-    wire [`DATA_LEN-1: 0] exe_alu_imm;
-    wire [`RRF_SEL-1: 0]  exe_alu_rrf_tag;
-    wire                  exe_alu_dst_val;
-    wire [`ALU_OP_WIDTH-1: 0] exe_alu_op;
-    wire [`ALU_ENT_NUM-1: 0]  exe_alu_ready;
+    // wire [`DATA_LEN-1: 0] exe_alu_op_1;
+    // wire [`DATA_LEN-1: 0] exe_alu_op_2;
+    // wire [`ADDR_LEN-1: 0] exe_alu_pc;   
+    // wire [`DATA_LEN-1: 0] exe_alu_imm;
+    // wire [`RRF_SEL-1: 0]  exe_alu_rrf_tag;
+    // wire                  exe_alu_dst_val;
+    // wire [`ALU_OP_WIDTH-1: 0] exe_alu_op;
+    // wire [`ALU_ENT_NUM-1: 0]  exe_alu_ready;
 
     wire [`ALU_ENT_SEL-1: 0] alu_issue_entry;
     wire [`RRF_SEL+1: 0]     alu_entry_value;
     
     // 分配单元根据 req_num 分配保留站条目
-    AllocateUnit #(`ALU_ENT_NUM, `ALU_ENT_SEL+1) AluAllocator(
-        .busy_i(busy_alu_vector),
+    AllocateUnit #(`ALU_ENT_NUM, `ALU_ENT_SEL) AluAllocator(
+        .busy_i(alu_busy_vector),
         .en_1_o(alu_allocate_en_1),
         .en_2_o(alu_allocate_en_2),
         .free_entry_1_o(free_alu_entry_1),
@@ -106,19 +109,23 @@ module SwUnit(
     );
 
     // 由于最后一位是 mask bit，因此提取前 `ALU_ENT_SEL-1 位 作为分配的 ADDR
-    assign alu_allocate_entry_1 = free_alu_entry_1[`ALU_ENT_SEL: 1];
-    assign alu_allocate_entry_2 = free_alu_entry_2[`ALU_ENT_SEL: 1];
+    // assign alu_allocate_entry_1 = free_alu_entry_1[`ALU_ENT_SEL: 1];
+    // assign alu_allocate_entry_2 = free_alu_entry_2[`ALU_ENT_SEL: 1];
 
     // 如果分配成功赋值，否则为 0
-    assign alu_rs_allocate_entry_1 = alu_allocate_en_1? alu_allocate_entry_1 : 0;
-    assign alu_rs_allocate_entry_2 = alu_allocate_en_2? alu_allocate_entry_2 : 0;
+    assign alu_rs_allocate_entry_1 = alu_allocate_en_1? free_alu_entry_1 : 0;
+    assign alu_rs_allocate_entry_2 = alu_allocate_en_2? free_alu_entry_2 : 0;
 
     // 写使能信号，TODO：更多条件
-    assign we_1 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_1;
-    assign we_2 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_2;
+    assign we_1 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_1 & (dp_req_alu_num_i >= 2'd1);
+    assign we_2 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_2 & (dp_req_alu_num_i == 2'd2);
 
     assign alu_issue_addr = alu_issue_entry;
+    // alu_clear_busy 信号，用于清空保留站的 busy 位
+    // 如果 entry ready 了就清空 busy 位
     assign alu_clear_busy = ~alu_entry_value[`RRF_SEL+1];
+    // alu issue 信号，用于控制是否发射 ALU 指令
+    assign alu_issue_enable = alu_clear_busy;
 
 
     RSAlu RSAlu(
@@ -172,14 +179,14 @@ module SwUnit(
         .exe_result_4_dst_i(exe_result_4_dst_i),
         .exe_result_5_dst_i(exe_result_5_dst_i),
 
-        .exe_op_1_o(exe_alu_op_1),
-        .exe_op_2_o(exe_alu_op_2),
-        .ready_o(exe_alu_ready),
-        .exe_pc_o(exe_alu_pc),
-        .exe_imm_o(exe_alu_imm),
-        .exe_rrf_tag_o(exe_alu_rrf_tag),
-        .exe_alu_op_o(exe_alu_op),
-        .exe_dst_val_o(exe_alu_dst_val),
+        .exe_op_1_o(exe_alu_op_1_o),
+        .exe_op_2_o(exe_alu_op_2_o),
+        .ready_o(exe_alu_ready_o),
+        .exe_pc_o(exe_alu_pc_o),
+        .exe_imm_o(exe_alu_imm_o),
+        .exe_rrf_tag_o(exe_alu_rrf_tag_o),
+        .exe_alu_op_o(exe_alu_op_o),
+        .exe_dst_val_o(exe_alu_dst_val_o),
 
         .busy_vector_o(alu_busy_vector),
         .history_vector_o(alu_history_vector)
@@ -195,26 +202,28 @@ module SwUnit(
         .oldest_value_o(alu_entry_value)
     );
 
-    always@(posedge clk_i)begin
-        if(reset_i)begin
-            // 初始化数据
-            exe_alu_op_1_o <= 0;
-            exe_alu_op_2_o <= 0;
-            exe_alu_pc_o <= 0;
-            exe_alu_imm_o <= 0;
-            exe_alu_rrf_tag_o <= 0;
-            exe_alu_dst_val_o <= 0;
-            exe_alu_op_o <= 0;
-        end else begin
-            // 上升沿为输出数据赋值
-            exe_alu_op_1_o <= exe_alu_op_1;
-            exe_alu_op_2_o <= exe_alu_op_2;
-            exe_alu_pc_o <= exe_alu_pc;
-            exe_alu_imm_o <= exe_alu_imm;
-            exe_alu_rrf_tag_o <= exe_alu_rrf_tag;
-            exe_alu_dst_val_o <= exe_alu_dst_val;
-            exe_alu_op_o <= exe_alu_op;
-        end
-    end
+    // always@(posedge clk_i)begin
+    //     if(reset_i)begin
+    //         // 初始化数据
+    //         exe_alu_op_1_o <= 0;
+    //         exe_alu_op_2_o <= 0;
+    //         exe_alu_pc_o <= 0;
+    //         exe_alu_imm_o <= 0;
+    //         exe_alu_rrf_tag_o <= 0;
+    //         exe_alu_dst_val_o <= 0;
+    //         exe_alu_op_o <= 0;
+    //     end else begin
+    //         // 上升沿为输出数据赋值
+    //         if(alu_issue_enable)begin
+    //             exe_alu_op_1_o <= exe_alu_op_1;
+    //             exe_alu_op_2_o <= exe_alu_op_2;
+    //             exe_alu_pc_o <= exe_alu_pc;
+    //             exe_alu_imm_o <= exe_alu_imm;
+    //             exe_alu_rrf_tag_o <= exe_alu_rrf_tag;
+    //             exe_alu_dst_val_o <= exe_alu_dst_val;
+    //             exe_alu_op_o <= exe_alu_op;
+    //         end
+    //     end
+    // end
 
 endmodule
