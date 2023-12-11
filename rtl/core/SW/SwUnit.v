@@ -1,4 +1,3 @@
-/* verilator lint_off UNUSEDSIGNAL */
 `include "consts/Consts.vh"
 `include "consts/ALU.vh"
 

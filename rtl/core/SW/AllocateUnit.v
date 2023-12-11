@@ -1,4 +1,3 @@
-/* verilator lint_off DECLFILENAME */
 module PriorityEncoder #(
     parameter REQ_LEN   = 4,
     parameter GRANT_LEN = 2

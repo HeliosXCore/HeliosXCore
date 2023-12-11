@@ -26,6 +26,7 @@ jobs:
     - name: Install verilator
       run: |
         sudo apt-get install -y verilator
+        echo $(verilator --version)
 
     - name: Lint
       run: |
