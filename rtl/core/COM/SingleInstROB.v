@@ -1,6 +1,5 @@
 `include "consts/Consts.v"
-`include
-module ROB (
+module SingleInstROB (
     input wire clk_i,
     input wire reset_i,
     input wire 			  dp1_i,                                     //是否发射
@@ -13,7 +12,7 @@ module ROB (
     
     output reg [`ROB_SEL-1:0] commit_ptr_1_o,
     output wire   arfwe_1_o,
-    output wire [`REG_SEL-1:0] dst_arf_1_o,
+    output wire [`REG_SEL-1:0] dst_arf_1_o
         
     
 );
