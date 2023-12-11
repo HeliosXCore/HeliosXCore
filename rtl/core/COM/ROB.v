@@ -1,4 +1,4 @@
-`include "consts/Consts.v"
+`include "consts/Consts.vh"
 module ROB (
     input wire clk_i,
     input wire reset_i,

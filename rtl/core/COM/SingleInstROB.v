@@ -1,4 +1,4 @@
-`include "consts/Consts.v"
+`include "consts/Consts.vh"
 module SingleInstROB (
     input wire clk_i,
     input wire reset_i,
@@ -45,7 +45,7 @@ module SingleInstROB (
         end
         else begin
             //更新提交指针
-            commit_ptr_1_o <= (commit_ptr_1_o + commit_1) % (`ROB_NUM);
+            commit_ptr_1_o <= (commit_ptr_1_o + commit_1) % `ROB_NUM;
             
             //当执行单元完成时,更新完成标志
             if(finish_ex_alu1_i) begin
