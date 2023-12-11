@@ -1,8 +1,4 @@
 `include "consts/Consts.vh"
-`include "rtl/core/DP/Arf.v"
-`include "rtl/core/DP/Rrf.v"
-`include "rtl/core/DP/SrcOprManager.v"
-`include "rtl/core/DP/RrfEntryAllocate.v"
 module ReNameUnit(
   input reg clk_i,
   input reg reset_i,
