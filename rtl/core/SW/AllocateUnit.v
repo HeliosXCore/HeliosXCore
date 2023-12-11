@@ -1,3 +1,4 @@
+/* verilator lint_off DECLFILENAME */
 module PriorityEncoder #(
     parameter REQ_LEN   = 4,
     parameter GRANT_LEN = 2
@@ -24,7 +25,7 @@ module MaskUnit #(
     parameter GRANT_LEN = 2
 ) (
     input  wire [GRANT_LEN-1:0] mask,
-    input  wire [  REQ_LEN-1:0] in,
+    // input  wire [  REQ_LEN-1:0] in,
     output reg  [  REQ_LEN-1:0] out
 );
 
@@ -60,7 +61,7 @@ module AllocateUnit #(
 
     MaskUnit #(REQ_LEN, GRANT_LEN) mask_unit (
         .mask(free_entry_1_o),
-        .in  (busy_i),
+        // .in  (busy_i),
         .out (busy_mask)
     );
 

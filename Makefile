@@ -50,5 +50,7 @@ clean:
 	@rm *.vcd
 
 lint:
-	@verilator --lint-only -Irtl $(MODULES) $(RTLD)/$(TEST).v
-	@verilator --lint-only -Irtl rtl/core/EX/AluExeUnit.v
+	@verilator --lint-only -Wall -Irtl rtl/core/SW/SourceManager.v rtl/core/SW/RSAluEntry.v \
+			rtl/core/SW/RSAlu.v rtl/core/SW/OldestFinder.v rtl/core/SW/AllocateUnit.v \
+			rtl/core/SW/SwUnit.v
+	@verilator --lint-only -Wall -Irtl rtl/core/EX/AluExeUnit.v
