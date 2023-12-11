@@ -69,7 +69,8 @@ module ROB (
     
 
 
-    assign commit_ptr_2_o = (commit_ptr_1_o + 1) % `ROB_NUM;
+    //等价于 commit_ptr_2_o = (commit_ptr_1_o + 1) % `ROB_NUM;
+    assign commit_ptr_2_o = (commit_ptr_1_o + {5'b0,1'b1}) & 6'b1; 
 
     // wire commit_1 = valid[commit_ptr_1_o] & finish[commit_ptr_1_o] & ~prmiss_i;
     // wire commit_2 = valid[commit_ptr_2_o] & finish[commit_ptr_2_o] & ~prmiss_i;
@@ -96,7 +97,7 @@ module ROB (
 
     assign combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) | (~prmiss_i & commit_2 & isbranch[commit_ptr_2_o]);
     assign pc_combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ? inst_pc[commit_ptr_1_o] : inst_pc[commit_ptr_2_o];
-    assign bhr_combranch_o =( ~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ?brcond[commit_ptr_1_o] : bhr[commit_ptr_2_o];
+    assign bhr_combranch_o =( ~prmiss_i & commit_1 & isbranch[commit_ptr_1_o])? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
     assign jmpaddr_combranch_o =( ~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ?jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
 
     // 收到prmiss信号时清空valid位
@@ -116,7 +117,10 @@ module ROB (
             brcond <= 0;
         end
         else begin
-            commit_ptr_1_o <= (commit_ptr_1_o + commit_1 + commit_2) % (`ROB_NUM);
+
+            //等价于commit_ptr_1_o <= (commit_ptr_1_o + commit_1 + commit_2) % (`ROB_NUM);
+            //每次提交一次或两次指令,commit_ptr_1_o向后移动
+            commit_ptr_1_o <= (commit_ptr_1_o + {5'b0,commit_1} + {5'b0,commit_2}) & 6'b1;
             if(finish_ex_alu1_i) begin
                 finish[finish_ex_alu1_addr_i] <= 1'b1;
             end             

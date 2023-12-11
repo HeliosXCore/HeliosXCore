@@ -54,3 +54,6 @@ lint:
 			rtl/core/SW/RSAlu.v rtl/core/SW/OldestFinder.v rtl/core/SW/AllocateUnit.v \
 			rtl/core/SW/SwUnit.v
 	@verilator --lint-only -Irtl rtl/core/EX/AluExeUnit.v
+
+	@verilator --lint-only -Irtl rtl/core/COM/SingleInstROB.V
+	@verilator --lint-only -Irtl rtl/core/COM/ROB.V
