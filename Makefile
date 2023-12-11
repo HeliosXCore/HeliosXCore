@@ -50,6 +50,10 @@ clean:
 	@rm *.vcd
 
 lint:
+	@verilator --lint-only -Irtl rtl/core/SW/SourceManager.v rtl/core/SW/RSAluEntry.v \
+			rtl/core/SW/RSAlu.v rtl/core/SW/OldestFinder.v rtl/core/SW/AllocateUnit.v \
+			rtl/core/SW/SwUnit.v
+	@verilator --lint-only -Irtl rtl/core/EX/AluExeUnit.v
 	@verilator --lint-only -Irtl rtl/core/DP/Arf.v  \
 			rtl/core/DP/Rrf.v rtl/core/DP/RrfEntryAllocate.v rtl/core/DP/SrcOprManager.v \
 			rtl/core/DP/SynRam.v

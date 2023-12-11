@@ -1,5 +1,4 @@
-/* `include "consts/Consts.v" */
-`include "../../consts/Consts.v"
+`include "consts/Consts.v"
 
 // 重命名寄存器
 module Rrf(

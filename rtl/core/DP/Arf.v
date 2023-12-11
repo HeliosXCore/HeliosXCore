@@ -1,5 +1,5 @@
-`include "../../consts/Consts.v"
-`include "SynRam.v"
+`include "consts/Consts.v"
+`include "rtl/core/DP/SynRam.v"
 module Arf (
     input wire  clk_i,
     input wire  reset_i,
