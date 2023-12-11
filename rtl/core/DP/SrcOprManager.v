@@ -1,4 +1,4 @@
-`include "consts/Consts.v"
+`include "consts/Consts.vh"
 
 module SrcOprManager(
   input wire arf_busy_i,

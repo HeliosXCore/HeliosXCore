@@ -1,4 +1,4 @@
-`include "consts/Consts.v"
+`include "consts/Consts.vh"
 
 // 暂时不考虑分支预测的话，每个时钟周期都会分配一个rrf entry
 module RrfEntryAllocate(
@@ -19,9 +19,11 @@ module RrfEntryAllocate(
 );
   
   wire [1:0] reqnum = 1;
-  reg [31:0] temp_result;
-  wire [`RRF_SEL-1:0] 	      temp_result = ((rrfptr_o + {5'b0,reqnum})%`RRF_NUM) ;
-  wire [`RRF_SEL-1:0] rrfptr_next = temp_result[5:0];
+  /* wire [`RRF_SEL-1:0] rrfptr_next = ((rrfptr_o + {5'b0,reqnum})%`RRF_NUM) ; */
+  // 由于consts.vh中的常量没有显示的定义位宽，会导致这里lint过不去，始终报位宽
+  // 不一制的warning
+  wire [`RRF_SEL:0] tmp = ((rrfptr_o + {5'b0,reqnum})%`RRF_NUM) ;
+  wire [`RRF_SEL-1:0] rrfptr_next = tmp[`RRF_SEL-1:0]; 
 
   assign rrf_allocatable_o = (freenum_o + {5'b0,com_inst_num_i}) < {5'b0,reqnum} ? 1'b0 : 1'b1;
 
