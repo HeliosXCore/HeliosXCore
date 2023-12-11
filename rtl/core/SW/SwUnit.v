@@ -57,7 +57,8 @@ module SwUnit (
     output wire [     `RRF_SEL-1:0] exe_alu_rrf_tag_o,
     output wire                     exe_alu_dst_val_o,
     output wire [`ALU_OP_WIDTH-1:0] exe_alu_op_o,
-    output wire [ `ALU_ENT_NUM-1:0] exe_alu_ready_o
+    output wire [ `ALU_ENT_NUM-1:0] exe_alu_ready_o,
+    output wire                     exe_alu_issue_o
 );
 
     // wire [`ALU_ENT_NUM-1: 0] busy_alu_vector; 
@@ -77,7 +78,7 @@ module SwUnit (
 
     wire [             `ALU_ENT_SEL-1:0] alu_issue_addr;
     wire                                 alu_clear_busy;
-    wire                                 alu_issue_enable;
+    // wire                                 alu_issue_enable;
 
     wire                                 we_1;
     wire                                 we_2;
@@ -125,7 +126,8 @@ module SwUnit (
     // 如果 entry ready 了就清空 busy 位
     assign alu_clear_busy = ~alu_entry_value[`RRF_SEL+1];
     // alu issue 信号，用于控制是否发射 ALU 指令
-    assign alu_issue_enable = alu_clear_busy;
+    // assign alu_issue_enable = alu_clear_busy;
+    assign exe_alu_issue_o = alu_clear_busy;
 
 
     RSAlu RSAlu (
