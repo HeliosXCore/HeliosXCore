@@ -56,4 +56,4 @@ lint:
 	@verilator --lint-only -Irtl rtl/core/EX/AluExeUnit.v
 	@verilator --lint-only -Irtl rtl/core/DP/Arf.v  \
 			rtl/core/DP/Rrf.v rtl/core/DP/RrfEntryAllocate.v rtl/core/DP/SrcOprManager.v \
-			rtl/core/DP/SynRam_4r2w.v rtl/core/DP/ReNameUnit.v
+			rtl/core/DP/SynRam.v rtl/core/DP/ReNameUnit.v
