@@ -33,7 +33,7 @@ module SynRam_2r2w #(
 endmodule // SynRam_2r2w
 
 
-module SynRam_4r2w #(
+module SynRam #(
 		       parameter BRAM_ADDR_WIDTH = `ADDR_LEN,
 		       parameter BRAM_DATA_WIDTH = `DATA_LEN,
 		       parameter DATA_DEPTH      = 32
