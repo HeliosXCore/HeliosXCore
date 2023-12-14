@@ -9,9 +9,9 @@ module ExUnit (
     input wire [`DATA_LEN-1:0] src1_i,
     input wire [`DATA_LEN-1:0] src2_i,
     input wire issue_i,
-    input wire rrf_tag_i,
+    input wire [`RRF_SEL-1:0] rrf_tag_i,
     output wire [`DATA_LEN-1:0] result_o,
-    output wire rrf_tag_o,
+    output wire [`RRF_SEL-1:0] rrf_tag_o,
     output wire reorder_buffer_we_o,
     output wire rename_register_we_o
 );
@@ -20,7 +20,7 @@ module ExUnit (
     reg [`DATA_LEN-1:0] result_latch;
     reg reorder_buffer_we_latch;
     reg rename_register_we_latch;
-    reg rrf_tag_latch;
+    reg [`RRF_SEL-1:0] rrf_tag_latch;
 
     // save alu result to latch
     wire [`DATA_LEN-1:0] result;
