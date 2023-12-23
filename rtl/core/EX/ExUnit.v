@@ -12,15 +12,15 @@ module ExUnit (
     input wire [`RRF_SEL-1:0] rrf_tag_i,
     output wire [`DATA_LEN-1:0] result_o,
     output wire [`RRF_SEL-1:0] rrf_tag_o,
-    output wire reorder_buffer_we_o,
-    output wire rename_register_we_o
+    output wire rob_we_o,
+    output wire rrf_we_o
 );
 
     // latch
     reg [`DATA_LEN-1:0] result_latch;
+    reg [`RRF_SEL-1:0] rrf_tag_latch;
     reg reorder_buffer_we_latch;
     reg rename_register_we_latch;
-    reg [`RRF_SEL-1:0] rrf_tag_latch;
 
     // save alu result to latch
     wire [`DATA_LEN-1:0] result;
@@ -29,8 +29,8 @@ module ExUnit (
 
     // latch to next stage
     assign result_o = result_latch;
-    assign reorder_buffer_we_o = reorder_buffer_we_latch;
-    assign rename_register_we_o = rename_register_we_latch;
+    assign rob_we_o = reorder_buffer_we_latch;
+    assign rrf_we_o = rename_register_we_latch;
     assign rrf_tag_o = rrf_tag_latch;
 
     AluExeUnit alu(
@@ -42,8 +42,8 @@ module ExUnit (
         .src2_i(src2_i),
         .issue_i(issue_i),
         .result_o(result),
-        .reorder_buffer_we_o(reorder_buffer_we),
-        .rename_register_we_o(rename_register_we)
+        .rob_we_o(reorder_buffer_we),
+        .rrf_we_o(rename_register_we)
    );
 
     always @(posedge clk_i) begin
@@ -53,9 +53,9 @@ module ExUnit (
             rename_register_we_latch <= 0;
         end else begin
             result_latch <= result;
-            reorder_buffer_we_latch <= reorder_buffer_we;
-            rename_register_we_latch <= rename_register_we;
             rrf_tag_latch <= rrf_tag_i;
+            reorder_buffer_we_latch <= reorder_buffer_we;
+            rename_register_we_latch <= rename_register_we;   
         end
     end
 
