@@ -13,7 +13,7 @@ module BranchUnit (
     input wire opcode,
     input wire issue_i,
     output wire [`DATA_LEN-1:0] result_o,
-    output wire reorder_buffer_we_o,
+    output wire rob_we_o,
     output wire rrf_we_o,
     output wire [`ADDR_LEN-1:0] jmpaddr,
     output wire [`ADDR_LEN-1:0] jmpaddr_taken,
@@ -22,7 +22,7 @@ module BranchUnit (
 
     // 当前部件是否有指令在运行
     reg busy;
-    assign reorder_buffer_we_o  = busy;
+    assign rob_we_o = busy;
     assign rrf_we_o = busy & if_write_rrf_i;
 
     always @(posedge clk_i) begin
@@ -32,7 +32,5 @@ module BranchUnit (
             busy <= issue_i;
         end
     end
-
-    assign result_o = (alu_op_i == `ALU_OP_ADD) ? (src1_i + src2_i) : 0;
 
 endmodule

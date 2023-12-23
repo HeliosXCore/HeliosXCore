@@ -14,22 +14,22 @@ module ALU_tb();
 
     // 输出
     wire [`DATA_LEN-1:0] result_o;
-    wire reorder_buffer_we_o;
-    wire rename_register_we_o;
+    wire rob_we_o;
+    wire rrf_we_o;
 
-   AluExeUnit alu(
-   .clk_i(clk_i),
-   .reset_i(reset_i),
-   .if_write_rrf_i(if_write_rrf_i),
-   .alu_op_i(alu_op_i),
-   .src1_i(src1_i),
-   .src2_i(src2_i),
-   .issue_i(issue_i),
-   .result_o(result_o),
-   .reorder_buffer_we_o(reorder_buffer_we_o),
-   .rename_register_we_o(rename_register_we_o)
-   );
-
+    AluExeUnit alu(
+    .clk_i(clk_i),
+    .reset_i(reset_i),
+    .if_write_rrf_i(if_write_rrf_i),
+    .alu_op_i(alu_op_i),
+    .src1_i(src1_i),
+    .src2_i(src2_i),
+    .issue_i(issue_i),
+    .result_o(result_o),
+    .rob_we_o(rob_we_o),
+    .rrf_we_o(rrf_we_o)
+    );
+    
     initial begin
         clk_i = 0;
         reset_i = 1;
@@ -43,11 +43,8 @@ module ALU_tb();
         reset_i=0;
 
         #10;
-        alu_op_i= `ALU_OP_ADD;
-        src1_i = `DATA_LEN'd10;
-        src2_i = `DATA_LEN'd12;
-        issue_i = 1;
-        if_write_rrf_i=1;
+        issue_i = 1; if_write_rrf_i=1; alu_op_i= `ALU_OP_ADD; src1_i = `DATA_LEN'd10; src2_i = `DATA_LEN'd12;
+        if (result_o !== 'd22) $display("add failed.");
 
         #10;
         reset_i=1;

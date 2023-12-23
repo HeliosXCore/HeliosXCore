@@ -27,6 +27,11 @@ module AluExeUnit (
         end
     end
 
-    assign result_o = (alu_op_i == `ALU_OP_ADD) ? (src1_i + src2_i) : 0;
+    ALU alu(
+        .op(alu_op_i),
+        .in1(src1_i),
+        .in2(src2_i),
+        .out(result_o)
+    );
 
 endmodule
