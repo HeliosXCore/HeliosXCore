@@ -2,10 +2,11 @@
 `include "consts/Consts.vh"
 
 module ALU(
-    input wire [`ALU_OP_WIDTH-1:0] op,
-    input wire [`DATA_LEN-1:0] in1,
-    input wire [`DATA_LEN-1:0] in2,
-    output wire [`DATA_LEN-1:0] out
+    (* IO_BUFFER_TYPE = "none" *) input wire [`ALU_OP_WIDTH-1:0] op,
+    (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] in1,
+    (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] in2,
+    
+    (* IO_BUFFER_TYPE = "none" *) output wire [`DATA_LEN-1:0] out
     );
 
     wire [`SHAMT_WIDTH-1:0] shamt;

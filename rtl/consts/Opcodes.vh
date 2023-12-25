@@ -1,3 +1,5 @@
+`define OPCODE_LEN 7
+
 `define RV32_LOAD     7'b00_000_11
 `define RV32_STORE    7'b01_000_11
 // `define RV32_MADD     7'b10_000_11
