@@ -1,17 +1,29 @@
 CXX		:= g++
-
-
-RTLD	?= rtl/core/SW
-RTLOBJD	:= build
-TESTBENCHD	:= testbench/verilator
-
-TEST 	  ?= SwUnit
-MODULES   ?= $(RTLD)/SourceManager.v $(RTLD)/RSAluEntry.v \
-			$(RTLD)/RSAlu.v $(RTLD)/OldestFinder.v \
-			$(RTLD)/AllocateUnit.v
-TESTBENCH ?= swunit_tb
 VERILATOR := verilator
-WAVE 	  := swunit.vcd
+
+
+RTLOBJD	:= build
+
+STAGE?= ROB
+ifeq ($(STAGE),ROB)
+	TESTBENCHD	:= testbench/verilator/ROB
+	RTLD	:= rtl/core/COM
+	TEST 	  := SingleInstROB
+	MODULES   :=
+	TESTBENCH := SingleInstROB_tb
+	WAVE 	  := SingleInstROB.vcd
+else ifeq ($(STAGE),SW)
+	TESTBENCHD	:= testbench/verilator
+	RTLD	:= rtl/core/SW
+	TEST 	  := SwUnit
+	MODULES   := $(RTLD)/SourceManager.v $(RTLD)/RSAluEntry.v \
+				$(RTLD)/RSAlu.v $(RTLD)/OldestFinder.v \
+				$(RTLD)/AllocateUnit.v
+	TESTBENCH ?= swuint_tb
+	WAVE 	  := SwUnit.vcd
+endif
+
+
 
 # CFLAGS	:= -Wall 
 VIGNOREW 	:= 
