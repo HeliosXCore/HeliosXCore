@@ -1,4 +1,4 @@
-`include "Consts.v"
+`include "consts/Consts.v"
 `default_nettype none
 module imm_gen(
                input wire [`INSN_LEN-1:0] 	inst,
