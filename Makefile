@@ -16,8 +16,8 @@ ifeq ($(STAGE), SW)
 	TESTBENCH := swunit_tb
 	WAVE 	  := swunit.vcd
 else ifeq ($(STAGE), ROB)
-  RTLD	:= rtl/core/COM
-  TESTBENCHD	:= testbench/verilator/ROB
+    RTLD	:= rtl/core/COM
+    TESTBENCHD	:= testbench/verilator/ROB
 	TEST 	  := SingleInstROB
 	MODULES   :=
 	TESTBENCH := SingleInstROB_tb
