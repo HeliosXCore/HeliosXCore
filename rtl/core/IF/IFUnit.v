@@ -37,7 +37,7 @@ module IFUnit (
 //     end else if (prmiss) begin
 //	 pc_i <= jmpaddr;
       end else if (stall_IF) begin
-	 pc_i <= pc_i;
+	 npc_o <= pc_i;
       end else begin
 	 pc_i <= npc_o;
       end
