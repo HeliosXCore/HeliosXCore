@@ -1,0 +1,153 @@
+`include "consts/Consts.v"
+`include "consts/rv32_opcodes.v"
+`include "consts/ALU.v"
+
+module ID_Unit (
+    input wire [31:0] 		  inst1,
+    output wire [`IMM_TYPE_WIDTH-1:0] imm_type_1,
+    output wire [`REG_SEL-1:0] 	      rs1_1,
+    output wire [`REG_SEL-1:0] 	      rs2_1,
+    output wire [`REG_SEL-1:0] 	      rd_1,
+    output wire [`SRC_A_SEL_WIDTH-1:0] src_a_sel_1,
+    output wire [`SRC_B_SEL_WIDTH-1:0] src_b_sel_1,
+    output wire 		       wr_reg_1,
+    output wire 		       uses_rs1_1,
+    output wire 		       uses_rs2_1,
+    output wire 		       illegal_instruction_1,
+    output wire [`ALU_OP_WIDTH-1:0]    alu_op_1,
+    output wire [`RS_ENT_SEL-1:0]      rs_ent_1,
+    output wire [2:0] 		       dmem_size_1,
+    output wire [`MEM_TYPE_WIDTH-1:0]  dmem_type_1,			  
+    output wire [`MD_OP_WIDTH-1:0]     md_req_op_1,
+    output wire 		       md_req_in_1_signed_1,
+    output wire 		       md_req_in_2_signed_1,
+    output wire [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1
+);
+//Decode Info1
+    reg [`IMM_TYPE_WIDTH-1:0] 	imm_type_1_id;
+    reg [`REG_SEL-1:0] 		rs1_1_id;
+    reg [`REG_SEL-1:0] 		rs2_1_id;
+    reg [`REG_SEL-1:0] 		rd_1_id;
+    reg [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_1_id;
+    reg [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_1_id;
+    reg 				wr_reg_1_id;
+    reg 				uses_rs1_1_id;
+    reg 				uses_rs2_1_id;
+    reg 				illegal_instruction_1_id;
+    reg [`ALU_OP_WIDTH-1:0] 	alu_op_1_id;
+    reg [`RS_ENT_SEL-1:0] 	rs_ent_1_id;
+    reg [2:0] 			dmem_size_1_id;
+    reg [`MEM_TYPE_WIDTH-1:0] 	dmem_type_1_id;			  
+    reg [`MD_OP_WIDTH-1:0] 	md_req_op_1_id;
+    reg 				md_req_in_1_signed_1_id;
+    reg 				md_req_in_2_signed_1_id;
+    reg [`MD_OUT_SEL_WIDTH-1:0] 	md_req_out_sel_1_id;
+/*
+//Decode Info2
+    reg [`IMM_TYPE_WIDTH-1:0] 	imm_type_2_id;
+    
+    reg [`REG_SEL-1:0] 		rs1_2_id;
+    reg [`REG_SEL-1:0] 		rs2_2_id;
+    reg [`REG_SEL-1:0] 		rd_2_id;
+    reg [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_2_id;
+    reg [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_2_id;
+    reg 				wr_reg_2_id;
+    reg 				uses_rs1_2_id;
+    reg 				uses_rs2_2_id;
+    reg 				illegal_instruction_2_id;
+    reg [`ALU_OP_WIDTH-1:0] 	alu_op_2_id;
+    reg [`RS_ENT_SEL-1:0] 	rs_ent_2_id;
+    reg [2:0] 			dmem_size_2_id;
+    reg [`MEM_TYPE_WIDTH-1:0] 	dmem_type_2_id;			  
+    reg [`MD_OP_WIDTH-1:0] 	md_req_op_2_id;
+    reg 				md_req_in_1_signed_2_id;
+    reg 				md_req_in_2_signed_2_id;
+    reg [`MD_OUT_SEL_WIDTH-1:0] 	md_req_out_sel_2_id;
+//Additional Info
+    reg 				rs1_2_eq_dst1_id;
+    reg  				rs2_2_eq_dst1_id;
+    reg [`SPECTAG_LEN-1:0] 	sptag1_id;
+    reg [`SPECTAG_LEN-1:0] 	sptag2_id;
+    reg [`SPECTAG_LEN-1:0] 	tagreg_id;
+    reg 				spec1_id;
+    reg 				spec2_id;
+    reg [`INSN_LEN-1:0] 		inst1_id;
+    reg [`INSN_LEN-1:0] 		inst2_id;
+    reg 				prcond1_id;
+    reg 				prcond2_id;
+    reg 				inv1_id;
+    reg 				inv2_id;
+    reg [`ADDR_LEN-1:0] 		praddr1_id;
+    reg [`ADDR_LEN-1:0] 		praddr2_id;
+    reg [`ADDR_LEN-1:0] 		pc_id;
+    reg [`GSH_BHR_LEN-1:0] 	bhr_id;
+    reg 				isbranch1_id;
+    reg 				isbranch2_id;
+*/
+
+    decoder dec1(
+		    .inst(inst1),
+		    .imm_type(imm_type_1),
+		    .rs1(rs1_1),
+		    .rs2(rs2_1),
+		    .rd(rd_1),
+		    .src_a_sel(src_a_sel_1),
+		    .src_b_sel(src_b_sel_1),
+		    .wr_reg(wr_reg_1),
+		    .uses_rs1(uses_rs1_1),
+		    .uses_rs2(uses_rs2_1),
+		    .illegal_instruction(illegal_instruction_1),
+		    .alu_op(alu_op_1),
+		    .rs_ent(rs_ent_1),
+		    .dmem_size(dmem_size_1),
+		    .dmem_type(dmem_type_1),
+		    .md_req_op(md_req_op_1),
+		    .md_req_in_1_signed(md_req_in_1_signed_1),
+		    .md_req_in_2_signed(md_req_in_2_signed_1),
+		    .md_req_out_sel(md_req_out_sel_1)
+		);
+
+    always @ (posedge clk) begin
+        if (reset | kill_ID) begin
+            imm_type_1_id <= 0;
+	          rs1_1_id <= 0;
+	          rs2_1_id <= 0;
+	          rd_1_id <= 0;
+	          src_a_sel_1_id <= 0;
+	          src_b_sel_1_id <= 0;
+	          wr_reg_1_id <= 0;
+	          uses_rs1_1_id <= 0;
+	          uses_rs2_1_id <= 0;
+	          illegal_instruction_1_id <= 0;
+	          alu_op_1_id <= 0;
+	          rs_ent_1_id <= 0;
+	          dmem_size_1_id <= 0;
+	          dmem_type_1_id <= 0;			  
+	          md_req_op_1_id <= 0;
+	          md_req_in_1_signed_1_id <= 0;
+	          md_req_in_2_signed_1_id <= 0;
+	          md_req_out_sel_1_id <= 0;
+        end 
+        else if (~stall_DP) begin
+            imm_type_1_id <= imm_type_1;
+	          rs1_1_id <= rs1_1;
+	          rs2_1_id <= rs2_1;
+	          rd_1_id <= rd_1;
+	          src_a_sel_1_id <= src_a_sel_1;
+	          src_b_sel_1_id <= src_b_sel_1;
+	          wr_reg_1_id <= wr_reg_1;
+	          uses_rs1_1_id <= uses_rs1_1;
+	          uses_rs2_1_id <= uses_rs2_1;
+	          illegal_instruction_1_id <= illegal_instruction_1;
+	          alu_op_1_id <= alu_op_1;
+	          rs_ent_1_id <= inv1_if ? 0 : rs_ent_1;
+	          dmem_size_1_id <= dmem_size_1;
+  	        dmem_type_1_id <= dmem_type_1;			  
+	          md_req_op_1_id <= md_req_op_1;
+	          md_req_in_1_signed_1_id <= md_req_in_1_signed_1;
+	          md_req_in_2_signed_1_id <= md_req_in_2_signed_1;
+	          md_req_out_sel_1_id <= md_req_out_sel_1;
+        end
+    end
+    
+endmodule
