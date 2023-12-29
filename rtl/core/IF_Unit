@@ -1,5 +1,5 @@
-`include "consts/Consts.vh"
-`include "consts/ALU.vh"
+`include "consts/Consts.v"
+`include "consts/ALU.v"
 
 module IF_Unit (
     input wire 			  clk,
