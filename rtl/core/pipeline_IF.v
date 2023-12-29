@@ -1,4 +1,4 @@
-`include "Consts.v"
+`include "consts/Consts.v"
 `default_nettype none
 module pipeline_if
   (
@@ -17,7 +17,7 @@ module pipeline_if
 		       .idata(idata),
 		       .inst1(inst1)
 		       );
-endmodule // pipeline_pc
+endmodule
 
 
 module select_logic
