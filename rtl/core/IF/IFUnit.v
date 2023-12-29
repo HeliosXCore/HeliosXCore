@@ -33,13 +33,13 @@ module IFUnit (
    
    always @ (posedge clk_i) begin
       if (reset_i) begin
-	 pc_i <= `ENTRY_POINT;
+	 npc_o <= `ENTRY_POINT;
 //     end else if (prmiss) begin
 //	 pc_i <= jmpaddr;
       end else if (stall_IF) begin
 	 npc_o <= pc_i;
       end else begin
-	 pc_i <= npc_o;
+	 npc_o <= pc_i+4;
       end
    end
 
