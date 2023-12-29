@@ -43,15 +43,15 @@ module IFUnit (
       end
    end
 
-   pipeline_IF pipeline_if(
-		       .clk(clk_i),
-		       .reset(reset_i),
-		       .pc(pc_i),
-		       .npc(npc_o),
-		       .inst1(inst1_o),
-//		       .inst2(inst2_o),
-//		       .invalid2(invalid2_pipe_o),
-		       .idata(idata_i)
+   PipelineIF pipeline_if(
+		       .clk_i(clk_i),
+		       .reset_i(reset_i),
+		       .pc_i(pc_i),
+		       .npc_o(npc_o),
+		       .inst1_o(inst1_o),
+//		       .inst2_o(inst2_o),
+//		       .invalid2_o(invalid2_pipe_o),
+		       .idata_i(idata_i)
 		       );
 
    always @ (posedge clk_i) begin
