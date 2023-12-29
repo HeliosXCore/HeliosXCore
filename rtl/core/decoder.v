@@ -1,6 +1,6 @@
-`include "Consts.v"
-`include "rv32_opcodes.v"
-`include "ALU.v"
+`include "consts/Consts.v"
+`include "consts/rv32_opcodes.v"
+`include "consts/ALU.v"
 
 `default_nettype none
 module decoder(
