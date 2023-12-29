@@ -509,4 +509,5 @@ int main(int argc, char **argv, char **env) {
     std::shared_ptr<VSwUnitTb> tb = std::make_shared<VSwUnitTb>(5, 50, 1000);
 
     tb->run("swunit.vcd");
+    fmt::print("Dut Correctness passed!\n");
 }
