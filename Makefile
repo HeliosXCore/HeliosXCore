@@ -1,6 +1,8 @@
 CXX		:= g++
 VERILATOR := verilator
 
+RTLOBJD	:= build
+
 STAGE ?= SW 
 
 ifeq ($(STAGE), SW)
@@ -13,9 +15,14 @@ ifeq ($(STAGE), SW)
 				$(RTLD)/AllocateUnit.v
 	TESTBENCH := swunit_tb
 	WAVE 	  := swunit.vcd
+else ifeq ($(STAGE), ROB)
+  RTLD	:= rtl/core/COM
+  TESTBENCHD	:= testbench/verilator/ROB
+	TEST 	  := SingleInstROB
+	MODULES   :=
+	TESTBENCH := SingleInstROB_tb
+	WAVE 	  := SingleInstROB.vcd
 endif
-
-
 
 
 # CFLAGS	:= -Wall 
@@ -59,3 +66,6 @@ lint:
 			rtl/core/SW/RSAlu.v rtl/core/SW/OldestFinder.v rtl/core/SW/AllocateUnit.v \
 			rtl/core/SW/SwUnit.v
 	@verilator --lint-only -Irtl rtl/core/EX/AluExeUnit.v
+
+	@verilator --lint-only -Irtl rtl/core/COM/SingleInstROB.v
+	@verilator --lint-only -Irtl rtl/core/COM/ROB.v
