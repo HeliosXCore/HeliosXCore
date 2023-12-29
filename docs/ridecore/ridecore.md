@@ -349,3 +349,5 @@ endmodule
 ### search_begin, search_end
 
 `search_begin` 和 `search_end` 都实现作为优先编码器。然而，`search_begin` 优先处理低位，`search_end` 优先处理高位。这些模块被用于在 `alloc_issue_ino` 和 `storebuf` 中实现顺序执行。
+
+### execution unit
