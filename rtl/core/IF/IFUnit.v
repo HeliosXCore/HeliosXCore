@@ -15,7 +15,7 @@ module IFUnit (
 );
 
     reg [`ADDR_LEN-1:0] npc_if;
-    reg [`ADDR_LEN-1:0] npc_o;
+    reg [`ADDR_LEN-1:0] npc;
     reg [`ADDR_LEN-1:0] pc_if;
     reg [`INSN_LEN-1:0] inst1_if;
     //reg [`INSN_LEN-1:0] inst2_if;
@@ -34,13 +34,13 @@ module IFUnit (
    
    always @ (posedge clk_i) begin
       if (reset_i) begin
-	 npc_o <= `ENTRY_POINT;
+	 npc <= `ENTRY_POINT;
 //     end else if (prmiss) begin
 //	 pc_i <= jmpaddr;
       end else if (stall_IF) begin
-	 npc_o <= pc_i;
+	 npc <= pc_i;
       end else begin
-	 npc_o <= pc_i+4;
+	 npc <= pc_i+4;
       end
    end
 
