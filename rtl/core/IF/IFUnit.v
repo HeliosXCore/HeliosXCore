@@ -15,6 +15,7 @@ module IFUnit (
 );
 
     reg [`ADDR_LEN-1:0] npc_if;
+    reg [`ADDR_LEN-1:0] npc_o;
     reg [`ADDR_LEN-1:0] pc_if;
     reg [`INSN_LEN-1:0] inst1_if;
     //reg [`INSN_LEN-1:0] inst2_if;
