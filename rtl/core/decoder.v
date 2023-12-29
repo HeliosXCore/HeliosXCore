@@ -1,5 +1,5 @@
 `include "consts/Consts.vh"
-`include "consts/RV32_opcodes.vh"
+`include "consts/RV32Opcodes.vh"
 `include "consts/ALU.vh"
 
 `default_nettype none
