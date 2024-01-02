@@ -10,13 +10,17 @@ TEST 	  ?=
 TESTBENCH ?=
 WAVE 	  ?=
 
-STAGE ?= ARF
+STAGE ?= RRF
 ifeq ($(STAGE), ARF)
 	TEST := Arf
 	TESTBENCH := DP/arf_tb
 	WAVE := arf.vcd
 endif
-
+ifeq ($(STAGE), RRF)
+	TEST := Rrf
+	TESTBENCH := DP/rrf_tb
+	WAVE := rrf.vcd
+endif
 
 # CFLAGS	:= -Wall 
 VIGNOREW 	:= 
