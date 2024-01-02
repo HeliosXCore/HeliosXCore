@@ -10,7 +10,7 @@ TEST 	  ?=
 TESTBENCH ?=
 WAVE 	  ?=
 
-STAGE ?= RRF
+STAGE ?= RRF_ALLO
 ifeq ($(STAGE), ARF)
 	TEST := Arf
 	TESTBENCH := DP/arf_tb
@@ -20,6 +20,11 @@ ifeq ($(STAGE), RRF)
 	TEST := Rrf
 	TESTBENCH := DP/rrf_tb
 	WAVE := rrf.vcd
+endif
+ifeq ($(STAGE), RRF_ALLO)
+	TEST := RrfEntryAllocate
+	TESTBENCH := DP/rrfentry_allocate_tb
+	WAVE := rrfentry_allocate.vcd
 endif
 
 # CFLAGS	:= -Wall 
