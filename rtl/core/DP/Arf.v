@@ -34,7 +34,7 @@ module Arf (
 );
 
   // arf data的实现
-  SynRam #(`REG_SEL, `DATA_LEN, `REG_NUM) ARFData (
+  SyncRAM #(`REG_SEL, `DATA_LEN, `REG_NUM) ARFData (
       .clk_i(clk_i),
       .raddr1(rs1_i),
       .raddr2(rs2_i),
