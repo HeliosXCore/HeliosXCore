@@ -3,7 +3,7 @@ VERILATOR := verilator
 
 RTLOBJD	:= build
 
-STAGE ?= SW 
+STAGE ?= SW
 
 ifeq ($(STAGE), SW)
 	RTLD	:= rtl/core/SW
@@ -38,6 +38,11 @@ MACRO_FLAGS := -CFLAGS -DFMT_HEADER_ONLY
 VFormater := verible-verilog-format
 FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
 VSRC 	  := $(shell find rtl -name "*.v")
+
+
+ifeq ($(STAGE), DP)
+include testbench/verilator/DP/dp.mk
+endif
 
 .PHONY: sim wave clean format
 

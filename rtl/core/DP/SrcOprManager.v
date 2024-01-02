@@ -1,5 +1,5 @@
 `include "consts/Consts.vh"
-
+`default_nettype none
 module SrcOprManager (
     input  wire                 arf_busy_i,
     input  wire [`DATA_LEN-1:0] arf_data_i,
@@ -15,3 +15,4 @@ module SrcOprManager (
   // 表明src是否已经就绪，即src中已经是data了，而不是rrftag
   assign ready_o = src_eq_zero_i | ~arf_busy_i | rrf_valid_i;
 endmodule
+`default_nettype wire

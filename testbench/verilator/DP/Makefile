@@ -10,7 +10,7 @@ TEST 	  ?=
 TESTBENCH ?=
 WAVE 	  ?=
 
-STAGE ?=SRCOPRMANAGER
+STAGE ?=ARF
 ifeq ($(STAGE), SRCOPRMANAGER)
 	TEST := SrcOprManager
 	TESTBENCH := DP/src_opr_manager_tb

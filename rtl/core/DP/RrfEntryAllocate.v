@@ -1,4 +1,5 @@
 `include "consts/Consts.vh"
+`default_nettype none
 
 // 暂时不考虑分支预测的话，每个时钟周期都会分配一个rrf entry
 module RrfEntryAllocate (
@@ -46,3 +47,4 @@ module RrfEntryAllocate (
     end
   end
 endmodule
+`default_nettype wire
