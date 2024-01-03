@@ -1,8 +1,5 @@
 CXX		:= g++
 VERILATOR := verilator
-
-RTLOBJD	:= build
-
 STAGE ?= SW
 
 ifeq ($(STAGE), SW)
@@ -13,6 +10,7 @@ else ifeq($(STAGE), DP)
 include testbench/verilator/DP/dp.mk
 endif
 
+RTLOBJD	:= build
 
 # CFLAGS	:= -Wall 
 VIGNOREW 	:= 
@@ -57,10 +55,8 @@ lint:
 			rtl/core/SW/RSAlu.v rtl/core/SW/OldestFinder.v rtl/core/SW/AllocateUnit.v \
 			rtl/core/SW/SwUnit.v
 	@verilator --lint-only -Irtl rtl/core/EX/AluExeUnit.v
-
 	@verilator --lint-only -Irtl rtl/core/COM/SingleInstROB.v
 	@verilator --lint-only -Irtl rtl/core/COM/ROB.v
-
 	@verilator --lint-only -Irtl rtl/core/DP/Arf.v  \
 		rtl/core/DP/Rrf.v rtl/core/DP/RrfEntryAllocate.v rtl/core/DP/SrcOprManager.v \
 		rtl/core/DP/SyncRAM.v rtl/core/DP/ReNameUnit.v
