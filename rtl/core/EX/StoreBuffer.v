@@ -62,7 +62,7 @@ module StoreBuffer(
                     address[empty_ptr] = address_i;
                     data[empty_ptr] = write_data_i;
                     // todo: 暂未考虑 store buffer 满的情况
-                    empty_ptr <= (~empty_ptr == `STORE_BUFFER_ENT_NUM-1) ? 0 : empty_ptr + 1;
+                    empty_ptr <= (empty_ptr == ~0) ? 0 : empty_ptr + 1;
                 end else begin
                     // 如果是 load 指令
                     hit_reg <= 0;
@@ -70,14 +70,14 @@ module StoreBuffer(
                     for (i = 0; i < `STORE_BUFFER_ENT_NUM; i = i + 1) begin
                         if (address[i] == address_i) begin
                             hit_reg <= 1;
-                            load_index <= i;
+                            load_index <= i[`STORE_BUFFER_ENT_NUM_BITS-1:0];
                         end
                     end
                 end
             end
             if(complete_i) begin
                 // 当前指令已提交
-                complete_ptr = (complete_ptr === 5'bxxxxx || complete_ptr == `STORE_BUFFER_ENT_NUM-1) ? 0 : complete_ptr + 1;
+                complete_ptr = (complete_ptr === 5'bxxxxx || complete_ptr == ~0) ? 0 : complete_ptr + 1;
                 last_complete_ptr <= complete_ptr;
             end
         end
