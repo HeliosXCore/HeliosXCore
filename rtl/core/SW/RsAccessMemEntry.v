@@ -1,6 +1,6 @@
 `include "consts/Consts.vh"
 
-module RsAccessMemEntry (
+module RSAccessMemEntry (
     input wire clk_i,
     input wire reset_i,
     input wire busy_i,

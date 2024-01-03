@@ -1,6 +1,6 @@
 `include "consts/Consts.vh"
 
-module RsAccessMem (
+module RSAccessMem (
     input wire clk_i,
     input wire reset_i,
     input wire next_rrf_cycle_i,
@@ -102,7 +102,7 @@ module RsAccessMem (
     assign select_write_signal_3_1 = we_1_i && (write_addr_1_i == 3);
     assign select_write_signal_3_2 = we_2_i && (write_addr_2_i == 3);
 
-    RsAccessMemEntry entry_0 (
+    RSAccessMemEntry entry_0 (
         .clk_i(clk_i),
         .reset_i(reset_i),
         .busy_i(busy_vector_o[0]),
@@ -134,7 +134,7 @@ module RsAccessMem (
         .exe_result_5_dst_i(exe_result_5_dst_i)
     );
 
-    RsAccessMemEntry entry_1 (
+    RSAccessMemEntry entry_1 (
         .clk_i(clk_i),
         .reset_i(reset_i),
         .busy_i(busy_vector_o[1]),
@@ -166,7 +166,7 @@ module RsAccessMem (
         .exe_result_5_dst_i(exe_result_5_dst_i)
     );
 
-    RsAccessMemEntry entry_2 (
+    RSAccessMemEntry entry_2 (
         .clk_i(clk_i),
         .reset_i(reset_i),
         .busy_i(busy_vector_o[2]),
@@ -198,7 +198,7 @@ module RsAccessMem (
         .exe_result_5_dst_i(exe_result_5_dst_i)
     );
 
-    RsAccessMemEntry entry_3 (
+    RSAccessMemEntry entry_3 (
         .clk_i(clk_i),
         .reset_i(reset_i),
         .busy_i(busy_vector_o[3]),
