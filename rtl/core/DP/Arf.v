@@ -104,13 +104,27 @@ module RenameTable (
     reg [`REG_NUM-1:0] arf_rrftag5;
 
     // 读取busy
-    assign rs1_arf_busy_o   = arf_busy[rs1_i];
-    assign rs2_arf_busy_o   = arf_busy[rs2_i];
+    assign rs1_arf_busy_o = arf_busy[rs1_i];
+    assign rs2_arf_busy_o = arf_busy[rs2_i];
 
     // 读取rrftag
-    assign rs1_arf_rrftag_o = {arf_rrftag5[rs1_i], arf_rrftag4[rs1_i], arf_rrftag3[rs1_i], arf_rrftag2[rs1_i], arf_rrftag1[rs1_i], arf_rrftag0[rs1_i]};
+    assign rs1_arf_rrftag_o = {
+        arf_rrftag5[rs1_i],
+        arf_rrftag4[rs1_i],
+        arf_rrftag3[rs1_i],
+        arf_rrftag2[rs1_i],
+        arf_rrftag1[rs1_i],
+        arf_rrftag0[rs1_i]
+    };
 
-    assign rs2_arf_rrftag_o = {arf_rrftag5[rs2_i], arf_rrftag4[rs2_i], arf_rrftag3[rs2_i], arf_rrftag2[rs2_i], arf_rrftag1[rs2_i], arf_rrftag0[rs2_i]};
+    assign rs2_arf_rrftag_o = {
+        arf_rrftag5[rs2_i],
+        arf_rrftag4[rs2_i],
+        arf_rrftag3[rs2_i],
+        arf_rrftag2[rs2_i],
+        arf_rrftag1[rs2_i],
+        arf_rrftag0[rs2_i]
+    };
 
     // clear arf busy
     always @(posedge clk_i) begin

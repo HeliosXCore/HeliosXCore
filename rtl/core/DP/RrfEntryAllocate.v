@@ -26,7 +26,7 @@ module RrfEntryAllocate (
     wire [`RRF_SEL:0] tmp = ((rrfptr_o + {5'b0, reqnum}) % `RRF_NUM);
     wire [`RRF_SEL-1:0] rrfptr_next = tmp[`RRF_SEL-1:0];
 
-    assign rrf_allocatable_o   = (freenum_o + {5'b0, com_inst_num_i}) < {5'b0, reqnum} ? 1'b0 : 1'b1;
+    assign rrf_allocatable_o = (freenum_o + {5'b0, com_inst_num_i}) < {5'b0, reqnum} ? 1'b0 : 1'b1;
 
     // TODO:在DP阶段stall以后，这里难道还是可以正常赋值吗？
     assign dst_rename_rrftag_o = rrfptr_o;
