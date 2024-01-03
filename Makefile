@@ -7,7 +7,7 @@ ifeq ($(STAGE), SW)
 include testbench/verilator/SW/sw.mk
 else ifeq ($(STAGE), ROB)
 include testbench/verilator/ROB/rob.mk
-else ifeq($(STAGE), DP)
+else ifeq ($(STAGE), DP)
 include testbench/verilator/DP/dp.mk
 endif
 
