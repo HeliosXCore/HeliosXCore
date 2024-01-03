@@ -1,0 +1,25 @@
+name: Lint CI
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+  pull_request:
+    paths:
+      - '**.md'
+      - 'LICENSE'
+
+jobs:
+  build:
+    name: Lint
+    runs-on: ubuntu-22.04
+    container: verilator/verilator:v5.018
+    steps:
+
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive 
+
+    - name: Lint
+      shell: bash
+      run: make lint
