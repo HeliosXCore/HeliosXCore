@@ -38,8 +38,8 @@ class VSingleInstROBTb : public VerilatorTb<VSingleInstROB> {
             int dp_addr = 0;
 
             //从50时间单位开始，开始发射指令，与此同时占据一个ROB的entry，entry从0开始。
-            //接下来每隔10个时间单位发射。直到占满ROB所有128个entry。
-            for(int i = 50; i <= 1340; i=i+10) {               
+            //接下来每隔10个时间单位发射。直到占满ROB所有64个entry。
+            for(int i = 50; i <= 690; i=i+10) {               
                 if(sim_time == i) {
                     dut->dp1_i = 1;
                     dut->dp1_addr_i = dp_addr;

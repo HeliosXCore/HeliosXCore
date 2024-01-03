@@ -31,10 +31,10 @@ module ROB (
     input wire [`RRF_SEL-1:0] 	  finish_ex_branch_addr_i,
     input wire 			  finish_ex_branch_brcond_i,
     input wire [`ADDR_LEN-1:0] 	  finish_ex_branch_jmpaddr_i,
-    input wire [`RRF_SEL-1:0] dispatch_ptr_i,
+    // input wire [`RRF_SEL-1:0] dispatch_ptr_i,
     
-    input wire [`RRF_SEL-1:0] rrf_freenum_i,
-    input wire prmiss_i,
+    // input wire [`RRF_SEL-1:0] rrf_freenum_i,
+    // input wire prmiss_i,
 
     output reg [`ROB_SEL-1:0] commit_ptr_1_o,
     output wire [`ROB_SEL-1:0] commit_ptr_2_o,
@@ -76,8 +76,8 @@ module ROB (
     // wire commit_2 = valid[commit_ptr_2_o] & finish[commit_ptr_2_o] & ~prmiss_i;
 
 
-    wire commit_1 = valid[commit_ptr_1_o] & finish[commit_ptr_1_o] ;
-    wire commit_2 = valid[commit_ptr_2_o] & finish[commit_ptr_2_o] ;
+    wire commit_1 = valid[commit_ptr_1_o] & finish[commit_ptr_1_o];
+    wire commit_2 = valid[commit_ptr_2_o] & finish[commit_ptr_2_o];
 
     assign comnum_o = commit_1 + commit_2;
 
@@ -95,10 +95,17 @@ module ROB (
     assign arfwe_2_o =  dstValid[commit_ptr_2_o] & commit_2;
 
 
-    assign combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) | (~prmiss_i & commit_2 & isbranch[commit_ptr_2_o]);
-    assign pc_combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ? inst_pc[commit_ptr_1_o] : inst_pc[commit_ptr_2_o];
-    assign bhr_combranch_o =( ~prmiss_i & commit_1 & isbranch[commit_ptr_1_o])? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
-    assign jmpaddr_combranch_o =( ~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ?jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
+    // assign combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) | (~prmiss_i & commit_2 & isbranch[commit_ptr_2_o]);
+    // assign pc_combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ? inst_pc[commit_ptr_1_o] : inst_pc[commit_ptr_2_o];
+    // assign bhr_combranch_o =( ~prmiss_i & commit_1 & isbranch[commit_ptr_1_o])? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
+    // assign jmpaddr_combranch_o =( ~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ?jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
+
+    assign combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) | (commit_2 & isbranch[commit_ptr_2_o]);
+    assign pc_combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) ? inst_pc[commit_ptr_1_o] : inst_pc[commit_ptr_2_o];
+    assign bhr_combranch_o =(commit_1 & isbranch[commit_ptr_1_o])? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
+    assign jmpaddr_combranch_o =(commit_1 & isbranch[commit_ptr_1_o]) ?jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
+
+
 
     // 收到prmiss信号时清空valid位
     // always @(posedge clk_i) begin
