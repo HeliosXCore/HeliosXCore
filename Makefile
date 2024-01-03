@@ -6,22 +6,11 @@ RTLOBJD	:= build
 STAGE ?= SW
 
 ifeq ($(STAGE), SW)
-	RTLD	:= rtl/core/SW
-	RTLOBJD	:= build
-	TESTBENCHD	:= testbench/verilator/SW
-	TEST 	  := SwUnit
-	MODULES   := $(RTLD)/SourceManager.v $(RTLD)/RSAluEntry.v \
-				$(RTLD)/RSAlu.v $(RTLD)/OldestFinder.v \
-				$(RTLD)/AllocateUnit.v
-	TESTBENCH := swunit_tb
-	WAVE 	  := swunit.vcd
+include testbench/verilator/SW/sw.mk
 else ifeq ($(STAGE), ROB)
-    RTLD	:= rtl/core/COM
-    TESTBENCHD	:= testbench/verilator/ROB
-	TEST 	  := SingleInstROB
-	MODULES   :=
-	TESTBENCH := SingleInstROB_tb
-	WAVE 	  := SingleInstROB.vcd
+include testbench/verilator/ROB/rob.mk
+else ifeq($(STAGE), DP)
+include testbench/verilator/DP/dp.mk
 endif
 
 
@@ -40,9 +29,6 @@ FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
 VSRC 	  := $(shell find rtl -name "*.v")
 
 
-ifeq ($(STAGE), DP)
-include testbench/verilator/DP/dp.mk
-endif
 
 .PHONY: sim wave clean format
 
