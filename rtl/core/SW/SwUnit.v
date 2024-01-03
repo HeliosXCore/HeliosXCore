@@ -203,28 +203,5 @@ module SwUnit (
         .oldest_value_o(alu_entry_value)
     );
 
-    // always@(posedge clk_i)begin
-    //     if(reset_i)begin
-    //         // 初始化数据
-    //         exe_alu_op_1_o <= 0;
-    //         exe_alu_op_2_o <= 0;
-    //         exe_alu_pc_o <= 0;
-    //         exe_alu_imm_o <= 0;
-    //         exe_alu_rrf_tag_o <= 0;
-    //         exe_alu_dst_val_o <= 0;
-    //         exe_alu_op_o <= 0;
-    //     end else begin
-    //         // 上升沿为输出数据赋值
-    //         if(alu_issue_enable)begin
-    //             exe_alu_op_1_o <= exe_alu_op_1;
-    //             exe_alu_op_2_o <= exe_alu_op_2;
-    //             exe_alu_pc_o <= exe_alu_pc;
-    //             exe_alu_imm_o <= exe_alu_imm;
-    //             exe_alu_rrf_tag_o <= exe_alu_rrf_tag;
-    //             exe_alu_dst_val_o <= exe_alu_dst_val;
-    //             exe_alu_op_o <= exe_alu_op;
-    //         end
-    //     end
-    // end
 
 endmodule
