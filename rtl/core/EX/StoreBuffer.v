@@ -5,8 +5,8 @@
 module StoreBuffer(
     (* IO_BUFFER_TYPE = "none" *) input wire clk_i,
     (* IO_BUFFER_TYPE = "none" *) input wire reset_i,
-    (* IO_BUFFER_TYPE = "none" *) input wire issue_i,   // 是否有访存指令发射
-    (* IO_BUFFER_TYPE = "none" *) input wire we_i,   // 用于区分是 store 指令还是 load 指令
+    (* IO_BUFFER_TYPE = "none" *) input wire issue_i, // 是否有访存指令发射
+    (* IO_BUFFER_TYPE = "none" *) input wire we_i, // 用于区分是 store 指令还是 load 指令
     (* IO_BUFFER_TYPE = "none" *) input wire [`ADDR_LEN-1:0] address_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] write_data_i,
     (* IO_BUFFER_TYPE = "none" *) input wire complete_i, // 由 ROB 传来，说明已提交，可以写入内存
@@ -16,7 +16,6 @@ module StoreBuffer(
     (* IO_BUFFER_TYPE = "none" *) output wire [`DATA_LEN-1:0] read_data_o,
 
     // 用于 store 指令把数据从 store buffer 实际写入到 memory
-    // (* IO_BUFFER_TYPE = "none" *) output wire memory_en_o,  // 内存使能
     (* IO_BUFFER_TYPE = "none" *) output wire [`ADDR_LEN-1:0] write_address_o, // 写入地址
     (* IO_BUFFER_TYPE = "none" *) output wire [`DATA_LEN-1:0] write_data_o // 写入数据
 );
@@ -34,9 +33,6 @@ module StoreBuffer(
     integer i;
     reg [`ADDR_LEN-1:0] address [`STORE_BUFFER_ENT_NUM-1:0];
     reg [`DATA_LEN-1:0] data [`STORE_BUFFER_ENT_NUM-1:0];
-    // 加一个中间变量来保存写入到mem的地址和值
-    reg [`ADDR_LEN-1:0] tmp_address;
-    reg [`DATA_LEN-1:0] tmp_data;
     // 这个变量是考虑到当某一周期store buffer数据提交到mem时，数据已在store buffer中不可用，但mem又还没有完成写入的情况，因此store buffer中数据不可用延迟一个周期
     reg [`STORE_BUFFER_ENT_NUM_BITS-1:0] last_complete_ptr; 
 
@@ -68,9 +64,9 @@ module StoreBuffer(
                     // todo: 暂未考虑 store buffer 满的情况
                     empty_ptr <= (empty_ptr == `STORE_BUFFER_ENT_NUM-1) ? 0 : empty_ptr + 1;
                 end else begin
+                    // 如果是 load 指令
                     hit_reg <= 0;
                     load_index <= 4'bxxxx;
-                    // 如果是 load 指令
                     for (i = 0; i < `STORE_BUFFER_ENT_NUM; i = i + 1) begin
                         if (address[i] == address_i) begin
                             hit_reg <= 1;
@@ -82,8 +78,6 @@ module StoreBuffer(
             if(complete_i) begin
                 // 当前指令已提交
                 complete_ptr = (complete_ptr === 4'bxxxx || complete_ptr == `STORE_BUFFER_ENT_NUM-1) ? 0 : complete_ptr + 1;
-                // tmp_address <= address[complete_ptr];
-                // tmp_data <= data[complete_ptr];
                 last_complete_ptr <= complete_ptr;
             end
         end
@@ -95,23 +89,3 @@ module StoreBuffer(
     assign write_data_o = data[complete_ptr];
     
 endmodule
-
-
-// // 例如输入 32'b11101010101010101010101010101010, 返回 31
-// // 例如输入 32'b00000000000000000000000000000001, 返回 0
-// // 例如输入 32'b00000000000000000000000000000000, 返回 63
-// module FindHighBit (
-//     (* IO_BUFFER_TYPE = "none" *) input wire [31:0] in,
-//     (* IO_BUFFER_TYPE = "none" *) output wire [5:0] out
-// );
-
-//     wire [5:0] out_stage [0:32];
-//     assign out_stage[0] = ~0; // 如果输入全为0，则输出6'b111111，表示找不到，即 store buffer 已满
-// 	generate genvar i;
-// 	    for(i=0; i<32; i=i+1) begin
-// 	        assign out_stage[i+1] = in[i] ? i : out_stage[i]; 
-//         end
-// 	endgenerate
-//     assign out = out_stage[32];
-
-// endmodule
