@@ -2,6 +2,7 @@ CXX		:= g++
 VERILATOR := verilator
 STAGE ?= SW
 
+RTLOBJD	:= build
 ifeq ($(STAGE), SW)
 include testbench/verilator/SW/sw.mk
 else ifeq ($(STAGE), ROB)
@@ -10,7 +11,6 @@ else ifeq($(STAGE), DP)
 include testbench/verilator/DP/dp.mk
 endif
 
-RTLOBJD	:= build
 
 # CFLAGS	:= -Wall 
 VIGNOREW 	:= 
