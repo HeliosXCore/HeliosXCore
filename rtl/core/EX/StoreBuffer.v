@@ -41,11 +41,11 @@ module StoreBuffer(
 
     always @(posedge clk_i) begin
         if (reset_i) begin
-            empty_ptr <= 4'bxxxx;
-            complete_ptr <= 4'bxxxx;
-            last_complete_ptr <= 4'bxxxx;
+            empty_ptr <= 5'bxxxxx;
+            complete_ptr = 5'bxxxxx;
+            last_complete_ptr <= 5'bxxxxx;
             hit_reg <= 0;
-            load_index <= 4'bxxxx;
+            load_index <= 5'bxxxxx;
             for (i = 0; i < `STORE_BUFFER_ENT_NUM; i = i + 1) begin
                 address[i] <= `ADDR_LEN'hxxxxxxxx;
                 data[i] <= `DATA_LEN'hxxxxxxxx;
@@ -58,15 +58,15 @@ module StoreBuffer(
                 // 有访存请求
                 if (we_i) begin
                     // 如果是 store 指令，注意阻塞赋值
-                    empty_ptr = (empty_ptr === 4'bxxxx) ? 0 : empty_ptr;
+                    empty_ptr = (empty_ptr === 5'bxxxxx) ? 0 : empty_ptr;
                     address[empty_ptr] = address_i;
                     data[empty_ptr] = write_data_i;
                     // todo: 暂未考虑 store buffer 满的情况
-                    empty_ptr <= (empty_ptr == `STORE_BUFFER_ENT_NUM-1) ? 0 : empty_ptr + 1;
+                    empty_ptr <= (~empty_ptr == `STORE_BUFFER_ENT_NUM-1) ? 0 : empty_ptr + 1;
                 end else begin
                     // 如果是 load 指令
                     hit_reg <= 0;
-                    load_index <= 4'bxxxx;
+                    load_index <= 5'bxxxxx;
                     for (i = 0; i < `STORE_BUFFER_ENT_NUM; i = i + 1) begin
                         if (address[i] == address_i) begin
                             hit_reg <= 1;
@@ -77,7 +77,7 @@ module StoreBuffer(
             end
             if(complete_i) begin
                 // 当前指令已提交
-                complete_ptr = (complete_ptr === 4'bxxxx || complete_ptr == `STORE_BUFFER_ENT_NUM-1) ? 0 : complete_ptr + 1;
+                complete_ptr = (complete_ptr === 5'bxxxxx || complete_ptr == `STORE_BUFFER_ENT_NUM-1) ? 0 : complete_ptr + 1;
                 last_complete_ptr <= complete_ptr;
             end
         end
