@@ -92,13 +92,13 @@ class VROBTb : public VerilatorTb<VROB> {
                 dut->finish_ex_alu1_addr_i = 0;
                 dut->finish_ex_alu2_i = 1;
                 dut->finish_ex_alu2_addr_i = 1;
-                // ASSERT(dut->commit_ptr_1_o == 2,"when sim_time = {}, ERROR: commit_ptr_1_o should be equal to 2, but now commit_ptr_1_o = {}", sim_time, dut->commit_ptr_1_o);
-                // ASSERT(dut->comnum_o == 2,"when sim_time = {}, ERROR: commit_num should be equal to 2", sim_time);
-                // ASSERT(dut->store_commit_o ==0, "when sim_time = {},  ERROR: store_commit_o should be equal to 0", sim_time);
-                // ASSERT(dut->arfwe_1_o == 1,"when sim_time = {}, ERROR: arfwe_1_o should be equal to 0", sim_time);
-                // ASSERT(dut->arfwe_2_o == 1,"when sim_time = {}, ERROR: arfwe_2_o should be equal to 1", sim_time);
-                // ASSERT(dut->dst_arf_1_o == 1,"when sim_time = {}, ERROR: dst_arf_1_o should be equal to 1", sim_time);
-                // ASSERT(dut->dst_arf_2_o == 2,"when sim_time = {}, ERROR: dst_arf_2_o should be equal to 2", sim_time);
+                ASSERT(dut->commit_ptr_1_o == 2,"when sim_time = {}, ERROR: commit_ptr_1_o should be equal to 2, but now commit_ptr_1_o = {}", sim_time, dut->commit_ptr_1_o);
+                ASSERT(dut->comnum_o == 2,"when sim_time = {}, ERROR: commit_num should be equal to 2", sim_time);
+                ASSERT(dut->store_commit_o ==0, "when sim_time = {},  ERROR: store_commit_o should be equal to 0", sim_time);
+                ASSERT(dut->arfwe_1_o == 1,"when sim_time = {}, ERROR: arfwe_1_o should be equal to 0", sim_time);
+                ASSERT(dut->arfwe_2_o == 1,"when sim_time = {}, ERROR: arfwe_2_o should be equal to 1", sim_time);
+                ASSERT(dut->dst_arf_1_o == 1,"when sim_time = {}, ERROR: dst_arf_1_o should be equal to 1", sim_time);
+                ASSERT(dut->dst_arf_2_o == 2,"when sim_time = {}, ERROR: dst_arf_2_o should be equal to 2", sim_time);
 
             }
             if(sim_time == 80) {
@@ -107,13 +107,13 @@ class VROBTb : public VerilatorTb<VROB> {
                 dut->finish_ex_alu2_i = 1;
                 dut->finish_ex_alu2_addr_i = 3;
 
-                // ASSERT(dut->commit_ptr_1_o == 4,"when sim_time ={}, ERROR: commit_ptr_1_o should be equal to 4", sim_time);
-                // ASSERT(dut->comnum_o == 2,"when sim_time ={}, ERROR: commit_num  should be equal to 2", sim_time);
-                // ASSERT(dut->store_commit_o ==0, "when sim_time = {},ERROR: store_commit_o should be equal to 0", sim_time);
-                // ASSERT(dut->arfwe_1_o == 1,"when sim_time = {}, ERROR: arfwe_1_o should be equal to 1", sim_time);
-                // ASSERT(dut->arfwe_2_o == 1,"when sim_time = {}, ERROR: arfwe_2_o should be equal to 1", sim_time);
-                // ASSERT(dut->dst_arf_1_o == 3,"when sim_time = {}, ERROR: dst_arf_1_o should be equal to 3", sim_time);
-                // ASSERT(dut->dst_arf_2_o == 4,"when sim_time = {}, ERROR: dst_arf_2_o should be equal to 4", sim_time);
+                ASSERT(dut->commit_ptr_1_o == 4,"when sim_time ={}, ERROR: commit_ptr_1_o should be equal to 4", sim_time);
+                ASSERT(dut->comnum_o == 2,"when sim_time ={}, ERROR: commit_num  should be equal to 2", sim_time);
+                ASSERT(dut->store_commit_o ==0, "when sim_time = {},ERROR: store_commit_o should be equal to 0", sim_time);
+                ASSERT(dut->arfwe_1_o == 1,"when sim_time = {}, ERROR: arfwe_1_o should be equal to 1", sim_time);
+                ASSERT(dut->arfwe_2_o == 1,"when sim_time = {}, ERROR: arfwe_2_o should be equal to 1", sim_time);
+                ASSERT(dut->dst_arf_1_o == 3,"when sim_time = {}, ERROR: dst_arf_1_o should be equal to 3", sim_time);
+                ASSERT(dut->dst_arf_2_o == 4,"when sim_time = {}, ERROR: dst_arf_2_o should be equal to 4", sim_time);
             }
         }
             
