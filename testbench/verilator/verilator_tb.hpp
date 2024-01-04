@@ -29,7 +29,7 @@ class VerilatorTb {
     ~VerilatorTb() {}
 
     // 初始化 DUT 信号
-    virtual void initialize_signal();
+    virtual void initialize_signal(){};
     // 验证 DUT 功能
     virtual void verify_dut(){};
 

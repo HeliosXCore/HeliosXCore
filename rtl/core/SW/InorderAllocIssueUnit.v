@@ -59,7 +59,7 @@ module InorderAllocIssueUnit #(
         if(reset_i)begin 
             alloc_ptr_o <= 0;
         end else if(~dp_stall_i && ~dp_kill_i)begin 
-            alloc_ptr_o <= alloc_ptr_o + req_num_i;
+            alloc_ptr_o <= (alloc_ptr_o + req_num_i) % ENT_NUM[ENT_SEL-1:0];
         end
     end
 

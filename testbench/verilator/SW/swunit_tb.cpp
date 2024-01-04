@@ -50,11 +50,6 @@ void VerilatorTb<VSwUnit>::initialize_signal() {
     dut->exe_result_5_dst_i = 0;
 }
 
-template <>
-vluint64_t VerilatorTb<VSwUnit>::get_clk() {
-    return dut->clk_i;
-}
-
 class VSwUnitTb : public VerilatorTb<VSwUnit> {
    public:
     enum class OperandType { VALUE, RRFTAG };
