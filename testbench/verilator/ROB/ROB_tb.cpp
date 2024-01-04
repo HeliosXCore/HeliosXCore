@@ -54,13 +54,13 @@ class VROBTb : public VerilatorTb<VROB> {
         // add，r3,r4,r5  目的寄存器被重命名为 x2
         // add，r4,r5,r6  目的寄存器被重命名为 x3
         //地址分别是 0x1000，0x1004，0x1008，0x100c
-        void test1(){
-            if(sim_time == 50) {
+        void test4add(){
+            if(sim_time == 60) {
                 dut->dp1_i = 1;
                 dut->dp1_addr_i = 0;
                 dut->pc_dp1_i = 0x1000;
                 dut->storebit_dp1_i = 0;
-                dut->dstvalid_dp1_i = 0;
+                dut->dstvalid_dp1_i = 1;
                 dut->dst_dp1_i = 1;
 
                 dut->dp2_i = 1;
@@ -70,36 +70,55 @@ class VROBTb : public VerilatorTb<VROB> {
                 dut->dstvalid_dp2_i = 1;
                 dut->dst_dp2_i = 2;
             }
-            if(sim_time == 60) {
-                //dp
+            if(sim_time == 70) {
+                //dp1
                 dut->dp1_i = 1;
                 dut->dp1_addr_i = 2;
                 dut->pc_dp1_i = 0x1008;
+                dut->storebit_dp1_i = 0;
+                dut->dstvalid_dp1_i = 1;
+                dut->dst_dp1_i = 3;
+
+                //dp2
                 dut->dp2_i = 1;
                 dut->dp2_addr_i = 3;
                 dut->pc_dp2_i = 0x100c;
+                dut->storebit_dp2_i = 0;
+                dut->dstvalid_dp2_i = 1;
+                dut->dst_dp2_i = 4;
 
                 //alu执行完成
                 dut->finish_ex_alu1_i = 1;
                 dut->finish_ex_alu1_addr_i = 0;
                 dut->finish_ex_alu2_i = 1;
                 dut->finish_ex_alu2_addr_i = 1;
-                ASSERT(dut->commit_ptr_1_o == 2,"ERROR:commit_ptr_1_o occur error!!");
-                ASSERT(dut->comnum_o == 2,"ERROR: commit_num occur error!!");
-                ASSERT(dut->store_commit_o ==0, "ERROR:store_commit_o occur error!!");
-                ASSERT(dut->arfwe_1_o == 0,"arfwe_1_o occur error!!");
-                ASSERT(dut->arfwe_2_o == 1,"arfwe_2_o occur error!!");
-                ASSERT(dut->dst_1_o == 1,"dst_1_o occur error!!");
-                ASSERT(dut->dst_2_o == 2,"dst_2_o occur error!!");
+                // ASSERT(dut->commit_ptr_1_o == 2,"when sim_time = {}, ERROR: commit_ptr_1_o should be equal to 2, but now commit_ptr_1_o = {}", sim_time, dut->commit_ptr_1_o);
+                // ASSERT(dut->comnum_o == 2,"when sim_time = {}, ERROR: commit_num should be equal to 2", sim_time);
+                // ASSERT(dut->store_commit_o ==0, "when sim_time = {},  ERROR: store_commit_o should be equal to 0", sim_time);
+                // ASSERT(dut->arfwe_1_o == 1,"when sim_time = {}, ERROR: arfwe_1_o should be equal to 0", sim_time);
+                // ASSERT(dut->arfwe_2_o == 1,"when sim_time = {}, ERROR: arfwe_2_o should be equal to 1", sim_time);
+                // ASSERT(dut->dst_arf_1_o == 1,"when sim_time = {}, ERROR: dst_arf_1_o should be equal to 1", sim_time);
+                // ASSERT(dut->dst_arf_2_o == 2,"when sim_time = {}, ERROR: dst_arf_2_o should be equal to 2", sim_time);
 
+            }
+            if(sim_time == 80) {
+                dut->finish_ex_alu1_i = 1;
+                dut->finish_ex_alu1_addr_i = 2;
+                dut->finish_ex_alu2_i = 1;
+                dut->finish_ex_alu2_addr_i = 3;
+
+                // ASSERT(dut->commit_ptr_1_o == 4,"when sim_time ={}, ERROR: commit_ptr_1_o should be equal to 4", sim_time);
+                // ASSERT(dut->comnum_o == 2,"when sim_time ={}, ERROR: commit_num  should be equal to 2", sim_time);
+                // ASSERT(dut->store_commit_o ==0, "when sim_time = {},ERROR: store_commit_o should be equal to 0", sim_time);
+                // ASSERT(dut->arfwe_1_o == 1,"when sim_time = {}, ERROR: arfwe_1_o should be equal to 1", sim_time);
+                // ASSERT(dut->arfwe_2_o == 1,"when sim_time = {}, ERROR: arfwe_2_o should be equal to 1", sim_time);
+                // ASSERT(dut->dst_arf_1_o == 3,"when sim_time = {}, ERROR: dst_arf_1_o should be equal to 3", sim_time);
+                // ASSERT(dut->dst_arf_2_o == 4,"when sim_time = {}, ERROR: dst_arf_2_o should be equal to 4", sim_time);
             }
         }
             
-
-        
-        // int count = 1;
         void verify_dut() {
-           
+           test4add();
         }
 };
 

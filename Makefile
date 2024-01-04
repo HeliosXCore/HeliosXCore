@@ -18,10 +18,10 @@ ifeq ($(STAGE), SW)
 else ifeq ($(STAGE), ROB)
   RTLD	:= rtl/core/COM
   TESTBENCHD	:= testbench/verilator/ROB
-	TEST 	  := SingleInstROB
-	MODULES   :=
-	TESTBENCH := SingleInstROB_tb
-	WAVE 	  := SingleInstROB.vcd
+	TEST 	  := ROB
+	MODULES   := 
+	TESTBENCH := ROB_tb
+	WAVE 	  := ROB.vcd
 endif
 
 

@@ -70,8 +70,6 @@ class VSingleInstROBTb : public VerilatorTb<VSingleInstROB> {
 };
 
 
-
-
 int main(int argc, char **argv, char **env) {
     srand(time(NULL));
     Verilated::commandArgs(argc, argv);
