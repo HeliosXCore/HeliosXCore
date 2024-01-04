@@ -31,17 +31,7 @@ module ROB (
     input wire [ `RRF_SEL-1:0] finish_ex_branch_addr_i,
     input wire                 finish_ex_branch_brcond_i,
     input wire [`ADDR_LEN-1:0] finish_ex_branch_jmpaddr_i,
-    input wire [ `RRF_SEL-1:0] dispatch_ptr_i,
 
-    input wire [`RRF_SEL-1:0] 	  finish_ex_alu2_addr_i,
-    input wire 			  finish_ex_mul_i,
-    input wire [`RRF_SEL-1:0] 	  finish_ex_mul_addr_i,
-    input wire 			  finish_ex_ldst_i,
-    input wire [`RRF_SEL-1:0] 	  finish_ex_ldst_addr_i,
-    input wire 			  finish_ex_branch_i,
-    input wire [`RRF_SEL-1:0] 	  finish_ex_branch_addr_i,
-    input wire 			  finish_ex_branch_brcond_i,
-    input wire [`ADDR_LEN-1:0] 	  finish_ex_branch_jmpaddr_i,
     // input wire [`RRF_SEL-1:0] dispatch_ptr_i,
     
     // input wire [`RRF_SEL-1:0] rrf_freenum_i,
