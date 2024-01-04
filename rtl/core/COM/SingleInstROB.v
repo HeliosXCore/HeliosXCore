@@ -13,7 +13,7 @@ module SingleInstROB (
     output reg [`ROB_SEL-1:0] commit_ptr_1_o,
     output wire arfwe_1_o,
     output wire [`REG_SEL-1:0] dst_arf_1_o
-
+    
 );
 
     //表示该 ROB entry 当前是否有效,即是否已被分配给某条指令。当新指令被分派时,会将对应 entry 的 valid 位置1,表示现在有效。
@@ -21,15 +21,14 @@ module SingleInstROB (
     //表示该 ROB entry 对应的指令是否已执行完成。当某条指令执行结束时,会将 finish 对应的位置1,表示该指令已完成执行。               
     reg [`ROB_NUM-1:0] finish;
     //表明该 ROB entry 对应的dst是否有效。
-    reg [`ROB_NUM-1:0] dstValid;
-    reg [`ADDR_LEN-1:0] inst_pc[0:`ROB_NUM-1];
-    reg [`REG_SEL-1:0] dst[0:`ROB_NUM-1];
+    reg [`ROB_NUM-1:0] dstValid; 
+    reg [`ADDR_LEN-1:0] inst_pc [0:`ROB_NUM-1];   
+    reg [`REG_SEL-1:0] dst [0:`ROB_NUM-1];
 
     wire commit_1;
 
     //当valid和finish同时为1时,允许提交
-    assign commit_1 = valid[commit_ptr_1_o] & finish[commit_ptr_1_o];
-
+    assign commit_1  = valid[commit_ptr_1_o] & finish[commit_ptr_1_o];
 
     //提交到arf的目的逻辑寄存器地址
     assign dst_arf_1_o = dst[commit_ptr_1_o];
@@ -47,7 +46,7 @@ module SingleInstROB (
             //等价于commit_ptr_2_o = (commit_ptr_1_o + 1) % `ROB_NUM;
             commit_ptr_1_o <= ((commit_ptr_1_o + {5'b0, commit_1}) & 6'b111111);
 
-
+            
             //当执行单元完成时,更新完成标志
             if (finish_ex_alu1_i) begin
                 finish[finish_ex_alu1_addr_i] <= 1'b1;
