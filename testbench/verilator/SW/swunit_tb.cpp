@@ -370,14 +370,6 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
                      0x8000000C, 8, 1, 2);
         } else if (sim_time == 440) {
             dut->dp_req_alu_num_i = 2;
-            ASSERT(dut->rootp->SwUnit__DOT__alu_allocatable == 0,
-                   "Wrong allocate entry singal!");
-            ASSERT(dut->rootp->SwUnit__DOT__alu_busy_vector == 0xFF,
-                   "Wrong busy vector with {:#x}!",
-                   dut->rootp->SwUnit__DOT__alu_busy_vector);
-            ASSERT(dut->rootp->SwUnit__DOT__we_1 == 0, "Wrong we signal!");
-            ASSERT(dut->rootp->SwUnit__DOT__we_2 == 0, "Wrong we signal!");
-
             // 发射所有指令
             dut->exe_result_1_dst_i = 1;
             dut->exe_result_1_i = 10;

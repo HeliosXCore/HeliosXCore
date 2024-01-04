@@ -64,11 +64,11 @@ class VerilatorTb {
             if ((sim_time % clock) == 0) {
                 tick();
             }
-            eval();
-            m_trace->dump(sim_time);
             if (posedge()) {
                 verify_dut();
             }
+            eval();
+            m_trace->dump(sim_time);
             sim_time++;
         }
     }

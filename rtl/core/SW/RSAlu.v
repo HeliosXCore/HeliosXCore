@@ -1,7 +1,7 @@
 `include "consts/Consts.vh"
 `include "consts/ALU.vh"
 
-module RSAlu (
+module RSAlu(
     input wire clk_i,
     input wire reset_i,
     // 重命名寄存器的下一次循环，需要清空历史向量
