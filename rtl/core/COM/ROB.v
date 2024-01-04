@@ -1,26 +1,37 @@
 `include "consts/Consts.vh"
 module ROB (
-    input wire clk_i,
-    input wire reset_i,
-    input wire 			  dp1_i,                                     //是否发射
-    input wire [`RRF_SEL-1:0] 	  dp1_addr_i,                        //第一条发射的指令在ROB的地址
-    input wire [`INSN_LEN-1:0] 	  pc_dp1_i,
-    input wire 			  storebit_dp1_i,
-    input wire 			  dstvalid_dp1_i,
-    input wire [`REG_SEL-1:0] 	  dst_dp1_i,
-    input wire [`GSH_BHR_LEN-1:0]  bhr_dp1_i,
-    input wire 			  isbranch_dp1_i,
-    input wire 			  dp2_i,
-    input wire [`RRF_SEL-1:0] 	  dp2_addr_i,
-    input wire [`INSN_LEN-1:0] 	  pc_dp2_i,
-    input wire 			  storebit_dp2_i,
-    input wire 			  dstvalid_dp2_i,
-    input wire [`REG_SEL-1:0] 	  dst_dp2_i,
-    input wire [`GSH_BHR_LEN-1:0]  bhr_dp2_i,
-    input wire 			  isbranch_dp2_i,
-    input wire finish_ex_alu1_i,                                    //alu1单元是否执行完成
-    input wire [`RRF_SEL-1:0] finish_ex_alu1_addr_i,                       //alu1执行完成的指令在ROB的地址
-    input wire 			  finish_ex_alu2_i,
+    input wire                    clk_i,
+    input wire                    reset_i,
+    input wire                    dp1_i,                  //是否发射
+    input wire [    `RRF_SEL-1:0] dp1_addr_i,             //第一条发射的指令在ROB的地址
+    input wire [   `INSN_LEN-1:0] pc_dp1_i,
+    input wire                    storebit_dp1_i,
+    input wire                    dstvalid_dp1_i,
+    input wire [    `REG_SEL-1:0] dst_dp1_i,
+    input wire [`GSH_BHR_LEN-1:0] bhr_dp1_i,
+    input wire                    isbranch_dp1_i,
+    input wire                    dp2_i,
+    input wire [    `RRF_SEL-1:0] dp2_addr_i,
+    input wire [   `INSN_LEN-1:0] pc_dp2_i,
+    input wire                    storebit_dp2_i,
+    input wire                    dstvalid_dp2_i,
+    input wire [    `REG_SEL-1:0] dst_dp2_i,
+    input wire [`GSH_BHR_LEN-1:0] bhr_dp2_i,
+    input wire                    isbranch_dp2_i,
+    input wire                    finish_ex_alu1_i,       //alu1单元是否执行完成
+    input wire [    `RRF_SEL-1:0] finish_ex_alu1_addr_i,  //alu1执行完成的指令在ROB的地址
+    input wire                    finish_ex_alu2_i,
+
+    input wire [ `RRF_SEL-1:0] finish_ex_alu2_addr_i,
+    input wire                 finish_ex_mul_i,
+    input wire [ `RRF_SEL-1:0] finish_ex_mul_addr_i,
+    input wire                 finish_ex_ldst_i,
+    input wire [ `RRF_SEL-1:0] finish_ex_ldst_addr_i,
+    input wire                 finish_ex_branch_i,
+    input wire [ `RRF_SEL-1:0] finish_ex_branch_addr_i,
+    input wire                 finish_ex_branch_brcond_i,
+    input wire [`ADDR_LEN-1:0] finish_ex_branch_jmpaddr_i,
+    input wire [ `RRF_SEL-1:0] dispatch_ptr_i,
 
     input wire [`RRF_SEL-1:0] 	  finish_ex_alu2_addr_i,
     input wire 			  finish_ex_mul_i,
@@ -50,8 +61,8 @@ module ROB (
     output wire [`ADDR_LEN-1:0] jmpaddr_combranch_o,
     output wire brcond_combranch_o,
     output wire combranch_o
-        
-    
+
+
 );
     //表示该 ROB entry 对应的指令是否已执行完成。当某条指令执行结束时,会将 finish 对应的位置1,表示该指令已完成执行。               
     reg [`ROB_NUM-1:0] finish;
@@ -59,12 +70,11 @@ module ROB (
     reg [`ROB_NUM-1:0] dstValid;
     reg [`ROB_NUM-1:0] brcond;
     reg [`ROB_NUM-1:0] isbranch;
-    
-    reg [`ADDR_LEN-1:0] inst_pc [0:`ROB_NUM-1];
-    reg [`ADDR_LEN-1:0] jmpaddr [0:`ROB_NUM-1];    
-    reg [`REG_SEL-1:0] dst [0:`ROB_NUM-1];
-    reg [`GSH_BHR_LEN-1:0] bhr [0:`ROB_NUM-1];
-    
+
+    reg [`ADDR_LEN-1:0] inst_pc[0:`ROB_NUM-1];
+    reg [`ADDR_LEN-1:0] jmpaddr[0:`ROB_NUM-1];
+    reg [`REG_SEL-1:0] dst[0:`ROB_NUM-1];
+    reg [`GSH_BHR_LEN-1:0] bhr[0:`ROB_NUM-1];
 
 
     //等价于 commit_ptr_2_o = (commit_ptr_1_o + 1) % `ROB_NUM;
@@ -81,7 +91,7 @@ module ROB (
 
     // assign store_commit_o = (commit_1 & storebit[commit_ptr_1_o] & ~prmiss_i) | (commit_2 & storebit[commit_ptr_2_o] & ~prmiss_i);
     assign store_commit_o = (commit_1 & storebit[commit_ptr_1_o]) | (commit_2 & storebit[commit_ptr_2_o]);
-    
+
     //提交到arf的目的逻辑寄存器地址
     assign dst_arf_1_o = dst[commit_ptr_1_o];
     assign dst_arf_2_o = dst[commit_ptr_2_o];
@@ -89,8 +99,8 @@ module ROB (
     // assign arfwe_1_o =  ~prmiss_i & dstValid[commit_ptr_1_o] & commit_1;
     // assign arfwe_2_o =  ~prmiss_i & dstValid[commit_ptr_2_o] & commit_2;
 
-    assign arfwe_1_o =  dstValid[commit_ptr_1_o] & commit_1;
-    assign arfwe_2_o =  dstValid[commit_ptr_2_o] & commit_2;
+    assign arfwe_1_o = dstValid[commit_ptr_1_o] & commit_1;
+    assign arfwe_2_o = dstValid[commit_ptr_2_o] & commit_2;
 
 
     // assign combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) | (~prmiss_i & commit_2 & isbranch[commit_ptr_2_o]);
@@ -106,8 +116,8 @@ module ROB (
 
 
 
-    always @(posedge clk_i ) begin
-        if(reset_i) begin
+    always @(posedge clk_i) begin
+        if (reset_i) begin
             commit_ptr_1_o <= 0;
             finish <= 0;
             brcond <= 0;
@@ -119,22 +129,22 @@ module ROB (
             commit_ptr_1_o <= (commit_ptr_1_o + {5'b0,commit_1} + {5'b0,commit_2}) & 6'b1;
             if(finish_ex_alu1_i) begin
                 finish[finish_ex_alu1_addr_i] <= 1'b1;
-            end             
-            if(finish_ex_alu2_i) begin
+            end
+            if (finish_ex_alu2_i) begin
                 finish[finish_ex_alu2_addr_i] <= 1'b1;
             end
-            if(finish_ex_branch_i) begin
-                finish[finish_ex_branch_addr_i] <= 1'b1;
+            if (finish_ex_branch_i) begin
+                finish[finish_ex_branch_addr_i]  <= 1'b1;
                 //标记该条指令是否是条件分支指令
-                brcond[finish_ex_branch_addr_i] <= finish_ex_branch_brcond_i;
+                brcond[finish_ex_branch_addr_i]  <= finish_ex_branch_brcond_i;
                 //记录分支指令的跳转地址
                 jmpaddr[finish_ex_branch_addr_i] <= finish_ex_branch_jmpaddr_i;
 
             end
-            if(finish_ex_mul_i) begin
+            if (finish_ex_mul_i) begin
                 finish[finish_ex_mul_addr_i] <= 1'b1;
             end
-            if(finish_ex_ldst_i)begin
+            if (finish_ex_ldst_i) begin
                 finish[finish_ex_ldst_addr_i] <= 1'b1;
             end
         end

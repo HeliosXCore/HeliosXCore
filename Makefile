@@ -1,27 +1,14 @@
 CXX		:= g++
 VERILATOR := verilator
+STAGE ?= SW
 
 RTLOBJD	:= build
-
-STAGE ?= SW 
-
 ifeq ($(STAGE), SW)
-	RTLD	:= rtl/core/SW
-	RTLOBJD	:= build
-	TESTBENCHD	:= testbench/verilator/SW
-	TEST 	  := SwUnit
-	MODULES   := $(RTLD)/SourceManager.v $(RTLD)/RSAluEntry.v \
-				$(RTLD)/RSAlu.v $(RTLD)/OldestFinder.v \
-				$(RTLD)/AllocateUnit.v
-	TESTBENCH := swunit_tb
-	WAVE 	  := swunit.vcd
+include testbench/verilator/SW/sw.mk
 else ifeq ($(STAGE), ROB)
-  RTLD	:= rtl/core/COM
-  TESTBENCHD	:= testbench/verilator/ROB
-	TEST 	  := ROB
-	MODULES   := 
-	TESTBENCH := ROB_tb
-	WAVE 	  := ROB.vcd
+include testbench/verilator/ROB/rob.mk
+else ifeq ($(STAGE), DP)
+include testbench/verilator/DP/dp.mk
 endif
 
 
@@ -38,6 +25,8 @@ MACRO_FLAGS := -CFLAGS -DFMT_HEADER_ONLY
 VFormater := verible-verilog-format
 FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
 VSRC 	  := $(shell find rtl -name "*.v")
+
+
 
 .PHONY: sim wave clean format
 
@@ -66,6 +55,8 @@ lint:
 			rtl/core/SW/RSAlu.v rtl/core/SW/OldestFinder.v rtl/core/SW/AllocateUnit.v \
 			rtl/core/SW/SwUnit.v
 	@verilator --lint-only -Irtl rtl/core/EX/AluExeUnit.v
-
 	@verilator --lint-only -Irtl rtl/core/COM/SingleInstROB.v
 	@verilator --lint-only -Irtl rtl/core/COM/ROB.v
+	@verilator --lint-only -Irtl rtl/core/DP/Arf.v  \
+		rtl/core/DP/Rrf.v rtl/core/DP/RrfEntryAllocate.v rtl/core/DP/SrcOprManager.v \
+		rtl/core/DP/SyncRAM.v rtl/core/DP/ReNameUnit.v
