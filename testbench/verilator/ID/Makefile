@@ -10,23 +10,19 @@ TEST 	  ?=
 TESTBENCH ?=
 WAVE 	  ?=
 
-STAGE ?=IMM_GEN
+STAGE ?=DECODER
 ifeq ($(STAGE), IMM_GEN)
 	TEST := imm_gen
 	TESTBENCH := ID/imm_gen_tb
 	WAVE := imm_gen.vcd
-else ifeq ($(STAGE), ARF)
-	TEST := Arf
-	TESTBENCH := ID/arf_tb
-	WAVE := arf.vcd
-else ifeq ($(STAGE), RRF)
-	TEST := Rrf
-	TESTBENCH := ID/rrf_tb
-	WAVE := rrf.vcd
-else ifeq ($(STAGE), RRF_ALLO)
-	TEST := RrfEntryAllocate
-	TESTBENCH := ID/rrfentry_allocate_tb
-	WAVE := rrfentry_allocate.vcd
+else ifeq ($(STAGE), DECODER)
+	TEST := decoder
+	TESTBENCH := ID/decoder_tb
+	WAVE := decoder.vcd
+else ifeq ($(STAGE), IDUNIT)
+	TEST := idunit
+	TESTBENCH := ID/idunit_tb
+	WAVE := idunit.vcd
 endif
 
 # CFLAGS	:= -Wall 
