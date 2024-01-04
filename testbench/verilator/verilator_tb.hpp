@@ -65,10 +65,10 @@ class VerilatorTb {
                 tick();
             }
             eval();
+            m_trace->dump(sim_time);
             if (posedge()) {
                 verify_dut();
             }
-            m_trace->dump(sim_time);
             sim_time++;
         }
     }

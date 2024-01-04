@@ -125,8 +125,6 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
             disable_next_rrf_cycle();
             // 分配一个 entry
             dut->dp_req_alu_num_i = 1;
-            // fmt::println("alu_busy_vector: {:#x}",
-            //              dut->rootp->SwUnit__DOT__alu_busy_vector);
             // 检查分配 entry 编号
             ASSERT(dut->rootp->SwUnit__DOT__alu_allocate_en_1 == 1,
                    "Wrong allocate enable signal!");
@@ -189,18 +187,9 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
             ASSERT(dut->rootp->SwUnit__DOT__alu_clear_busy == 0,
                    "Wrong alu clear busy signal {}!",
                    dut->rootp->SwUnit__DOT__alu_clear_busy);
-            // fmt::println("Busy Vector: {:#x}",
-            //              dut->rootp->SwUnit__DOT__alu_busy_vector);
         } else if (sim_time == 110) {
             // 在第二个周期，将输入信号修改为 0
             dut->dp_req_alu_num_i = 0;
-            // fmt::println("Busy Vector: {:#x}",
-            //              dut->rootp->SwUnit__DOT__alu_busy_vector);
-            // fmt::println("ALU entry value: {:#x}",
-            //              dut->rootp->SwUnit__DOT__alu_entry_value);
-            // fmt::println("ALU issue addr: {}",
-            //              dut->rootp->SwUnit__DOT__alu_issue_addr);
-
             // 第二周期发射第一条指令
             ASSERT(dut->rootp->exe_alu_ready_o == 3, "Wrong alu ready signal!");
             ASSERT(dut->exe_alu_op_1_o == 3, "Wrong output alu op1 signal {}!",
@@ -361,49 +350,24 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
                      0x80000008, 1, 1, 1);
             dispatch(1, OperandType::VALUE, OperandType::RRFTAG, 2, 2,
                      0x8000000C, 2, 1, 2);
-            // fmt::println("Ready vector: {:#x}", dut->exe_alu_ready_o);
-            // fmt::println("Busy vector: {:#x}",
-            //              dut->rootp->SwUnit__DOT__alu_busy_vector);
-            // fmt::println("Allocate entry: {}, {}",
-            //              dut->rootp->SwUnit__DOT__free_alu_entry_1,
-            //              dut->rootp->SwUnit__DOT__free_alu_entry_2);
-
         } else if (sim_time == 410) {
             dut->dp_req_alu_num_i = 2;
             dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 3, 3,
                      0x80000008, 3, 1, 1);
             dispatch(1, OperandType::VALUE, OperandType::RRFTAG, 4, 4,
                      0x8000000C, 4, 1, 2);
-            // fmt::println("Ready vector: {:#x}", dut->exe_alu_ready_o);
-            // fmt::println("Busy vector: {:#x}",
-            //              dut->rootp->SwUnit__DOT__alu_busy_vector);
-            // fmt::println("Allocate entry: {}, {}",
-            //              dut->rootp->SwUnit__DOT__free_alu_entry_1,
-            //              dut->rootp->SwUnit__DOT__free_alu_entry_2);
         } else if (sim_time == 420) {
             dut->dp_req_alu_num_i = 2;
             dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 5, 5,
                      0x80000008, 5, 1, 1);
             dispatch(1, OperandType::VALUE, OperandType::RRFTAG, 6, 6,
                      0x8000000C, 6, 1, 2);
-            // fmt::println("Ready vector: {:#x}", dut->exe_alu_ready_o);
-            // fmt::println("Busy vector: {:#x}",
-            //              dut->rootp->SwUnit__DOT__alu_busy_vector);
-            // fmt::println("Allocate entry: {}, {}",
-            //              dut->rootp->SwUnit__DOT__free_alu_entry_1,
-            //              dut->rootp->SwUnit__DOT__free_alu_entry_2);
         } else if (sim_time == 430) {
             dut->dp_req_alu_num_i = 2;
             dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 7, 7,
                      0x80000008, 7, 1, 1);
             dispatch(1, OperandType::VALUE, OperandType::RRFTAG, 8, 8,
                      0x8000000C, 8, 1, 2);
-            // fmt::println("Ready vector: {:#x}", dut->exe_alu_ready_o);
-            // fmt::println("Busy vector: {:#x}",
-            //              dut->rootp->SwUnit__DOT__alu_busy_vector);
-            // fmt::println("Allocate entry: {}, {}",
-            //              dut->rootp->SwUnit__DOT__free_alu_entry_1,
-            //              dut->rootp->SwUnit__DOT__free_alu_entry_2);
         } else if (sim_time == 440) {
             dut->dp_req_alu_num_i = 2;
             ASSERT(dut->rootp->SwUnit__DOT__alu_allocatable == 0,
@@ -411,10 +375,6 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
             ASSERT(dut->rootp->SwUnit__DOT__alu_busy_vector == 0xFF,
                    "Wrong busy vector with {:#x}!",
                    dut->rootp->SwUnit__DOT__alu_busy_vector);
-            // ASSERT(dut->rootp->SwUnit__DOT__alu_allocate_en_1 == 0,
-            //        "Wrong allocate enable signal!");
-            // ASSERT(dut->rootp->SwUnit__DOT__alu_allocate_en_2 == 0,
-            //        "Wrong allocate enable signal!");
             ASSERT(dut->rootp->SwUnit__DOT__we_1 == 0, "Wrong we signal!");
             ASSERT(dut->rootp->SwUnit__DOT__we_2 == 0, "Wrong we signal!");
 
@@ -429,9 +389,6 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
             dut->exe_result_4_i = 40;
 
         } else if (sim_time == 450) {
-            // fmt::println("Ready vector: {:#x}", dut->exe_alu_ready_o);
-            // fmt::println("History vector: {:#x}",
-            //              dut->rootp->SwUnit__DOT__alu_history_vector);
             dut->dp_req_alu_num_i = 0;
             dut->exe_result_1_dst_i = 5;
             dut->exe_result_1_i = 50;
@@ -443,46 +400,28 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
             dut->exe_result_4_i = 80;
 
             // 验证发射
-            // fmt::println("exe_alu_op_1_o: {}", dut->exe_alu_op_1_o);
-            // fmt::println("exe_alu_op_2_o: {}", dut->exe_alu_op_2_o);
-            // fmt::println("busy vector: {:#x}",
-            //              dut->rootp->SwUnit__DOT__alu_busy_vector);
             ASSERT(dut->exe_alu_op_1_o == 1, "Wrong output alu op signal {} !",
                    dut->exe_alu_op_1_o);
             ASSERT(dut->exe_alu_op_2_o == 10, "Wrong output alu op signal!");
         } else if (sim_time == 460) {
-            // fmt::println("exe_alu_op_1_o: {}", dut->exe_alu_op_1_o);
-            // fmt::println("exe_alu_op_2_o: {}", dut->exe_alu_op_2_o);
             ASSERT(dut->exe_alu_op_1_o == 2, "Wrong output alu op signal!");
             ASSERT(dut->exe_alu_op_2_o == 20, "Wrong output alu op signal!");
         } else if (sim_time == 470) {
-            // fmt::println("exe_alu_op_1_o: {}", dut->exe_alu_op_1_o);
-            // fmt::println("exe_alu_op_2_o: {}", dut->exe_alu_op_2_o);
             ASSERT(dut->exe_alu_op_1_o == 3, "Wrong output alu op signal!");
             ASSERT(dut->exe_alu_op_2_o == 30, "Wrong output alu op signal!");
         } else if (sim_time == 480) {
-            // fmt::println("exe_alu_op_1_o: {}", dut->exe_alu_op_1_o);
-            // fmt::println("exe_alu_op_2_o: {}", dut->exe_alu_op_2_o);
             ASSERT(dut->exe_alu_op_1_o == 4, "Wrong output alu op signal!");
             ASSERT(dut->exe_alu_op_2_o == 40, "Wrong output alu op signal!");
         } else if (sim_time == 490) {
-            // fmt::println("exe_alu_op_1_o: {}", dut->exe_alu_op_1_o);
-            // fmt::println("exe_alu_op_2_o: {}", dut->exe_alu_op_2_o);
             ASSERT(dut->exe_alu_op_1_o == 5, "Wrong output alu op signal!");
             ASSERT(dut->exe_alu_op_2_o == 50, "Wrong output alu op signal!");
         } else if (sim_time == 500) {
-            // fmt::println("exe_alu_op_1_o: {}", dut->exe_alu_op_1_o);
-            // fmt::println("exe_alu_op_2_o: {}", dut->exe_alu_op_2_o);
             ASSERT(dut->exe_alu_op_1_o == 6, "Wrong output alu op signal!");
             ASSERT(dut->exe_alu_op_2_o == 60, "Wrong output alu op signal!");
         } else if (sim_time == 510) {
-            // fmt::println("exe_alu_op_1_o: {}", dut->exe_alu_op_1_o);
-            // fmt::println("exe_alu_op_2_o: {}", dut->exe_alu_op_2_o);
             ASSERT(dut->exe_alu_op_1_o == 7, "Wrong output alu op signal!");
             ASSERT(dut->exe_alu_op_2_o == 70, "Wrong output alu op signal!");
         } else if (sim_time == 520) {
-            // fmt::println("exe_alu_op_1_o: {}", dut->exe_alu_op_1_o);
-            // fmt::println("exe_alu_op_2_o: {}", dut->exe_alu_op_2_o);
             ASSERT(dut->exe_alu_op_1_o == 8, "Wrong output alu op signal!");
             ASSERT(dut->exe_alu_op_2_o == 80, "Wrong output alu op signal!");
         }
@@ -500,9 +439,7 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
 int main(int argc, char **argv, char **env) {
     srand(time(NULL));
     Verilated::commandArgs(argc, argv);
-
     std::shared_ptr<VSwUnitTb> tb = std::make_shared<VSwUnitTb>(5, 50, 1000);
-
     tb->run("swunit.vcd");
     fmt::print("Dut Correctness passed!\n");
 }
