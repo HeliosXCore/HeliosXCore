@@ -230,6 +230,21 @@ module SwUnit (
         .oldest_value_o(alu_entry_value)
     );
 
+    InorderAllocIssueUnit inorder_alloc_issue_unit(
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .busy_vector_i(mem_busy_vector),
+        .req_num_i(dp_req_mem_num_i),
+        .ready_vector_i(exe_mem_ready_o),
+        .previous_busy_vector_next_i(mem_previous_busy_vector_next),
+        .dp_kill_i(kill_dp_i),
+        .dp_stall_i(stall_dp_i),
+        .allocatable_o(),
+        .alloc_ptr_o(),
+        .issue_ptr_o(mem_issue_entry),
+        .issue_valid_o()
+    );
+
     // Load/Store Unit
     RSAccessMem RSAccessMem (
         .clk_i(clk_i),

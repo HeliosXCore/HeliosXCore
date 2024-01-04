@@ -6,7 +6,7 @@ module InorderAllocIssueUnit #(
     input reset_i,
     input [1:0] req_num_i,
     input [ENT_NUM-1:0] busy_vector_i,
-    input [ENT_NUM-1:0] previsous_busy_vector_next_i,
+    input [ENT_NUM-1:0] previous_busy_vector_next_i,
     input [ENT_NUM-1:0] ready_vector_i,
     input wire dp_stall_i,
     input wire dp_kill_i,

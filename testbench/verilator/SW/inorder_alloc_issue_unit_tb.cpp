@@ -12,8 +12,10 @@ class VInorderAllocIssueTB : public VerilatorTb<VInorderAllocIssueUnit> {
         if (sim_time == 50) {
             dut->reset_i = 0;
             dut->req_num_i = 1;
-        } else if (sim_time == 60) {
+
             dut->busy_vector_i = 0x1;
+            dut->ready_vector_i = 0x1;
+        } else if (sim_time == 60) {
             dut->req_num_i = 2;
             dut->ready_vector_i = 0x1;
         } else if (sim_time == 70) {
