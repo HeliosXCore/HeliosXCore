@@ -30,6 +30,8 @@ class VerilatorTb {
 
     // 初始化 DUT 信号
     virtual void initialize_signal(){};
+    // 输入信号
+    virtual void input(){};
     // 验证 DUT 功能
     virtual void verify_dut(){};
 
@@ -65,9 +67,10 @@ class VerilatorTb {
                 tick();
             }
             if (posedge()) {
-                verify_dut();
+                input();
             }
             eval();
+            verify_dut();
             m_trace->dump(sim_time);
             sim_time++;
         }
