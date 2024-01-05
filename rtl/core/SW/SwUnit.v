@@ -80,9 +80,12 @@ module SwUnit (
     wire [             `ALU_ENT_SEL-1:0] free_alu_entry_1;
     wire [             `ALU_ENT_SEL-1:0] free_alu_entry_2;
 
-    // 提取出前 ALU_ENT_SEL 位的 ALU 指令地址
-    // wire [`ALU_ENT_SEL-1: 0] alu_allocate_entry_1;
-    // wire [`ALU_ENT_SEL-1: 0] alu_allocate_entry_2; 
+    wire                                 mem_allocatable;
+    wire                                 mem_allocate_en_1;
+    wire                                 mem_allocate_en_2;
+    wire [            `LDST_ENT_SEL-1:0] free_mem_entry_1;
+    wire [            `LDST_ENT_SEL-1:0] free_mem_entry_2;
+
 
     wire [             `ALU_ENT_SEL-1:0] alu_rs_allocate_entry_1;
     wire [             `ALU_ENT_SEL-1:0] alu_rs_allocate_entry_2;
@@ -101,6 +104,8 @@ module SwUnit (
 
     wire                                 mem_we_1;
     wire                                 mem_we_2;
+
+    wire mem_issue_valid;
 
     reg  [             `ALU_ENT_NUM-1:0] alu_busy_vector;
     wire [`ALU_ENT_NUM*(`RRF_SEL+2)-1:0] alu_history_vector;
@@ -126,17 +131,21 @@ module SwUnit (
         .allocatable_o(alu_allocatable)
     );
 
-    // 由于最后一位是 mask bit，因此提取前 `ALU_ENT_SEL-1 位 作为分配的 ADDR
-    // assign alu_allocate_entry_1 = free_alu_entry_1[`ALU_ENT_SEL: 1];
-    // assign alu_allocate_entry_2 = free_alu_entry_2[`ALU_ENT_SEL: 1];
 
     // 如果分配成功赋值，否则为 0
     assign alu_rs_allocate_entry_1 = alu_allocate_en_1 ? free_alu_entry_1 : 0;
     assign alu_rs_allocate_entry_2 = alu_allocate_en_2 ? free_alu_entry_2 : 0;
 
+    assign free_mem_entry_2 = free_mem_entry_1 + 1;
+    assign mem_rs_allocate_entry_1 = mem_allocate_en_1 ? free_mem_entry_1 : 0;
+    assign mem_rs_allocate_entry_2 = mem_allocate_en_2 ? free_mem_entry_2 : 0;
+
     // 写使能信号，TODO：更多条件
     assign alu_we_1 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_1 & (dp_req_alu_num_i >= 2'd1) & alu_allocatable;
     assign alu_we_2 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_2 & (dp_req_alu_num_i == 2'd2) & alu_allocatable;
+
+    assign mem_we_1 = ~stall_dp_i & ~kill_dp_i & mem_allocate_en_1 & (dp_req_mem_num_i >= 2'd1) & mem_allocatable;
+    assign mem_we_2 = ~stall_dp_i & ~kill_dp_i & mem_allocate_en_2 & (dp_req_mem_num_i == 2'd2) & mem_allocatable;
 
     assign alu_issue_addr = alu_issue_entry;
     // alu_clear_busy 信号，用于清空保留站的 busy 位
@@ -146,6 +155,9 @@ module SwUnit (
     assign exe_alu_issue_o = alu_clear_busy;
 
     assign mem_issue_addr = mem_issue_entry;
+
+    assign mem_clear_busy = mem_issue_valid;
+    
 
 
     RSAlu RSAlu (
@@ -230,7 +242,7 @@ module SwUnit (
         .oldest_value_o(alu_entry_value)
     );
 
-    InorderAllocIssueUnit inorder_alloc_issue_unit(
+    InorderAllocIssueUnit inorder_alloc_issue_unit (
         .clk_i(clk_i),
         .reset_i(reset_i),
         .busy_vector_i(mem_busy_vector),
@@ -239,10 +251,10 @@ module SwUnit (
         .previous_busy_vector_next_i(mem_previous_busy_vector_next),
         .dp_kill_i(kill_dp_i),
         .dp_stall_i(stall_dp_i),
-        .allocatable_o(),
-        .alloc_ptr_o(),
+        .allocatable_o(mem_allocatable),
+        .alloc_ptr_o(free_mem_entry_1),
         .issue_ptr_o(mem_issue_entry),
-        .issue_valid_o()
+        .issue_valid_o(mem_issue_valid)
     );
 
     // Load/Store Unit

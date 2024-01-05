@@ -5,6 +5,7 @@ TEST 	  := SwUnit
 MODULES   := $(RTLD)/SourceManager.v $(RTLD)/RSAluEntry.v \
 			$(RTLD)/RSAlu.v $(RTLD)/OldestFinder.v \
 			$(RTLD)/AllocateUnit.v $(RTLD)/RSAccessMemEntry.v \
-			$(RTLD)/RSAccessMem.v $(RTLD)/InorderAllocIssueUnit.v
+			$(RTLD)/RSAccessMem.v $(RTLD)/InorderAllocIssueUnit.v \
+			$(RTLD)/Searcher.v
 TESTBENCH := swunit_tb
 WAVE 	  := swunit.vcd
