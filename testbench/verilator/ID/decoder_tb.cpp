@@ -34,7 +34,6 @@ int main(int argc, char **argv, char **env) {
             dut->inst_i = 0x800002b7;
         }
         if (sim_time == 6) {
-            // TODO: you should write some assert on this
             assert(dut->imm_type_o==IMM_U);
             assert(dut->rd_o==0x05);
             assert(dut->uses_rs1_o==0);
@@ -49,7 +48,6 @@ int main(int argc, char **argv, char **env) {
             dut->inst_i = 0x374000ef;
         }
         if (sim_time == 8) {
-            // TODO: you should write some assert on this
             assert(dut->imm_type_o==IMM_I);
             assert(dut->rd_o==0x01);
             assert(dut->uses_rs1_o==0);
@@ -65,7 +63,6 @@ int main(int argc, char **argv, char **env) {
             dut->inst_i = 0x00082883;
         }
         if (sim_time == 10) {
-            // TODO: you should write some assert on this
             assert(dut->imm_type_o==IMM_I);
             assert(dut->rs1_o==0x10);
             assert(dut->rd_o==0x11);
@@ -86,7 +83,6 @@ int main(int argc, char **argv, char **env) {
             dut->inst_i = 0x00f82023;
         }
         if (sim_time == 12) {
-            // TODO: you should write some assert on this
             assert(dut->imm_type_o==IMM_S);
             assert(dut->rs1_o==0x10);
             assert(dut->rs2_o==0x0f);
