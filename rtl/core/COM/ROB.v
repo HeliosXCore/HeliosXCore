@@ -31,10 +31,11 @@ module ROB (
     input wire [ `RRF_SEL-1:0] finish_ex_branch_addr_i,
     input wire                 finish_ex_branch_brcond_i,
     input wire [`ADDR_LEN-1:0] finish_ex_branch_jmpaddr_i,
-    input wire [ `RRF_SEL-1:0] dispatch_ptr_i,
 
-    input wire [`RRF_SEL-1:0] rrf_freenum_i,
-    input wire prmiss_i,
+    // input wire [`RRF_SEL-1:0] dispatch_ptr_i,
+    
+    // input wire [`RRF_SEL-1:0] rrf_freenum_i,
+    // input wire prmiss_i,
 
     output reg [`ROB_SEL-1:0] commit_ptr_1_o,
     output wire [`ROB_SEL-1:0] commit_ptr_2_o,
@@ -53,8 +54,6 @@ module ROB (
 
 
 );
-    //表示该 ROB entry 当前是否有效,即是否已被分配给某条指令。当新指令被分派时,会将对应 entry 的 valid 位置1,表示现在有效。
-    reg [`ROB_NUM-1:0] valid;
     //表示该 ROB entry 对应的指令是否已执行完成。当某条指令执行结束时,会将 finish 对应的位置1,表示该指令已完成执行。               
     reg [`ROB_NUM-1:0] finish;
     reg [`ROB_NUM-1:0] storebit;
@@ -68,16 +67,15 @@ module ROB (
     reg [`GSH_BHR_LEN-1:0] bhr[0:`ROB_NUM-1];
 
 
-
     //等价于 commit_ptr_2_o = (commit_ptr_1_o + 1) % `ROB_NUM;
-    assign commit_ptr_2_o = (commit_ptr_1_o + {5'b0, 1'b1}) & 6'b1;
+    assign commit_ptr_2_o = (commit_ptr_1_o + {5'b0,1'b1}) & 6'b1; 
 
-    // wire commit_1 = valid[commit_ptr_1_o] & finish[commit_ptr_1_o] & ~prmiss_i;
-    // wire commit_2 = valid[commit_ptr_2_o] & finish[commit_ptr_2_o] & ~prmiss_i;
+    // wire commit_1 = finish[commit_ptr_1_o] & ~prmiss_i;
+    // wire commit_2 = finish[commit_ptr_2_o] & ~prmiss_i;
 
 
-    wire commit_1 = valid[commit_ptr_1_o] & finish[commit_ptr_1_o];
-    wire commit_2 = valid[commit_ptr_2_o] & finish[commit_ptr_2_o];
+    wire commit_1 =  finish[commit_ptr_1_o];
+    wire commit_2 =  finish[commit_ptr_2_o];
 
     assign comnum_o = commit_1 + commit_2;
 
@@ -95,32 +93,31 @@ module ROB (
     assign arfwe_2_o = dstValid[commit_ptr_2_o] & commit_2;
 
 
-    assign combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) | (~prmiss_i & commit_2 & isbranch[commit_ptr_2_o]);
-    assign pc_combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ? inst_pc[commit_ptr_1_o] : inst_pc[commit_ptr_2_o];
-    assign bhr_combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
-    assign jmpaddr_combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ? jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
+    // assign combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) | (~prmiss_i & commit_2 & isbranch[commit_ptr_2_o]);
+    // assign pc_combranch_o = (~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ? inst_pc[commit_ptr_1_o] : inst_pc[commit_ptr_2_o];
+    // assign bhr_combranch_o =( ~prmiss_i & commit_1 & isbranch[commit_ptr_1_o])? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
+    // assign jmpaddr_combranch_o =( ~prmiss_i & commit_1 & isbranch[commit_ptr_1_o]) ?jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
 
-    // 收到prmiss信号时清空valid位
-    // always @(posedge clk_i) begin
-    //     if (prmiss_i) begin
-    //         valid[dispatch_ptr_i:commit_ptr_1_o] <= 0;
-    //         commit_ptr_1_o <= dispatch_ptr_i; 
-    //     end
-    // end
+    assign combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) | (commit_2 & isbranch[commit_ptr_2_o]);
+    assign pc_combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) ? inst_pc[commit_ptr_1_o] : inst_pc[commit_ptr_2_o];
+    assign bhr_combranch_o =(commit_1 & isbranch[commit_ptr_1_o])? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
+    assign jmpaddr_combranch_o =(commit_1 & isbranch[commit_ptr_1_o]) ?jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
+
+
 
 
     always @(posedge clk_i) begin
         if (reset_i) begin
             commit_ptr_1_o <= 0;
-            valid <= 0;
             finish <= 0;
             brcond <= 0;
-        end else begin
+        end
+        else begin
 
             //等价于commit_ptr_1_o <= (commit_ptr_1_o + commit_1 + commit_2) % (`ROB_NUM);
             //每次提交一次或两次指令,commit_ptr_1_o向后移动
-            commit_ptr_1_o <= (commit_ptr_1_o + {5'b0, commit_1} + {5'b0, commit_2}) & 6'b1;
-            if (finish_ex_alu1_i) begin
+            commit_ptr_1_o <= (commit_ptr_1_o + {5'b0,commit_1} + {5'b0,commit_2}) & 6'b1;
+            if(finish_ex_alu1_i) begin
                 finish[finish_ex_alu1_addr_i] <= 1'b1;
             end
             if (finish_ex_alu2_i) begin
@@ -140,21 +137,11 @@ module ROB (
             if (finish_ex_ldst_i) begin
                 finish[finish_ex_ldst_addr_i] <= 1'b1;
             end
-
-            // 当ROB entry的指令提交时,将valid置0
-            if (commit_1) begin
-                valid[commit_ptr_1_o] <= 1'b0;
-            end
-            if (commit_2) begin
-                valid[commit_ptr_2_o] <= 1'b0;
-            end
         end
     end
 
-    always @(posedge clk_i) begin
-        if (dp1_i) begin
-            // 分配ROB entry
-            valid[dp1_addr_i] <= 1'b1;
+    always @(posedge clk_i ) begin
+        if(dp1_i) begin
             //标记该条指令还未执行完成
             finish[dp1_addr_i] <= 1'b0;
             // 记录指令信息
@@ -170,9 +157,7 @@ module ROB (
             // 记录分支指令的跳转地址
             bhr[dp1_addr_i] <= bhr_dp1_i;
         end
-        if (dp2_i) begin
-            // 分配ROB entry
-            valid[dp2_addr_i] <= 1'b1;
+        if(dp2_i) begin
             //标记该条指令还未执行完成
             finish[dp2_addr_i] <= 1'b0;
             // 记录指令信息
