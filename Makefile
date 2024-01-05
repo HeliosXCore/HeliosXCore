@@ -34,6 +34,7 @@ IFLGAS		:= -CFLAGS -I../testbench/verilator -CFLAGS -I../3rd-party/fmt/include
 LDFLAGS		:= -LDFLAGS ../3rd-party/fmt/build/libfmt.a
 MACRO_FLAGS := -CFLAGS -DFMT_HEADER_ONLY
 
+
 # Format
 VFormater := verible-verilog-format
 FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
