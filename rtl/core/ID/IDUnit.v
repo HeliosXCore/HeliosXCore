@@ -107,6 +107,7 @@ module IDUnit (
       .md_req_out_sel_o(md_req_out_sel_1_o)
   );
 
+/*
   always @(posedge clk_i) begin
     if (reset_i | kill_ID) begin
       imm_type_1_id <= 0;
@@ -148,5 +149,6 @@ module IDUnit (
       md_req_out_sel_1_id <= md_req_out_sel_1_o;
     end
   end
+*/
 
 endmodule
