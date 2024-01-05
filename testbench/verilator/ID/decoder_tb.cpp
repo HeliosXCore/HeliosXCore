@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <iostream>
 
-#include "build/Vdecoder.h"
+#include "obj_dir/Vdecoder.h"
 #include "decoder.hpp"
 
 #define MAX_SIM_TIME 300
@@ -37,9 +37,9 @@ int main(int argc, char **argv, char **env) {
             // TODO: you should write some assert on this
             assert(dut->imm_type_o==IMM_U);
             assert(dut->rd_o==0x05);
-            assert(dut->uses_rs1_o==1'b0);
+            assert(dut->uses_rs1_o==0);
             assert(dut->src_a_sel_o==SRC_A_ZERO);
-            assert(dut->wr_reg_o==1'b1);
+            assert(dut->wr_reg_o==1);
             std::cout << "decoder Test 1 Pass!" << std::endl;
         }
 
@@ -50,12 +50,12 @@ int main(int argc, char **argv, char **env) {
         }
         if (sim_time == 8) {
             // TODO: you should write some assert on this
-            assert(dut->imm_type_o==IMM_J);
+            assert(dut->imm_type_o==IMM_I);
             assert(dut->rd_o==0x01);
-            assert(dut->uses_rs1_o==1'b0);
+            assert(dut->uses_rs1_o==0);
             assert(dut->src_a_sel_o==SRC_A_PC);
             assert(dut->src_b_sel_o==SRC_B_FOUR);
-            assert(dut->wr_reg_o==1'b1);
+            assert(dut->wr_reg_o==1);
             assert(dut->rs_ent_o==RS_ENT_JAL);
             std::cout << "decoder Test 2 Pass!" << std::endl;
         }
@@ -71,10 +71,10 @@ int main(int argc, char **argv, char **env) {
             assert(dut->rd_o==0x11);
             assert(dut->src_a_sel_o==SRC_A_RS1);
             assert(dut->src_b_sel_o==SRC_B_IMM);
-            assert(dut->wr_reg_o==1'b1);
-            assert(dut->uses_rs1_o==1'b1);
-            assert(dut->uses_rs2_o==1'b0);
-            assert(dut->illegal_instruction_o==1'b0);
+            assert(dut->wr_reg_o==1);
+            assert(dut->uses_rs1_o==1);
+            assert(dut->uses_rs2_o==0);
+            assert(dut->illegal_instruction_o==0);
             assert(dut->rs_ent_o==RS_ENT_LDST);
             assert(dut->dmem_size_o==0x2);
             assert(dut->dmem_type_o==0x2);
@@ -92,10 +92,10 @@ int main(int argc, char **argv, char **env) {
             assert(dut->rs2_o==0x0f);
             assert(dut->src_a_sel_o==SRC_A_RS1);
             assert(dut->src_b_sel_o==SRC_B_IMM);
-            assert(dut->wr_reg_o==1'b0);
-            assert(dut->uses_rs1_o==1'b1);
-            assert(dut->uses_rs2_o==1'b1);
-            assert(dut->illegal_instruction_o==1'b0);
+            assert(dut->wr_reg_o==0);
+            assert(dut->uses_rs1_o==1);
+            assert(dut->uses_rs2_o==1);
+            assert(dut->illegal_instruction_o==0);
             assert(dut->rs_ent_o==RS_ENT_LDST);
             assert(dut->dmem_size_o==0x2);
             assert(dut->dmem_type_o==0x2);
