@@ -59,7 +59,8 @@
 `define ROB_SEL 6
 `define ROB_NUM 64
 `define RRF_SEL `ROB_SEL
-`define RRF_NUM `ROB_NUM
+`define RRF_NUM_WIDTH 7
+`define RRF_NUM	`RRF_NUM_WIDTH'd64 
 
 // ALU 操作数 A 选择信号
 `define SRC_A_SEL_WIDTH 2

@@ -2,3 +2,4 @@
 build/*
 *.vcd
 tags
+.DS_Store
