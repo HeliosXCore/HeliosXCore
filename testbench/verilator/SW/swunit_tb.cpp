@@ -432,10 +432,10 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
                      0x80000004, 0, 1, 2);
         } else if (sim_time == 710) {
             // dut->dp_req_mem_num_i = 2;
-            // dispatch(0, OperandType::VALUE, OperandType::VALUE, 5, 6,
-            //          0x80000008, 0, 1, 1);
-            // dispatch(1, OperandType::VALUE, OperandType::VALUE, 7, 8,
-            //          0x8000000C, 0, 1, 2);
+            dispatch(0, OperandType::VALUE, OperandType::VALUE, 9, 10,
+                     0x80000008, 0, 1, 1);
+            dispatch(1, OperandType::VALUE, OperandType::VALUE, 11, 12,
+                     0x8000000C, 0, 1, 2);
         } else if (sim_time == 720) {
             dut->dp_req_mem_num_i = 0;
         }
@@ -443,12 +443,129 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
 
     void double_mem_inst_issue_test() {
         if (sim_time == 705) {
+#ifdef DEBUG
+            fmt::println(
+                "[Load/Store::double_mem_inst_issue_test], time: {}, issue "
+                "entry: {}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_issue_entry);
+#endif
             ASSERT(dut->exe_mem_op_1_o == 5, "Wrong output mem op signal!");
             ASSERT(dut->exe_mem_op_2_o == 6, "Wrong output mem op signal!");
         } else if (sim_time == 715) {
+#ifdef DEBUG
+            fmt::println(
+                "[Load/Store::double_mem_inst_issue_test], time: {}, issue "
+                "entry: {}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_issue_entry);
+#endif
             ASSERT(dut->exe_mem_op_1_o == 7, "Wrong output mem op signal!");
             ASSERT(dut->exe_mem_op_2_o == 8, "Wrong output mem op signal!");
+        } else if (sim_time == 725) {
+#ifdef DEBUG
+            fmt::println(
+                "[Load/Store::double_mem_inst_issue_test], time: {}, issue "
+                "entry: {}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_issue_entry);
+#endif
+            ASSERT(dut->exe_mem_op_1_o == 9, "Wrong output mem op signal!");
+            ASSERT(dut->exe_mem_op_2_o == 10, "Wrong output mem op signal!");
+        } else if (sim_time == 735) {
+#ifdef DEBUG
+            fmt::println(
+                "[Load/Store::double_mem_inst_issue_test], time: {}, issue "
+                "entry: {}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_issue_entry);
+#endif
+            ASSERT(dut->exe_mem_op_1_o == 11, "Wrong output mem op signal!");
+            ASSERT(dut->exe_mem_op_2_o == 12, "Wrong output mem op signal!");
             fmt::println("Double Load/Store issue test passed!");
+        }
+    }
+
+    void single_mem_inst_block_issue_input() {
+        if (sim_time == 800) {
+            disable_next_rrf_cycle();
+            dut->dp_req_mem_num_i = 1;
+            dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 13, 1,
+                     0x80000000, 0, 1, 1);
+        } else if (sim_time == 810) {
+            dut->dp_req_mem_num_i = 1;
+            dispatch(0, OperandType::VALUE, OperandType::VALUE, 15, 16,
+                     0x80000004, 0, 1, 2);
+            dut->exe_result_1_dst_i = 1;
+            dut->exe_result_1_i = 14;
+        } else if (sim_time == 820) {
+            dut->dp_req_mem_num_i = 0;
+            dut->exe_result_1_dst_i = 0;
+            dut->exe_result_1_i = 0;
+        }
+    }
+
+    void single_mem_inst_block_issue_test() {
+        if (sim_time == 805) {
+            // ASSERT(dut->exe_mem_op_1_o == 0,
+            //        "Wrong output mem op signal, Expected: {}, Actual: {}!",
+            //        0, dut->exe_mem_op_1_o);
+            // ASSERT(dut->exe_mem_op_2_o == 0,
+            //        "Wrong output mem op signal, Expected: {}, Actual: {}!",
+            //        0, dut->exe_mem_op_2_o);
+            ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem ready signal!");
+        } else if (sim_time == 815) {
+            ASSERT(dut->exe_mem_op_1_o == 13,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 13,
+                   dut->exe_mem_op_1_o);
+            ASSERT(dut->exe_mem_op_2_o == 14,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 14,
+                   dut->exe_mem_op_2_o);
+        } else if (sim_time == 825) {
+            ASSERT(dut->exe_mem_op_1_o == 15,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 3,
+                   dut->exe_mem_op_1_o);
+            ASSERT(dut->exe_mem_op_2_o == 16,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 4,
+                   dut->exe_mem_op_2_o);
+            fmt::println("Single Load/Store Block issue test passed!");
+        }
+    }
+
+    void double_mem_inst_block_issue_input() {
+        if (sim_time == 900) {
+            disable_next_rrf_cycle();
+            dut->dp_req_mem_num_i = 2;
+            dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 17, 1,
+                     0x80000000, 0, 1, 1);
+            dispatch(1, OperandType::VALUE, OperandType::VALUE, 19, 20,
+                     0x80000004, 0, 1, 2);
+        } else if (sim_time == 910) {
+            dut->dp_req_mem_num_i = 0;
+        } else if (sim_time == 920) {
+            dut->exe_result_1_dst_i = 1;
+            dut->exe_result_1_i = 18;
+        }
+    }
+
+    void double_mem_inst_block_issue_test() {
+        if (sim_time == 905) {
+            ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem issue signal!");
+        } else if (sim_time == 915) {
+            ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem issue signal!");
+        } else if (sim_time == 925) {
+            ASSERT(dut->exe_mem_issue_o == 1, "Wrong output mem issue signal!");
+            ASSERT(dut->exe_mem_op_1_o == 17,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 17,
+                   dut->exe_mem_op_1_o);
+            ASSERT(dut->exe_mem_op_2_o == 18,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 18,
+                   dut->exe_mem_op_2_o);
+        } else if (sim_time == 935) {
+            ASSERT(dut->exe_mem_issue_o == 1, "Wrong output mem issue signal!");
+            ASSERT(dut->exe_mem_op_1_o == 19,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 17,
+                   dut->exe_mem_op_1_o);
+            ASSERT(dut->exe_mem_op_2_o == 20,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 18,
+                   dut->exe_mem_op_2_o);
+            fmt::println("Double Load/Store Block issue test passed!");
         }
     }
 
@@ -507,6 +624,8 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
         // Load/Store
         single_mem_inst_issue_input();
         double_mem_inst_issue_input();
+        single_mem_inst_block_issue_input();
+        double_mem_inst_block_issue_input();
     }
 
     void verify_dut() override {
@@ -519,6 +638,8 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
         // Load/Store
         single_mem_inst_issue_test();
         double_mem_inst_issue_test();
+        single_mem_inst_block_issue_test();
+        double_mem_inst_block_issue_test();
     }
 };
 

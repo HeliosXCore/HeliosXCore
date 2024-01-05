@@ -72,7 +72,6 @@ module SwUnit (
     output wire                     exe_mem_issue_o
 );
 
-    // wire [`ALU_ENT_NUM-1: 0] busy_alu_vector; 
     wire                                 alu_allocatable;
     wire                                 alu_allocate_en_1;
     wire                                 alu_allocate_en_2;
@@ -105,7 +104,7 @@ module SwUnit (
     wire                                 mem_we_1;
     wire                                 mem_we_2;
 
-    wire mem_issue_valid;
+    wire                                 mem_issue_valid;
 
     reg  [             `ALU_ENT_NUM-1:0] alu_busy_vector;
     wire [`ALU_ENT_NUM*(`RRF_SEL+2)-1:0] alu_history_vector;
@@ -157,7 +156,8 @@ module SwUnit (
     assign mem_issue_addr = mem_issue_entry;
 
     assign mem_clear_busy = mem_issue_valid;
-    
+    assign exe_mem_issue_o = mem_issue_valid;
+
 
 
     RSAlu RSAlu (
