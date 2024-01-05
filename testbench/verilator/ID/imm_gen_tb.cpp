@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <iostream>
 
-#include "build/Vimm_gen.h"
+#include "obj_dir/Vimm_gen.h"
 #include "decoder.hpp"
 
 #define MAX_SIM_TIME 300
