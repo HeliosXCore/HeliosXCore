@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <iostream>
 
-#include "obj_dir/Vdecoder.h"
+#include "obj_dir/VDecoder.h"
 #include "decoder.hpp"
 
 #define MAX_SIM_TIME 300
@@ -17,7 +17,7 @@ vluint64_t sim_time = 0;
 int main(int argc, char **argv, char **env) {
     srand(time(NULL));
     Verilated::commandArgs(argc, argv);
-    auto dut = std::make_shared<Vdecoder>();
+    auto dut = std::make_shared<VDecoder>();
 
     Verilated::traceEverOn(true);
     auto m_trace = std::make_shared<VerilatedVcdC>();
