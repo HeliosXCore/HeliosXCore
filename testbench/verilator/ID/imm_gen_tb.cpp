@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <iostream>
 
-#include "obj_dir/Vimm_gen.h"
+#include "obj_dir/VImmDecoder.h"
 #include "decoder.hpp"
 
 #define MAX_SIM_TIME 300
@@ -17,13 +17,13 @@ vluint64_t sim_time = 0;
 int main(int argc, char **argv, char **env) {
     srand(time(NULL));
     Verilated::commandArgs(argc, argv);
-    auto dut = std::make_shared<Vimm_gen>();
+    auto dut = std::make_shared<VImmDecoder>();
 
     Verilated::traceEverOn(true);
     auto m_trace = std::make_shared<VerilatedVcdC>();
     dut->trace(m_trace.get(), 99);
 
-    m_trace->open("imm_gen.vcd");
+    m_trace->open("immdecoder.vcd");
 
     while (sim_time < MAX_SIM_TIME) {
         dut->eval();
@@ -36,7 +36,7 @@ int main(int argc, char **argv, char **env) {
         }
         if (sim_time == 6) {
             assert(dut->imm == 0x80000000);
-            std::cout << "imm_gen Test 1 Pass!" << std::endl;
+            std::cout << "immdecoder Test 1 Pass!" << std::endl;
         }
 
         /* 80000024:	374000ef          	jal	ra,80000398 <halt> */
@@ -47,7 +47,7 @@ int main(int argc, char **argv, char **env) {
         }
         if (sim_time == 8) {
             assert(dut->imm == 0x374);
-            std::cout << "imm_gen Test 2 Pass!" << std::endl;
+            std::cout << "immdecoder Test 2 Pass!" << std::endl;
         }
         /* 80000034:	00082883          	lw	a7,0(a6) */
         // type:I
@@ -57,7 +57,7 @@ int main(int argc, char **argv, char **env) {
         }
         if (sim_time == 10) {
             assert(dut->imm == 0x0);
-            std::cout << "imm_gen Test 3 Pass!" << std::endl;
+            std::cout << "immdecoder Test 3 Pass!" << std::endl;
         }
         /* 80000074:	00f82023          	sw	a5,0(a6) */
         // type:S
@@ -67,7 +67,7 @@ int main(int argc, char **argv, char **env) {
         }
         if (sim_time == 12) {
             assert(dut->imm == 0x0);
-            std::cout << "imm_gen Test 4 Pass!" << std::endl;
+            std::cout << "immdecoder Test 4 Pass!" << std::endl;
         }
         sim_time++;
     }
