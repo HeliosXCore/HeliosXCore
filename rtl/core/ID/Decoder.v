@@ -3,7 +3,7 @@
 `include "consts/ALU.vh"
 
 `default_nettype none
-module decoder (
+module Decoder (
     input  wire [                 31:0] inst_i,
     output reg  [  `IMM_TYPE_WIDTH-1:0] imm_type_o,
     output wire [         `REG_SEL-1:0] rs1_o,
