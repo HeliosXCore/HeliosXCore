@@ -85,7 +85,7 @@ module IDUnit (
     reg 				isbranch2_id;
 */
 
-  decoder dec1 (
+  Decoder dec1 (
       .inst_i(inst1_i),
       .imm_type_o(imm_type_1_o),
       .rs1_o(rs1_1_o),
