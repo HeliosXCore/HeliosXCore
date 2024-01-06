@@ -1,6 +1,6 @@
 `include "consts/Consts.vh"
 `default_nettype none
-module imm_gen (
+module ImmDecoder (
     input wire [`INSN_LEN-1:0] inst,
     input wire [`IMM_TYPE_WIDTH-1:0] imm_type,
     output reg [`DATA_LEN-1:0] imm
@@ -16,6 +16,6 @@ module imm_gen (
     endcase  // case (imm_type)
   end
 
-endmodule  // imm_gen
+endmodule
 
 `default_nettype wire
