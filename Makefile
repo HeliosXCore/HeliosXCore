@@ -33,7 +33,7 @@ ifeq ($(DEBUG), Y)
 endif
 
 ifeq ($(WAVE), Y)
-	VFLAGS += -CFLAGS -DWAVE
+	CFLAGS += -CFLAGS -DWAVE
 endif
 
 .PHONY: sim wave clean format
