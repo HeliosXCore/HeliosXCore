@@ -12,6 +12,7 @@ include testbench/verilator/DP/dp.mk
 endif
 
 DEBUG ?= N
+WAVE  ?= N
 
 VIGNOREW 	:= 
 VINCULDES	:= -Irtl/
@@ -29,6 +30,10 @@ VSRC 	  := $(shell find rtl -name "*.v")
 
 ifeq ($(DEBUG), Y)
 	CFLAGS += -CFLAGS -DDEBUG
+endif
+
+ifeq ($(WAVE), Y)
+	VFLAGS += -CFLAGS -DWAVE
 endif
 
 .PHONY: sim wave clean format

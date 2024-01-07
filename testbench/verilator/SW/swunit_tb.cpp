@@ -408,7 +408,7 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
                    "Wrong dispatch write valid signal!");
             ASSERT(dut->dp_valid_1_2_i == 1,
                    "Wrong dispatch write valid signal!");
-            ASSERT(dut->rootp->SwUnit__DOT__mem_allocate_en_1 == 1,
+            ASSERT(dut->rootp->SwUnit__DOT__mem_allocatable == 1,
                    "Wrong allocate enable signal!");
             ASSERT(dut->rootp->SwUnit__DOT__free_mem_entry_1 == 1,
                    "Wrong allocate entry singal {}!",
@@ -511,6 +511,13 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
             //        0, dut->exe_mem_op_2_o);
             ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem ready signal!");
         } else if (sim_time == 815) {
+#ifdef DEBUG
+            // Print Issue Entry
+            fmt::println(
+                "[Load/Store::single_mem_inst_block_issue_test], time: {}, "
+                "issue entry: {}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_issue_entry);
+#endif
             ASSERT(dut->exe_mem_op_1_o == 13,
                    "Wrong output mem op signal, Expected: {}, Actual: {}!", 13,
                    dut->exe_mem_op_1_o);
@@ -518,11 +525,18 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
                    "Wrong output mem op signal, Expected: {}, Actual: {}!", 14,
                    dut->exe_mem_op_2_o);
         } else if (sim_time == 825) {
+#ifdef DEBUG
+            // Print Issue Entry
+            fmt::println(
+                "[Load/Store::single_mem_inst_block_issue_test], time: {}, "
+                "issue entry: {}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_issue_entry);
+#endif
             ASSERT(dut->exe_mem_op_1_o == 15,
-                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 3,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 15,
                    dut->exe_mem_op_1_o);
             ASSERT(dut->exe_mem_op_2_o == 16,
-                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 4,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 16,
                    dut->exe_mem_op_2_o);
             fmt::println("Single Load/Store Block issue test passed!");
         }
@@ -541,6 +555,9 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
         } else if (sim_time == 920) {
             dut->exe_result_1_dst_i = 1;
             dut->exe_result_1_i = 18;
+        } else if (sim_time == 940) {
+            dut->exe_result_1_dst_i = 0;
+            dut->exe_result_1_i = 0;
         }
     }
 
@@ -550,6 +567,13 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
         } else if (sim_time == 915) {
             ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem issue signal!");
         } else if (sim_time == 925) {
+#ifdef DEBUG
+            // Print Issue Entry
+            fmt::println(
+                "[Load/Store::double_mem_inst_block_issue_test], time: {}, "
+                "issue entry: {}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_issue_entry);
+#endif
             ASSERT(dut->exe_mem_issue_o == 1, "Wrong output mem issue signal!");
             ASSERT(dut->exe_mem_op_1_o == 17,
                    "Wrong output mem op signal, Expected: {}, Actual: {}!", 17,
@@ -558,6 +582,13 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
                    "Wrong output mem op signal, Expected: {}, Actual: {}!", 18,
                    dut->exe_mem_op_2_o);
         } else if (sim_time == 935) {
+#ifdef DEBUG
+            // Print Issue Entry
+            fmt::println(
+                "[Load/Store::double_mem_inst_block_issue_test], time: {}, "
+                "issue entry: {}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_issue_entry);
+#endif
             ASSERT(dut->exe_mem_issue_o == 1, "Wrong output mem issue signal!");
             ASSERT(dut->exe_mem_op_1_o == 19,
                    "Wrong output mem op signal, Expected: {}, Actual: {}!", 17,
@@ -566,6 +597,191 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
                    "Wrong output mem op signal, Expected: {}, Actual: {}!", 18,
                    dut->exe_mem_op_2_o);
             fmt::println("Double Load/Store Block issue test passed!");
+        }
+    }
+
+    void full_mem_inst_issue_input() {
+        if (sim_time == 1000) {
+            disable_next_rrf_cycle();
+#ifdef DEBUG
+            // Print begin_0, end_0, begin_1, end_1
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_input], time: {}, begin_0: "
+                "{:#x}, end_0: {:#x}, begin_1: {:#x}, end_1: {:#x}, not_full: "
+                "{}",
+                sim_time,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__begin_0,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__end_0,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__begin_1,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__end_1,
+                dut->rootp
+                    ->SwUnit__DOT__inorder_alloc_issue_unit__DOT__not_full);
+            // Print busy vector
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_input], time: {}, busy "
+                "vector: {:#x}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_busy_vector);
+#endif
+            dut->dp_req_mem_num_i = 2;
+            dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 21, 1,
+                     0x80000000, 0, 1, 1);
+            dispatch(1, OperandType::VALUE, OperandType::RRFTAG, 23, 2,
+                     0x80000004, 0, 1, 2);
+        } else if (sim_time == 1010) {
+#ifdef DEBUG
+            // Print begin_0, end_0, begin_1, end_1
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_input], time: {}, begin_0: "
+                "{:#x}, end_0: {:#x}, begin_1: {:#x}, end_1: {:#x}, not_full: "
+                "{}",
+                sim_time,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__begin_0,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__end_0,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__begin_1,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__end_1,
+                dut->rootp
+                    ->SwUnit__DOT__inorder_alloc_issue_unit__DOT__not_full);
+            // Print busy vector
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_input], time: {}, busy "
+                "vector: {:#x}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_busy_vector);
+#endif
+            dut->dp_req_mem_num_i = 2;
+            dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 25, 3,
+                     0x80000008, 0, 1, 1);
+            dispatch(1, OperandType::VALUE, OperandType::RRFTAG, 27, 4,
+                     0x8000000C, 0, 1, 2);
+        } else if (sim_time == 1020) {
+            dut->dp_req_mem_num_i = 2;
+            dispatch(0, OperandType::VALUE, OperandType::RRFTAG, 29, 5,
+                     0x80000010, 0, 1, 1);
+            dispatch(1, OperandType::VALUE, OperandType::RRFTAG, 31, 6,
+                     0x80000014, 0, 1, 2);
+        } else if (sim_time == 1030) {
+            dut->dp_req_mem_num_i = 0;
+            dut->exe_result_1_dst_i = 1;
+            dut->exe_result_1_i = 22;
+            dut->exe_result_2_dst_i = 2;
+            dut->exe_result_2_i = 24;
+            dut->exe_result_3_dst_i = 3;
+            dut->exe_result_3_i = 26;
+            dut->exe_result_4_dst_i = 4;
+            dut->exe_result_4_i = 28;
+        }
+    }
+
+    void full_mem_inst_issue_test() {
+        if (sim_time == 1005) {
+#ifdef DEBUG
+            // Print Allocate Entry
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_test], time: {}, allocate "
+                "entry_1: {:#x}, allocate entry_2: {:#x}",
+                sim_time, dut->rootp->SwUnit__DOT__free_mem_entry_1,
+                dut->rootp->SwUnit__DOT__free_mem_entry_2);
+            // Print Issue Entry
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_test], time: {}, issue "
+                "entry: {}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_issue_entry);
+            // Print begin_0, end_0, begin_1, end_1
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_test], time: {}, begin_0: "
+                "{:#x}, end_0: {:#x}, begin_1: {:#x}, end_1: {:#x}, not_full: "
+                "{}",
+                sim_time,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__begin_0,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__end_0,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__begin_1,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__end_1,
+                dut->rootp
+                    ->SwUnit__DOT__inorder_alloc_issue_unit__DOT__not_full);
+            // Print busy vector
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_test], time: {}, busy "
+                "vector: {:#x}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_busy_vector);
+#endif
+            ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem issue signal!");
+            ASSERT(dut->rootp->SwUnit__DOT__mem_allocatable == 1,
+                   "Wrong allocate enable signal!");
+            // assert busy vector
+            ASSERT(dut->rootp->SwUnit__DOT__mem_busy_vector == 0x3,
+                   "Wrong busy vector with {:#x}!",
+                   dut->rootp->SwUnit__DOT__mem_busy_vector);
+        } else if (sim_time == 1015) {
+#ifdef DEBUG
+            // Print Allocate Entry
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_test], time: {}, allocate "
+                "entry_1: {:#x}, allocate entry_2: {:#x}",
+                sim_time, dut->rootp->SwUnit__DOT__free_mem_entry_1,
+                dut->rootp->SwUnit__DOT__free_mem_entry_2);
+            // Print Issue Entry
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_test], time: {}, issue "
+                "entry: {}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_issue_entry);
+            // Print begin_0, end_0, begin_1, end_1
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_test], time: {}, begin_0: "
+                "{:#x}, end_0: {:#x}, begin_1: {:#x}, end_1: {:#x}, not_full: "
+                "{}",
+                sim_time,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__begin_0,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__end_0,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__begin_1,
+                dut->rootp->SwUnit__DOT__inorder_alloc_issue_unit__DOT__end_1,
+                dut->rootp
+                    ->SwUnit__DOT__inorder_alloc_issue_unit__DOT__not_full);
+            // Print busy vector
+            fmt::println(
+                "[Load/Store::full_mem_inst_issue_test], time: {}, busy "
+                "vector: {:#x}",
+                sim_time, dut->rootp->SwUnit__DOT__mem_busy_vector);
+#endif
+            ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem issue signal!");
+            ASSERT(dut->rootp->SwUnit__DOT__mem_allocatable == 1,
+                   "Wrong allocate enable signal!");
+        } else if (sim_time == 1025) {
+            ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem issue signal!");
+            // allocatenable
+            ASSERT(dut->rootp->SwUnit__DOT__mem_allocatable == 0,
+                   "Wrong allocate enable signal!");
+        } else if (sim_time == 1035) {
+            ASSERT(dut->exe_mem_issue_o == 1, "Wrong output mem issue signal!");
+            ASSERT(dut->exe_mem_op_1_o == 21,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 21,
+                   dut->exe_mem_op_1_o);
+            ASSERT(dut->exe_mem_op_2_o == 22,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 22,
+                   dut->exe_mem_op_2_o);
+        } else if (sim_time == 1045) {
+            ASSERT(dut->exe_mem_issue_o == 1, "Wrong output mem issue signal!");
+            ASSERT(dut->exe_mem_op_1_o == 23,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 23,
+                   dut->exe_mem_op_1_o);
+            ASSERT(dut->exe_mem_op_2_o == 24,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 24,
+                   dut->exe_mem_op_2_o);
+        } else if (sim_time == 1055) {
+            ASSERT(dut->exe_mem_issue_o == 1, "Wrong output mem issue signal!");
+            ASSERT(dut->exe_mem_op_1_o == 25,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 25,
+                   dut->exe_mem_op_1_o);
+            ASSERT(dut->exe_mem_op_2_o == 26,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 26,
+                   dut->exe_mem_op_2_o);
+        } else if (sim_time == 1065) {
+            ASSERT(dut->exe_mem_issue_o == 1, "Wrong output mem issue signal!");
+            ASSERT(dut->exe_mem_op_1_o == 27,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 27,
+                   dut->exe_mem_op_1_o);
+            ASSERT(dut->exe_mem_op_2_o == 28,
+                   "Wrong output mem op signal, Expected: {}, Actual: {}!", 28,
+                   dut->exe_mem_op_2_o);
+            fmt::println("Full Load/Store issue test passed!");
         }
     }
 
@@ -626,6 +842,7 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
         double_mem_inst_issue_input();
         single_mem_inst_block_issue_input();
         double_mem_inst_block_issue_input();
+        full_mem_inst_issue_input();
     }
 
     void verify_dut() override {
@@ -640,6 +857,7 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
         double_mem_inst_issue_test();
         single_mem_inst_block_issue_test();
         double_mem_inst_block_issue_test();
+        full_mem_inst_issue_test();
     }
 };
 
@@ -647,7 +865,7 @@ int main(int argc, char **argv, char **env) {
     srand(time(NULL));
     Verilated::commandArgs(argc, argv);
 
-    std::shared_ptr<VSwUnitTb> tb = std::make_shared<VSwUnitTb>(5, 50, 1000);
+    std::shared_ptr<VSwUnitTb> tb = std::make_shared<VSwUnitTb>(5, 50, 1500);
 
     tb->run("swunit.vcd");
     fmt::print("Dut Correctness passed!\n");

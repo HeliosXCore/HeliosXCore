@@ -80,8 +80,8 @@ module SwUnit (
     wire [             `ALU_ENT_SEL-1:0] free_alu_entry_2;
 
     wire                                 mem_allocatable;
-    wire                                 mem_allocate_en_1;
-    wire                                 mem_allocate_en_2;
+    // wire                                 mem_allocate_en_1;
+    // wire                                 mem_allocate_en_2;
     wire [            `LDST_ENT_SEL-1:0] free_mem_entry_1;
     wire [            `LDST_ENT_SEL-1:0] free_mem_entry_2;
 
@@ -89,8 +89,8 @@ module SwUnit (
     wire [             `ALU_ENT_SEL-1:0] alu_rs_allocate_entry_1;
     wire [             `ALU_ENT_SEL-1:0] alu_rs_allocate_entry_2;
 
-    wire [            `LDST_ENT_SEL-1:0] mem_rs_allocate_entry_1;
-    wire [            `LDST_ENT_SEL-1:0] mem_rs_allocate_entry_2;
+    // wire [            `LDST_ENT_SEL-1:0] mem_rs_allocate_entry_1;
+    // wire [            `LDST_ENT_SEL-1:0] mem_rs_allocate_entry_2;
 
     wire [             `ALU_ENT_SEL-1:0] alu_issue_addr;
     wire                                 alu_clear_busy;
@@ -136,15 +136,16 @@ module SwUnit (
     assign alu_rs_allocate_entry_2 = alu_allocate_en_2 ? free_alu_entry_2 : 0;
 
     assign free_mem_entry_2 = free_mem_entry_1 + 1;
-    assign mem_rs_allocate_entry_1 = mem_allocate_en_1 ? free_mem_entry_1 : 0;
-    assign mem_rs_allocate_entry_2 = mem_allocate_en_2 ? free_mem_entry_2 : 0;
+
+    // assign mem_rs_allocate_entry_1 = mem_allocatable ? free_mem_entry_1 : 0;
+    // assign mem_rs_allocate_entry_2 = mem_allocatable ? free_mem_entry_2 : 0;
 
     // 写使能信号，TODO：更多条件
     assign alu_we_1 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_1 & (dp_req_alu_num_i >= 2'd1) & alu_allocatable;
     assign alu_we_2 = ~stall_dp_i & ~kill_dp_i & alu_allocate_en_2 & (dp_req_alu_num_i == 2'd2) & alu_allocatable;
 
-    assign mem_we_1 = ~stall_dp_i & ~kill_dp_i & mem_allocate_en_1 & (dp_req_mem_num_i >= 2'd1) & mem_allocatable;
-    assign mem_we_2 = ~stall_dp_i & ~kill_dp_i & mem_allocate_en_2 & (dp_req_mem_num_i == 2'd2) & mem_allocatable;
+    assign mem_we_1 = ~stall_dp_i & ~kill_dp_i & mem_allocatable & (dp_req_mem_num_i >= 2'd1);
+    assign mem_we_2 = ~stall_dp_i & ~kill_dp_i & mem_allocatable & (dp_req_mem_num_i == 2'd2);
 
     assign alu_issue_addr = alu_issue_entry;
     // alu_clear_busy 信号，用于清空保留站的 busy 位
@@ -266,8 +267,8 @@ module SwUnit (
         .issue_addr_i(mem_issue_addr),
         .we_1_i(mem_we_1),
         .we_2_i(mem_we_2),
-        .write_addr_1_i(mem_rs_allocate_entry_1),
-        .write_addr_2_i(mem_rs_allocate_entry_2),
+        .write_addr_1_i(free_mem_entry_1),
+        .write_addr_2_i(free_mem_entry_2),
         .write_pc_1_i(dp_pc_1_i),
         .write_pc_2_i(dp_pc_2_i),
         .write_src_op_1_1_i(dp_op_1_1_i),
