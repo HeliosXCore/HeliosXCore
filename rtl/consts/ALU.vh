@@ -1,4 +1,5 @@
 `define ALU_OP_WIDTH 4
+`define SHAMT_WIDTH 5
 
 `define ALU_OP_ADD  `ALU_OP_WIDTH'd0
 `define ALU_OP_SLL  `ALU_OP_WIDTH'd1
