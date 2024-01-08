@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <iostream>
 
-#include "build/VArf.h"
+#include "VArf.h"
 
 #define MAX_SIM_TIME 300
 #define VERIF_START_TIME 7

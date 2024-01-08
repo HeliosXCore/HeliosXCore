@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <iostream>
 
-#include "build/VRrfEntryAllocate.h"
+#include "VRrfEntryAllocate.h"
 
 #define MAX_SIM_TIME 300
 #define VERIF_START_TIME 7

@@ -70,7 +70,9 @@ class VerilatorTb {
                 input();
             }
             eval();
+#ifndef WAVE
             verify_dut();
+#endif
             m_trace->dump(sim_time);
             sim_time++;
         }
