@@ -25,8 +25,8 @@ module BranchUnit (
 
     // 当前部件是否有指令在运行
     reg busy;
-    assign rob_we_o = busy; // 向 ROB 发送完成信号
-    assign rrf_we_o = busy & if_write_rrf_i; // 向 RRF 发送写信号
+    assign rob_we_o = busy;  // 向 ROB 发送完成信号
+    assign rrf_we_o = busy & if_write_rrf_i;  // 向 RRF 发送写信号
 
     wire [`DATA_LEN-1:0] compare_result;
 
@@ -51,11 +51,11 @@ module BranchUnit (
         end
     end
 
-    ALU comparator(
-      .op(alu_op_i),
-      .in1(src1_i),
-      .in2(src2_i),
-      .out(compare_result)
+    ALU comparator (
+        .op (alu_op_i),
+        .in1(src1_i),
+        .in2(src2_i),
+        .out(compare_result)
     );
 
 endmodule

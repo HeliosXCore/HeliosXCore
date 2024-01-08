@@ -29,10 +29,10 @@ module InorderAllocIssueUnit #(
     // 第一个 1 的结束序号
     wire [ENT_SEL-1:0] end_1;
 
-    wire [ENT_SEL-1: 0] next_begin_1;
-    wire [ENT_SEL-1: 0] next_end_1;
+    wire [ENT_SEL-1:0] next_begin_1;
+    wire [ENT_SEL-1:0] next_end_1;
 
-    wire [ENT_SEL-1: 0] next_begin_0;
+    wire [ENT_SEL-1:0] next_begin_0;
 
     wire not_full;
     wire not_full_next;

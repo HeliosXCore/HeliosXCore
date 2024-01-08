@@ -17,7 +17,7 @@ module ExUnit (
     (* IO_BUFFER_TYPE = "none" *) input wire [`SRC_A_SEL_WIDTH-1:0] alu_src_a_select_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] alu_src2_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`SRC_B_SEL_WIDTH-1:0] alu_src_b_select_i,
-    
+
     // ALU 输出
     (* IO_BUFFER_TYPE = "none" *) output wire [`DATA_LEN-1:0] alu_result_o,
     (* IO_BUFFER_TYPE = "none" *) output wire [`RRF_SEL-1:0] alu_rrf_tag_o,
@@ -53,7 +53,7 @@ module ExUnit (
     (* IO_BUFFER_TYPE = "none" *) input wire mem_access_complete_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] mem_access_load_data_from_data_memory_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`RRF_SEL-1:0] mem_access_rrf_tag_i,
-    
+
     // MemAccess 输出
     (* IO_BUFFER_TYPE = "none" *) output wire mem_access_rrf_we_o,
     (* IO_BUFFER_TYPE = "none" *) output wire mem_access_rob_we_o,
@@ -78,7 +78,7 @@ module ExUnit (
     wire alu_rob_we;
     wire alu_rrf_we;
 
-    AluUnit alu_unit(
+    AluUnit alu_unit (
         .clk_i(clk_i),
         .reset_i(reset_i),
         .if_write_rrf_i(alu_if_write_rrf_i),
@@ -94,28 +94,28 @@ module ExUnit (
         .result_o(alu_result),
         .rob_we_o(alu_rob_we),
         .rrf_we_o(alu_rrf_we)
-   );
+    );
 
     // 上升沿保存 ALU 执行结果到锁存器中
     always @(posedge clk_i) begin
         if (reset_i) begin
-            alu_result_latch <= 0;
+            alu_result_latch  <= 0;
             alu_rrf_tag_latch <= 0;
-            alu_rob_we_latch <= 0;
-            alu_rrf_we_latch <= 0;
+            alu_rob_we_latch  <= 0;
+            alu_rrf_we_latch  <= 0;
         end else begin
             // ALU 执行结果 -> 锁存器
-            alu_result_latch <= alu_result;
+            alu_result_latch  <= alu_result;
             alu_rrf_tag_latch <= alu_rrf_tag_i;
-            alu_rob_we_latch <= alu_rob_we;
-            alu_rrf_we_latch <= alu_rrf_we;   
+            alu_rob_we_latch  <= alu_rob_we;
+            alu_rrf_we_latch  <= alu_rrf_we;
         end
     end
 
     // ALU 锁存器 -> ALU 输出信号
-    assign alu_result_o = alu_result_latch;
-    assign alu_rob_we_o = alu_rob_we_latch;
-    assign alu_rrf_we_o = alu_rrf_we_latch;
+    assign alu_result_o  = alu_result_latch;
+    assign alu_rob_we_o  = alu_rob_we_latch;
+    assign alu_rrf_we_o  = alu_rrf_we_latch;
     assign alu_rrf_tag_o = alu_rrf_tag_latch;
 
 
@@ -176,7 +176,7 @@ module ExUnit (
             branch_rrf_we_latch <= branch_rrf_we;
             branch_jump_result_latch <= branch_jump_result;
             branch_jump_addr_latch <= branch_jump_addr;
-            branch_if_jump_latch <=  branch_if_jump;
+            branch_if_jump_latch <= branch_if_jump;
         end
     end
 
@@ -207,7 +207,7 @@ module ExUnit (
     wire [`ADDR_LEN-1:0] mem_access_store_buffer_write_address;
     wire [`DATA_LEN-1:0] mem_access_store_buffer_write_data;
     wire [`DATA_LEN-1:0] mem_access_load_data;
-    
+
     MemAccessUnit mem_access_unit (
         .clk_i(clk_i),
         .reset_i(reset_i),
