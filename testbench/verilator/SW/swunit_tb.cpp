@@ -507,12 +507,6 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
 
     void single_mem_inst_block_issue_test() {
         if (sim_time == 805) {
-            // ASSERT(dut->exe_mem_op_1_o == 0,
-            //        "Wrong output mem op signal, Expected: {}, Actual: {}!",
-            //        0, dut->exe_mem_op_1_o);
-            // ASSERT(dut->exe_mem_op_2_o == 0,
-            //        "Wrong output mem op signal, Expected: {}, Actual: {}!",
-            //        0, dut->exe_mem_op_2_o);
             ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem ready signal!");
         } else if (sim_time == 815) {
 #ifdef DEBUG
@@ -710,10 +704,6 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
             ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem issue signal!");
             ASSERT(dut->rootp->SwUnit__DOT__mem_allocatable == 1,
                    "Wrong allocate enable signal!");
-            // assert busy vector
-            // ASSERT(dut->rootp->SwUnit__DOT__mem_busy_vector == 0x3,
-            //        "Wrong busy vector with {:#x}!",
-            //        dut->rootp->SwUnit__DOT__mem_busy_vector);
         } else if (sim_time == 1015) {
 #ifdef DEBUG
             // Print Allocate Entry
@@ -746,8 +736,6 @@ class VSwUnitTb : public VerilatorTb<VSwUnit> {
                 sim_time, dut->rootp->SwUnit__DOT__mem_busy_vector);
 #endif
             ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem issue signal!");
-            // ASSERT(dut->rootp->SwUnit__DOT__mem_allocatable == 1,
-            //        "Wrong allocate enable signal!");
         } else if (sim_time == 1025) {
             ASSERT(dut->exe_mem_issue_o == 0, "Wrong output mem issue signal!");
             // allocatenable
