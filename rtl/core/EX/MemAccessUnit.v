@@ -13,7 +13,7 @@ module MemAccessUnit (
     (* IO_BUFFER_TYPE = "none" *) output wire rrf_we_o,
     (* IO_BUFFER_TYPE = "none" *) output wire rob_we_o,
     // -------------------------------------------------- Store ---------------------------------------------------------------
-    (* IO_BUFFER_TYPE = "none" *) output wire [`DATA_LEN-1:0] store_buffer_write_address_o,  // store buffer 要写入 mem 的地址
+    (* IO_BUFFER_TYPE = "none" *) output wire [`ADDR_LEN-1:0] store_buffer_write_address_o,  // store buffer 要写入 mem 的地址
     (* IO_BUFFER_TYPE = "none" *) output wire [`DATA_LEN-1:0] store_buffer_write_data_o,  // store buffer 要写入 mem 的数据
     // -------------------------------------------------- Load ----------------------------------------------------------------
     (* IO_BUFFER_TYPE = "none" *) output wire [`ADDR_LEN-1:0] load_address_o,  // 要读取的地址，传给 mem

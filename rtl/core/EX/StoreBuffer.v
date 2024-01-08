@@ -6,8 +6,7 @@ module StoreBuffer (
     (* IO_BUFFER_TYPE = "none" *) input wire clk_i,
     (* IO_BUFFER_TYPE = "none" *) input wire reset_i,
     (* IO_BUFFER_TYPE = "none" *) input wire issue_i,  // 是否有访存指令发射
-    (* IO_BUFFER_TYPE = "none" *)
-    input wire we_i,  // 用于区分是 store 指令还是 load 指令
+    (* IO_BUFFER_TYPE = "none" *) input wire we_i,  // 用于区分是 store 指令还是 load 指令
     (* IO_BUFFER_TYPE = "none" *) input wire [`ADDR_LEN-1:0] address_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] write_data_i,
     (* IO_BUFFER_TYPE = "none" *) input wire complete_i,  // 由 ROB 传来，说明已提交，可以写入内存

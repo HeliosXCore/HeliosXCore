@@ -21,7 +21,8 @@ module ALU (
                 (op == `ALU_OP_SEQ) ? {31'b0, in1 == in2} :
                 (op == `ALU_OP_SNE) ? {31'b0, in1 != in2} :
                 (op == `ALU_OP_SUB) ? (in1 - in2) :
-                (op == `ALU_OP_SRA) ? ($signed(in1) >>> shamt) : (op == `ALU_OP_SLT) ? {31'b0, $signed(in1) < $signed(in2)} : 
+                (op == `ALU_OP_SRA) ? ($signed(in1) >>> shamt) : 
+                (op == `ALU_OP_SLT) ? {31'b0, $signed(in1) < $signed(in2)} : 
                 (op == `ALU_OP_SGE) ? {31'b0, $signed(in1) >= $signed(in2)} : 
                 (op == `ALU_OP_SLTU) ? {31'b0, in1 < in2} : 
                 (op == `ALU_OP_SGEU) ? {31'b0, in1 >= in2} : 0;
