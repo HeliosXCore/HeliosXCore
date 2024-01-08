@@ -12,6 +12,7 @@ include testbench/verilator/DP/dp.mk
 endif
 
 DEBUG ?= N
+WAVE  ?= N
 
 VIGNOREW 	:= 
 VINCULDES	:= -Irtl/
@@ -25,10 +26,14 @@ MACRO_FLAGS := -CFLAGS -DFMT_HEADER_ONLY
 # Format
 VFormater := verible-verilog-format
 FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
-VSRC 	  := $(shell find rtl -name "*.v")
+VSRC 	  := $(shell find rtl -name "*.v" -not -name "Alu.v")
 
 ifeq ($(DEBUG), Y)
 	CFLAGS += -CFLAGS -DDEBUG
+endif
+
+ifeq ($(WAVE), Y)
+	CFLAGS += -CFLAGS -DWAVE
 endif
 
 .PHONY: sim wave clean format
@@ -56,7 +61,8 @@ clean:
 lint:
 	@verilator --lint-only -Irtl rtl/core/SW/SourceManager.v rtl/core/SW/RSAluEntry.v \
 			rtl/core/SW/RSAlu.v rtl/core/SW/OldestFinder.v rtl/core/SW/AllocateUnit.v \
-			rtl/core/SW/SwUnit.v
+			rtl/core/SW/RSAccessMemEntry.v rtl/core/SW/RSAccessMem.v rtl/core/SW/InorderAllocIssueUnit.v \
+			rtl/core/SW/Searcher.v rtl/core/SW/SwUnit.v 
 	@verilator --lint-only -Irtl rtl/core/EX/*.v
 	@verilator --lint-only -Irtl rtl/core/COM/SingleInstROB.v
 	@verilator --lint-only -Irtl rtl/core/COM/ROB.v

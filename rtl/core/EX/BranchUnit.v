@@ -25,13 +25,12 @@ module BranchUnit (
 
     // 当前部件是否有指令在运行
     reg busy;
-    assign rob_we_o = busy; // 向 ROB 发送完成信号
-    assign rrf_we_o = busy & if_write_rrf_i; // 向 RRF 发送写信号
+    assign rob_we_o = busy;  // 向 ROB 发送完成信号
+    assign rrf_we_o = busy & if_write_rrf_i;  // 向 RRF 发送写信号
 
     wire [`DATA_LEN-1:0] compare_result;
 
     // 判断是否满足跳转条件，其中 JAL 和 JALR 是无条件跳转，恒为 1
-    // 只用最低一位就可以判断条件吗?
     assign if_jump_o = ((opcode_i == `RV32_JAL) || (opcode_i == `RV32_JALR)) ? 1 : compare_result[0];
 
     // 计算跳转目标地址，其中 JALR 由 src1 给出基址
@@ -51,11 +50,11 @@ module BranchUnit (
         end
     end
 
-    ALU comparator(
-      .op(alu_op_i),
-      .in1(src1_i),
-      .in2(src2_i),
-      .out(compare_result)
+    ALU comparator (
+        .op (alu_op_i),
+        .in1(src1_i),
+        .in2(src2_i),
+        .out(compare_result)
     );
 
 endmodule

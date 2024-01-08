@@ -33,7 +33,7 @@ module ROB (
     input wire [`ADDR_LEN-1:0] finish_ex_branch_jmpaddr_i,
 
     // input wire [`RRF_SEL-1:0] dispatch_ptr_i,
-    
+
     // input wire [`RRF_SEL-1:0] rrf_freenum_i,
     // input wire prmiss_i,
 
@@ -68,14 +68,14 @@ module ROB (
 
 
     //等价于 commit_ptr_2_o = (commit_ptr_1_o + 1) % `ROB_NUM;
-    assign commit_ptr_2_o = (commit_ptr_1_o + {5'b0,1'b1}) & 6'b1; 
+    assign commit_ptr_2_o = (commit_ptr_1_o + {5'b0, 1'b1}) & 6'b1;
 
     // wire commit_1 = finish[commit_ptr_1_o] & ~prmiss_i;
     // wire commit_2 = finish[commit_ptr_2_o] & ~prmiss_i;
 
 
-    wire commit_1 =  finish[commit_ptr_1_o];
-    wire commit_2 =  finish[commit_ptr_2_o];
+    wire commit_1 = finish[commit_ptr_1_o];
+    wire commit_2 = finish[commit_ptr_2_o];
 
     assign comnum_o = commit_1 + commit_2;
 
@@ -100,8 +100,8 @@ module ROB (
 
     assign combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) | (commit_2 & isbranch[commit_ptr_2_o]);
     assign pc_combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) ? inst_pc[commit_ptr_1_o] : inst_pc[commit_ptr_2_o];
-    assign bhr_combranch_o =(commit_1 & isbranch[commit_ptr_1_o])? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
-    assign jmpaddr_combranch_o =(commit_1 & isbranch[commit_ptr_1_o]) ?jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
+    assign bhr_combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) ? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
+    assign jmpaddr_combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) ? jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
 
 
 
@@ -111,13 +111,12 @@ module ROB (
             commit_ptr_1_o <= 0;
             finish <= 0;
             brcond <= 0;
-        end
-        else begin
+        end else begin
 
             //等价于commit_ptr_1_o <= (commit_ptr_1_o + commit_1 + commit_2) % (`ROB_NUM);
             //每次提交一次或两次指令,commit_ptr_1_o向后移动
-            commit_ptr_1_o <= (commit_ptr_1_o + {5'b0,commit_1} + {5'b0,commit_2}) & 6'b1;
-            if(finish_ex_alu1_i) begin
+            commit_ptr_1_o <= (commit_ptr_1_o + {5'b0, commit_1} + {5'b0, commit_2}) & 6'b1;
+            if (finish_ex_alu1_i) begin
                 finish[finish_ex_alu1_addr_i] <= 1'b1;
             end
             if (finish_ex_alu2_i) begin
@@ -140,8 +139,8 @@ module ROB (
         end
     end
 
-    always @(posedge clk_i ) begin
-        if(dp1_i) begin
+    always @(posedge clk_i) begin
+        if (dp1_i) begin
             //标记该条指令还未执行完成
             finish[dp1_addr_i] <= 1'b0;
             // 记录指令信息
@@ -157,7 +156,7 @@ module ROB (
             // 记录分支指令的跳转地址
             bhr[dp1_addr_i] <= bhr_dp1_i;
         end
-        if(dp2_i) begin
+        if (dp2_i) begin
             //标记该条指令还未执行完成
             finish[dp2_addr_i] <= 1'b0;
             // 记录指令信息
