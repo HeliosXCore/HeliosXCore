@@ -9,12 +9,22 @@ TESTBENCH ?=
 WAVE 	  ?=
 
 
-MODULE ?= InorderAllocIssueUnit
-ifeq ($(MODULE), InorderAllocIssueUnit)
-	TEST := InorderAllocIssueUnit
-	TESTBENCH := inorder_alloc_issue_unit_tb
-	MODULES := $(RTLD)/Searcher.v
-	WAVE := inorder_alloc_issue_unit.vcd
+MODULE ?= AllocateUnit
+ifeq ($(MODULE), AllocateUnit)
+	TEST := AllocateUnit
+	TESTBENCH := allocate_unit_tb
+	MODULES := 
+	WAVE := allocate_unit.vcd
+else ifeq ($(MODULE), RSAluEntry)
+	TEST := RSAluEntry
+	TESTBENCH := rs_alu_entry_tb
+	MODULES := $(RTLD)/SourceManager.v 
+	WAVE := rs_alu_entry.vcd
+else ifeq ($(MODULE), RSAlu)
+	TEST := RSAlu
+	TESTBENCH := rs_alu_tb
+	MODULES := $(RTLD)/SourceManager.v $(RTLD)/RSAluEntry.v
+	WAVE := rs_alu.vcd
 endif
 
 VIGNOREW 	:= 
