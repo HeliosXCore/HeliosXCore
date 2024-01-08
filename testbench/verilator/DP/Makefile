@@ -10,23 +10,20 @@ TEST 	  ?=
 TESTBENCH ?=
 WAVE 	  ?=
 
-STAGE ?=ARF
-ifeq ($(STAGE), SRCOPRMANAGER)
+MODULE ?=ARF
+ifeq ($(MODULE), SRCOPRMANAGER)
 	TEST := SrcOprManager
 	TESTBENCH := DP/src_opr_manager_tb
 	WAVE := src_opr_manager.vcd
-endif
-ifeq ($(STAGE), ARF)
+else ifeq ($(MODULE), ARF)
 	TEST := Arf
 	TESTBENCH := DP/arf_tb
 	WAVE := arf.vcd
-endif
-ifeq ($(STAGE), RRF)
+else ifeq ($(MODULE), RRF)
 	TEST := Rrf
 	TESTBENCH := DP/rrf_tb
 	WAVE := rrf.vcd
-endif
-ifeq ($(STAGE), RRF_ALLO)
+else ifeq ($(MODULE), RRF_ALLO)
 	TEST := RrfEntryAllocate
 	TESTBENCH := DP/rrfentry_allocate_tb
 	WAVE := rrfentry_allocate.vcd
@@ -37,9 +34,7 @@ VIGNOREW 	:=
 VINCULDES	:= -I../../../rtl/ -I../../../rtl/core/DP/
 VFLAGS 		:= --trace --x-assign unique --x-initial unique $(VIGNOREW) $(VINCULDES)
 PFLAGS		:= -GREQ_LEN=4 -GGRANT_LEN=2
-# IFLGAS		:=  -I../testbench/verilator  -I../3rd-party/fmt/include
 IFLGAS		:=  -I../testbench/verilator 
-# LDFLAGS		:= -LDFLAGS ../3rd-party/fmt/build/libfmt.a
 MACRO_FLAGS :=  -DFMT_HEADER_ONLY
 
 # Format

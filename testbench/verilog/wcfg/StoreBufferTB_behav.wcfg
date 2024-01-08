@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="StoreBufferTB_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="StoreBufferTB" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="138.059 ns"></ZoomEndTime>
+      <Cursor1Time time="38.300 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="199"></NameColumnWidth>
+      <ValueColumnWidth column_width="81"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="9" />
+   <wvobject fp_name="/StoreBufferTB/clk_i" type="logic">
+      <obj_property name="ElementShortName">clk_i</obj_property>
+      <obj_property name="ObjectShortName">clk_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/StoreBufferTB/reset_i" type="logic">
+      <obj_property name="ElementShortName">reset_i</obj_property>
+      <obj_property name="ObjectShortName">reset_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/StoreBufferTB/storebuffer/issue_i" type="logic">
+      <obj_property name="ElementShortName">issue_i</obj_property>
+      <obj_property name="ObjectShortName">issue_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/StoreBufferTB/we_i" type="logic">
+      <obj_property name="ElementShortName">we_i</obj_property>
+      <obj_property name="ObjectShortName">we_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/StoreBufferTB/address_i" type="array">
+      <obj_property name="ElementShortName">address_i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">address_i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="group28" type="group">
+      <obj_property name="label">Store</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/StoreBufferTB/write_data_i" type="array">
+         <obj_property name="ElementShortName">write_data_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">write_data_i[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group21" type="group">
+      <obj_property name="label">store buffer</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/StoreBufferTB/storebuffer/empty_ptr" type="array">
+         <obj_property name="ElementShortName">empty_ptr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">empty_ptr[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/StoreBufferTB/storebuffer/address" type="array">
+         <obj_property name="ElementShortName">address[31:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">address[31:0][31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/StoreBufferTB/storebuffer/data" type="array">
+         <obj_property name="ElementShortName">data[31:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">data[31:0][31:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group27" type="group">
+      <obj_property name="label">Load</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/StoreBufferTB/hit" type="logic">
+         <obj_property name="ElementShortName">hit</obj_property>
+         <obj_property name="ObjectShortName">hit</obj_property>
+      </wvobject>
+      <wvobject fp_name="/StoreBufferTB/storebuffer/load_index" type="array">
+         <obj_property name="ElementShortName">load_index[4:0]</obj_property>
+         <obj_property name="ObjectShortName">load_index[4:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/StoreBufferTB/read_data_o" type="array">
+         <obj_property name="ElementShortName">read_data_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">read_data_o[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group29" type="group">
+      <obj_property name="label">write to mem</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/StoreBufferTB/complete_i" type="logic">
+         <obj_property name="ElementShortName">complete_i</obj_property>
+         <obj_property name="ObjectShortName">complete_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/StoreBufferTB/storebuffer/complete_ptr" type="array">
+         <obj_property name="ElementShortName">complete_ptr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">complete_ptr[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/StoreBufferTB/storebuffer/retire_ptr" type="array">
+         <obj_property name="ElementShortName">retire_ptr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">retire_ptr[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/StoreBufferTB/write_data_o" type="array">
+         <obj_property name="ElementShortName">write_data_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">write_data_o[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/StoreBufferTB/write_address_o" type="array">
+         <obj_property name="ElementShortName">write_address_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">write_address_o[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

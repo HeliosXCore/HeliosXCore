@@ -30,7 +30,6 @@ module SingleInstROB (
     //当valid和finish同时为1时,允许提交
     assign commit_1 = valid[commit_ptr_1_o] & finish[commit_ptr_1_o];
 
-
     //提交到arf的目的逻辑寄存器地址
     assign dst_arf_1_o = dst[commit_ptr_1_o];
 
