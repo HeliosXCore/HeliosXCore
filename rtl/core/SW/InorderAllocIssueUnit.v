@@ -73,7 +73,7 @@ module InorderAllocIssueUnit #(
         .end_en_o(not_full_next)
     );
 
-    assign issue_ptr_o = ~not_full ? alloc_ptr_o: ((begin_1 == 0) && ({30'b0, end_1} == ENT_NUM - 1))? (end_0 + 1): begin_1;
+    assign issue_ptr_o = ~not_full ? alloc_ptr_o : ((begin_1 == 0) && ({30'b0, end_1} == ENT_NUM - 1)) ? (end_0 + 1) : begin_1;
     assign issue_valid_o = ready_vector_i[issue_ptr_o];
     assign allocatable_o = (reset_i == 1)? 0: (req_num_i == 2'h0) ? 1'b1: 
             (req_num_i == 2'h1) ? ((~busy_vector_i[alloc_ptr_o] ? 1'b1: 1'b0)): 

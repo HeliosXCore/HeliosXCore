@@ -25,8 +25,8 @@ MACRO_FLAGS := -CFLAGS -DFMT_HEADER_ONLY
 
 # Format
 VFormater := verible-verilog-format
-FormatFlags := --inplace --column_limit=100 --indentation_spaces=4
-VSRC 	  := $(shell find rtl -name "*.v")
+FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
+VSRC 	  := $(shell find rtl -name "*.v" -not -name "Alu.v")
 
 ifeq ($(DEBUG), Y)
 	CFLAGS += -CFLAGS -DDEBUG

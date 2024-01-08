@@ -492,9 +492,7 @@ module RSAlu (
     end
 
     // 根据发射地址选择输出的数据
-    assign ready_o = {
-        ready[7], ready[6], ready[5], ready[4], ready[3], ready[2], ready[1], ready[0]
-    };
+    assign ready_o = {ready[7], ready[6], ready[5], ready[4], ready[3], ready[2], ready[1], ready[0]};
 
     assign exe_op_1_o = (issue_addr_i == 0)? exe_op_1[0]:
                         (issue_addr_i == 1)? exe_op_1[1]:

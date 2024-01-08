@@ -228,16 +228,7 @@ module SwUnit (
 
     // 从8个Entry中找到最老的进行发射
     OldestFinder AluIssuer (
-        .entry_vector_i({
-            `ALU_ENT_SEL'h7,
-            `ALU_ENT_SEL'h6,
-            `ALU_ENT_SEL'h5,
-            `ALU_ENT_SEL'h4,
-            `ALU_ENT_SEL'h3,
-            `ALU_ENT_SEL'h2,
-            `ALU_ENT_SEL'h1,
-            `ALU_ENT_SEL'h0
-        }),
+        .entry_vector_i({`ALU_ENT_SEL'h7, `ALU_ENT_SEL'h6, `ALU_ENT_SEL'h5, `ALU_ENT_SEL'h4, `ALU_ENT_SEL'h3, `ALU_ENT_SEL'h2, `ALU_ENT_SEL'h1, `ALU_ENT_SEL'h0}),
         .value_vector_i(alu_history_vector),
         .oldest_entry_o(alu_issue_entry),
         .oldest_value_o(alu_entry_value)

@@ -10,7 +10,7 @@ module StoreBuffer (
     input wire we_i,  // 用于区分是 store 指令还是 load 指令
     (* IO_BUFFER_TYPE = "none" *) input wire [`ADDR_LEN-1:0] address_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] write_data_i,
-    (* IO_BUFFER_TYPE = "none" *) input wire complete_i, // 由 ROB 传来，说明已提交，可以写入内存
+    (* IO_BUFFER_TYPE = "none" *) input wire complete_i,  // 由 ROB 传来，说明已提交，可以写入内存
 
     // 用于 load 指令从 store buffer 中取数的情况
     (* IO_BUFFER_TYPE = "none" *) output wire hit,  // load 指令是否命中

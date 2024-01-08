@@ -100,8 +100,8 @@ module ROB (
 
     assign combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) | (commit_2 & isbranch[commit_ptr_2_o]);
     assign pc_combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) ? inst_pc[commit_ptr_1_o] : inst_pc[commit_ptr_2_o];
-    assign bhr_combranch_o =(commit_1 & isbranch[commit_ptr_1_o])? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
-    assign jmpaddr_combranch_o =(commit_1 & isbranch[commit_ptr_1_o]) ?jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
+    assign bhr_combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) ? bhr[commit_ptr_1_o] : bhr[commit_ptr_2_o];
+    assign jmpaddr_combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) ? jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
 
 
 

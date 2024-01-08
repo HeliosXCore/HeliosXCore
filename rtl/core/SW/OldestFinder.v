@@ -83,18 +83,8 @@ module OldestFinder #(
         .ENTLEN(ENTLEN),
         .VALLEN(VALLEN)
     ) oldest_finder_1 (
-        .entry_vector_i({
-            entry_vector_i[3*ENTLEN+:ENTLEN],
-            entry_vector_i[2*ENTLEN+:ENTLEN],
-            entry_vector_i[ENTLEN+:ENTLEN],
-            entry_vector_i[0+:ENTLEN]
-        }),
-        .value_vector_i({
-            value_vector_i[3*VALLEN+:VALLEN],
-            value_vector_i[2*VALLEN+:VALLEN],
-            value_vector_i[VALLEN+:VALLEN],
-            value_vector_i[0+:VALLEN]
-        }),
+        .entry_vector_i({entry_vector_i[3*ENTLEN+:ENTLEN], entry_vector_i[2*ENTLEN+:ENTLEN], entry_vector_i[ENTLEN+:ENTLEN], entry_vector_i[0+:ENTLEN]}),
+        .value_vector_i({value_vector_i[3*VALLEN+:VALLEN], value_vector_i[2*VALLEN+:VALLEN], value_vector_i[VALLEN+:VALLEN], value_vector_i[0+:VALLEN]}),
         .oldest_entry_o(old_entry_1),
         .oldest_value_o(old_value_1)
     );
@@ -103,18 +93,8 @@ module OldestFinder #(
         .ENTLEN(ENTLEN),
         .VALLEN(VALLEN)
     ) oldest_finder_2 (
-        .entry_vector_i({
-            entry_vector_i[7*ENTLEN+:ENTLEN],
-            entry_vector_i[6*ENTLEN+:ENTLEN],
-            entry_vector_i[5*ENTLEN+:ENTLEN],
-            entry_vector_i[4*ENTLEN+:ENTLEN]
-        }),
-        .value_vector_i({
-            value_vector_i[7*VALLEN+:VALLEN],
-            value_vector_i[6*VALLEN+:VALLEN],
-            value_vector_i[5*VALLEN+:VALLEN],
-            value_vector_i[4*VALLEN+:VALLEN]
-        }),
+        .entry_vector_i({entry_vector_i[7*ENTLEN+:ENTLEN], entry_vector_i[6*ENTLEN+:ENTLEN], entry_vector_i[5*ENTLEN+:ENTLEN], entry_vector_i[4*ENTLEN+:ENTLEN]}),
+        .value_vector_i({value_vector_i[7*VALLEN+:VALLEN], value_vector_i[6*VALLEN+:VALLEN], value_vector_i[5*VALLEN+:VALLEN], value_vector_i[4*VALLEN+:VALLEN]}),
         .oldest_entry_o(old_entry_2),
         .oldest_value_o(old_value_2)
     );
