@@ -27,7 +27,7 @@ jobs:
 
     - name: build fmt
       run: |
-        cd 3rd-party/fmt && mkdir build && cd build && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE .. && make
+        cd 3rd-party/fmt && mkdir build && cd build && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE .. && make -j
     
     - name: verify
       run: |
