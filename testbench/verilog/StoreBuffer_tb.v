@@ -13,6 +13,7 @@ module StoreBufferTB();
 
     // Outputs
     wire hit;
+    wire mem_we_o;
     wire [`DATA_LEN-1:0] read_data_o;
     wire [`ADDR_LEN-1:0] write_address_o;
     wire [`DATA_LEN-1:0] write_data_o;
@@ -28,13 +29,14 @@ module StoreBufferTB();
 
     .hit(hit),
     .read_data_o(read_data_o),
+    .mem_we_o(mem_we_o),
     .write_address_o(write_address_o),
     .write_data_o(write_data_o)
 );
     
     initial begin
         #10 reset_i=0;
-        #10 issue_i=1;we_i=1; address_i=`ADDR_LEN'h80000000; write_data_i=`DATA_LEN'd1;
+        #5 issue_i=1;we_i=1; address_i=`ADDR_LEN'h80000000; write_data_i=`DATA_LEN'd1;
         #10 address_i=`ADDR_LEN'h80000001; write_data_i=`DATA_LEN'd2;
         #10 address_i=`ADDR_LEN'h80000002; write_data_i=`DATA_LEN'd3;
         #10 address_i=`ADDR_LEN'h80000003; write_data_i=`DATA_LEN'd4;
@@ -47,7 +49,10 @@ module StoreBufferTB();
         #10 address_i=`ADDR_LEN'h80000004; write_data_i=`DATA_LEN'd1;
         #10 address_i=`ADDR_LEN'h80000005; write_data_i=`DATA_LEN'd1;
         
-        #10 complete_i=1;
+        #10 issue_i=0;complete_i=1;
+        #10 issue_i=1;we_i=1;
+        #10 issue_i=1;we_i=0;
+        #10 issue_i=0;we_i=0;
 
         #30 $display("test finish."); $finish();
     end

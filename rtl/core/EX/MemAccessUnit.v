@@ -13,6 +13,7 @@ module MemAccessUnit (
     (* IO_BUFFER_TYPE = "none" *) output wire rrf_we_o,
     (* IO_BUFFER_TYPE = "none" *) output wire rob_we_o,
     // -------------------------------------------------- Store ---------------------------------------------------------------
+    (* IO_BUFFER_TYPE = "none" *) output wire store_buffer_mem_we_o,  // store buffer 要写入 mem 的使能信号
     (* IO_BUFFER_TYPE = "none" *) output wire [`ADDR_LEN-1:0] store_buffer_write_address_o,  // store buffer 要写入 mem 的地址
     (* IO_BUFFER_TYPE = "none" *) output wire [`DATA_LEN-1:0] store_buffer_write_data_o,  // store buffer 要写入 mem 的数据
     // -------------------------------------------------- Load ----------------------------------------------------------------
@@ -53,6 +54,7 @@ module MemAccessUnit (
 
         .hit(hit_store_buffer),
         .read_data_o(load_data_from_store_buffer),
+        .mem_we_o(store_buffer_mem_we_o),
         .write_address_o(store_buffer_write_address_o),
         .write_data_o(store_buffer_write_data_o)
     );
