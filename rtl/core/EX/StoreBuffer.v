@@ -43,9 +43,9 @@ module StoreBuffer (
 
     always @(posedge clk_i) begin
         if (reset_i) begin
-            used_ptr <= 0;
-            complete_ptr <= 0;
-            retire_ptr <= 0;
+            used_ptr = 0;
+            complete_ptr = 0;
+            retire_ptr = 0;
             hit_reg <= 0;
             load_index <= 0;
             mem_we <= 0;
