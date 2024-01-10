@@ -59,7 +59,7 @@ class VExUnitTb : public VerilatorTb<VExUnit> {
     VExUnitTb(uint64_t clock, uint64_t start_time, uint64_t end_time)
         : VerilatorTb<VExUnit>(clock, start_time, end_time) {}
 
-    void test1() {
+    void test1_input() {
         if (sim_time == 50) {
             dut->reset_i = 0;
 
@@ -84,7 +84,10 @@ class VExUnitTb : public VerilatorTb<VExUnit> {
             dut->mem_access_src1_i = 0x80000000;
             dut->mem_access_src2_i = 4;
         }
-        if (sim_time == 60) {
+    }
+
+    void test1_verify() {
+        if (sim_time == 55) {
             ASSERT(dut->alu_result_o == 1 + 2, "ALU error");
             ASSERT(dut->branch_jump_result_o == 0x88000000 + 0x8000,
                    "Branch error");
@@ -92,7 +95,7 @@ class VExUnitTb : public VerilatorTb<VExUnit> {
         }
     }
 
-    void test2() {
+    void test2_input() {
         if (sim_time == 60) {
             dut->alu_issue_i = 1;
             dut->alu_if_write_rrf_i = 1;
@@ -115,8 +118,10 @@ class VExUnitTb : public VerilatorTb<VExUnit> {
 
             dut->mem_access_complete_i = 1;
         }
+    }
 
-        if (sim_time == 70) {
+    void test2_verify() {
+        if (sim_time == 65) {
             ASSERT(dut->alu_result_o == 0x80000000 + 4, "ALU error");
             ASSERT(dut->branch_jump_result_o == 0x80000000 + 0x8000,
                    "Branch error");
@@ -124,9 +129,14 @@ class VExUnitTb : public VerilatorTb<VExUnit> {
         }
     }
 
+    void input() {
+        test1_input();
+        test2_input();
+    }
+
     void verify_dut() {
-        test1();
-        test2();
+        test1_verify();
+        test2_verify();
     }
 };
 

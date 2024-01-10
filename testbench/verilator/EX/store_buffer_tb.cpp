@@ -44,22 +44,19 @@ class VStoreBufferTb : public VerilatorTb<VStoreBuffer> {
             dut->we_i = 1;
             dut->address_i = 0x88000000;
             dut->write_data_i = 4;
-        }
-        if (sim_time == 60) {
+        } else if (sim_time == 60) {
             // 1 complete
             dut->complete_i = 1;
             // 2. store 8 to 0x88000004
             dut->address_i = 0x88000004;
             dut->write_data_i = 8;
-        }
-        if (sim_time == 70) {
+        } else if (sim_time == 70) {
             // 2 complete
             dut->complete_i = 1;
             // 3. store 12 to 0x88000008
             dut->address_i = 0x88000008;
             dut->write_data_i = 12;
-        }
-        if (sim_time == 80) {
+        } else if (sim_time == 80) {
             // 3 complete but a load instruction has issued
             dut->complete_i = 1;
             dut->we_i = 0;
@@ -73,15 +70,13 @@ class VStoreBufferTb : public VerilatorTb<VStoreBuffer> {
             ASSERT(dut->write_address_o == 0x88000000,
                    "StoreBuffer store_test error");
             ASSERT(dut->write_data_o == 4, "StoreBuffer store_test error");
-        }
-        if (sim_time == 75) {
+        } else if (sim_time == 75) {
             // check 2
             ASSERT(dut->mem_we_o == 1, "StoreBuffer store_test error");
             ASSERT(dut->write_address_o == 0x88000004,
                    "StoreBuffer store_test error");
             ASSERT(dut->write_data_o == 8, "StoreBuffer store_test error");
-        }
-        if (sim_time == 85) {
+        } else if (sim_time == 85) {
             // check 3
             ASSERT(dut->mem_we_o == 0, "StoreBuffer store_test error");
             ASSERT(dut->write_address_o == 0x88000004,
@@ -96,8 +91,7 @@ class VStoreBufferTb : public VerilatorTb<VStoreBuffer> {
             // 1. load 0x88000004 should not hit.
             dut->we_i = 0;
             dut->address_i = 0x88000004;
-        }
-        if (sim_time == 100) {
+        } else if (sim_time == 100) {
             // 2. load 0x88000008
             dut->we_i = 0;
             dut->address_i = 0x88000008;
@@ -108,8 +102,7 @@ class VStoreBufferTb : public VerilatorTb<VStoreBuffer> {
         if (sim_time == 95) {
             // check 1
             ASSERT(dut->hit == 0, "StoreBuffer load_test error");
-        }
-        if (sim_time == 105) {
+        } else if (sim_time == 105) {
             // check 2
             ASSERT(dut->hit == 1, "StoreBuffer load_test error");
             ASSERT(dut->read_data_o == 12, "StoreBuffer load_test error");
