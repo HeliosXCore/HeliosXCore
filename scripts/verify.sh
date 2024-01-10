@@ -8,7 +8,7 @@ make -j -C testbench/verilator/SW sim MODULE=AllocateUnit
 make -j -C testbench/verilator/SW sim MODULE=RSAluEntry
 make -j -C testbench/verilator/SW sim MODULE=RSAlu
 
-make -C testbench/verilator/EX sim MODULE=StoreBuffer
+make -j -C testbench/verilator/EX sim MODULE=StoreBuffer
 
 # Stage 2: Run the pipeline stage tests.
 make -j sim STAGE=SW
