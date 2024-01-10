@@ -17,7 +17,6 @@ module ExUnit (
     (* IO_BUFFER_TYPE = "none" *) input wire [`SRC_A_SEL_WIDTH-1:0] alu_src_a_select_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] alu_src2_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`SRC_B_SEL_WIDTH-1:0] alu_src_b_select_i,
-
     // ALU 输出
     (* IO_BUFFER_TYPE = "none" *) output wire [`DATA_LEN-1:0] alu_result_o,
     (* IO_BUFFER_TYPE = "none" *) output wire [`RRF_SEL-1:0] alu_rrf_tag_o,
@@ -53,11 +52,11 @@ module ExUnit (
     (* IO_BUFFER_TYPE = "none" *) input wire mem_access_complete_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] mem_access_load_data_from_data_memory_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`RRF_SEL-1:0] mem_access_rrf_tag_i,
-
     // MemAccess 输出
     (* IO_BUFFER_TYPE = "none" *) output wire mem_access_rrf_we_o,
     (* IO_BUFFER_TYPE = "none" *) output wire mem_access_rob_we_o,
     (* IO_BUFFER_TYPE = "none" *) output wire [`ADDR_LEN-1:0] mem_access_load_address_o,
+    (* IO_BUFFER_TYPE = "none" *) output wire mem_access_store_buffer_mem_we_o,
     (* IO_BUFFER_TYPE = "none" *) output wire [`ADDR_LEN-1:0] mem_access_store_buffer_write_address_o,
     (* IO_BUFFER_TYPE = "none" *) output wire [`DATA_LEN-1:0] mem_access_store_buffer_write_data_o,
     (* IO_BUFFER_TYPE = "none" *) output wire [`DATA_LEN-1:0] mem_access_load_data_o,
@@ -195,6 +194,7 @@ module ExUnit (
     reg mem_access_rrf_we_latch;
     reg mem_access_rob_we_latch;
     reg [`ADDR_LEN-1:0] mem_access_load_address_latch;
+    reg mem_access_store_buffer_write_mem_we_latch;
     reg [`ADDR_LEN-1:0] mem_access_store_buffer_write_address_latch;
     reg [`DATA_LEN-1:0] mem_access_store_buffer_write_data_latch;
     reg [`DATA_LEN-1:0] mem_access_load_data_latch;
@@ -204,10 +204,10 @@ module ExUnit (
     wire mem_access_rrf_we;
     wire mem_access_rob_we;
     wire [`ADDR_LEN-1:0] mem_access_load_address;
+    wire mem_access_store_buffer_write_mem_we;
     wire [`ADDR_LEN-1:0] mem_access_store_buffer_write_address;
     wire [`DATA_LEN-1:0] mem_access_store_buffer_write_data;
     wire [`DATA_LEN-1:0] mem_access_load_data;
-
     MemAccessUnit mem_access_unit (
         .clk_i(clk_i),
         .reset_i(reset_i),
@@ -222,6 +222,7 @@ module ExUnit (
         .rob_we_o(mem_access_rob_we),
         .load_address_o(mem_access_load_address),
         // ----------- Store -----------------
+        .store_buffer_mem_we_o(mem_access_store_buffer_write_mem_we),
         .store_buffer_write_address_o(mem_access_store_buffer_write_address),
         .store_buffer_write_data_o(mem_access_store_buffer_write_data),
         // ----------- Load ------------------
@@ -233,6 +234,7 @@ module ExUnit (
     always @(posedge clk_i) begin
         if (reset_i) begin
             mem_access_load_address_latch <= 0;
+            mem_access_store_buffer_write_mem_we_latch <= 0;
             mem_access_store_buffer_write_address_latch <= 0;
             mem_access_store_buffer_write_data_latch <= 0;
             mem_access_rrf_tag_latch <= 0;
@@ -242,6 +244,7 @@ module ExUnit (
         end else begin
             // Branch 执行结果 -> Branch 锁存器
             mem_access_load_address_latch <= mem_access_load_address;
+            mem_access_store_buffer_write_mem_we_latch <= mem_access_store_buffer_write_mem_we;
             mem_access_store_buffer_write_address_latch <= mem_access_store_buffer_write_address;
             mem_access_store_buffer_write_data_latch <= mem_access_store_buffer_write_data;
             mem_access_rrf_tag_latch <= mem_access_rrf_tag_i;
@@ -253,6 +256,7 @@ module ExUnit (
 
     // MemAccess 锁存器 -> MemAccess 输出信号
     assign mem_access_load_address_o = mem_access_load_address_latch;
+    assign mem_access_store_buffer_mem_we_o = mem_access_store_buffer_write_mem_we_latch;
     assign mem_access_store_buffer_write_address_o = mem_access_store_buffer_write_address_latch;
     assign mem_access_store_buffer_write_data_o = mem_access_store_buffer_write_data_latch;
     assign mem_access_load_data_o = mem_access_load_data_latch;

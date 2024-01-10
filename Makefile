@@ -9,6 +9,8 @@ else ifeq ($(STAGE), ROB)
 include testbench/verilator/ROB/rob.mk
 else ifeq ($(STAGE), DP)
 include testbench/verilator/DP/dp.mk
+else ifeq ($(STAGE), EX)
+include testbench/verilator/EX/ex.mk
 endif
 
 DEBUG ?= N
