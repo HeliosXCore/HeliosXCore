@@ -4,207 +4,201 @@
 
 `default_nettype none
 module Decoder (
-    input  wire [                 31:0] inst_i,
-    output reg  [  `IMM_TYPE_WIDTH-1:0] imm_type_o,
-    output wire [         `REG_SEL-1:0] rs1_o,
-    output wire [         `REG_SEL-1:0] rs2_o,
-    output wire [         `REG_SEL-1:0] rd_o,
-    output reg  [ `SRC_A_SEL_WIDTH-1:0] src_a_sel_o,
-    output reg  [ `SRC_B_SEL_WIDTH-1:0] src_b_sel_o,
-    output reg                          wr_reg_o,
-    output reg                          uses_rs1_o,
-    output reg                          uses_rs2_o,
-    output reg                          illegal_instruction_o,
-    output reg  [    `ALU_OP_WIDTH-1:0] alu_op_o,
-    output reg  [      `RS_ENT_SEL-1:0] rs_ent_o,
+    input  wire [                 31:0] inst_i,//指令
+    output reg  [  `IMM_TYPE_WIDTH-1:0] imm_type_o,//当前指令的立即数类型
+    output wire [         `REG_SEL-1:0] rs1_o,//当前指令中的第一个源操作数寄存器地址
+    output wire [         `REG_SEL-1:0] rs2_o,//当前指令中的第二个源操作数寄存器地址
+    output wire [         `REG_SEL-1:0] rd_o,//当前指令的目标寄存器地址
+
+    output wire  [ `SRC_A_SEL_WIDTH-1:0] src_a_sel_o,//用于选择ALU操作数
+    output wire  [ `SRC_B_SEL_WIDTH-1:0] src_b_sel_o,//用于选择ALU操作数
+    output wire                          wr_reg_o,//是否将数据写入目标寄存器
+    output wire                          uses_rs1_o,//rs1的有效信号
+    output wire                          uses_rs2_o,//rs2的有效信号
+    output wire                          illegal_instruction_o,//表示该指令未在该处理器中定义
+    output wire  [    `ALU_OP_WIDTH-1:0] alu_op_o,//ALU操作类型
+    output wire  [      `RS_ENT_SEL-1:0] rs_ent_o,//保留站ID
     //output reg 			  dmem_use,
     //output reg 			  dmem_write,
-    output wire [                  2:0] dmem_size_o,
-    output wire [  `MEM_TYPE_WIDTH-1:0] dmem_type_o,
-    output reg  [     `MD_OP_WIDTH-1:0] md_req_op_o,
-    output reg                          md_req_in_1_signed_o,
-    output reg                          md_req_in_2_signed_o,
-    output reg  [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_o
+
+    output wire [                  2:0] dmem_size_o,//决定Load/Store指令数据的大小
+    output wire [  `MEM_TYPE_WIDTH-1:0] dmem_type_o,//决定Load/Store指令数据的大小
+
+    output wire  [     `MD_OP_WIDTH-1:0] md_req_op_o,//运算类型（乘、除、模）
+    output wire                          md_req_in_1_signed_o,//乘法器的第一个源操作数是否有符号
+    output wire                          md_req_in_2_signed_o,//乘法器的第二个源操作数是否有符号
+    output wire  [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_o//决定乘法器输出的哪一部分为最后的乘法结果:高32位还是低32位
 );
 
-  wire [`ALU_OP_WIDTH-1:0] srl_or_sra;
-  wire [`ALU_OP_WIDTH-1:0] add_or_sub;
-  wire [  `RS_ENT_SEL-1:0] rs_ent_md;
+    wire [`ALU_OP_WIDTH-1:0] srl_or_sra;
+    wire [`ALU_OP_WIDTH-1:0] add_or_sub;
+    wire [  `RS_ENT_SEL-1:0] rs_ent_md;
 
-  wire [              6:0] opcode = inst_i[6:0];
-  wire [              6:0] funct7 = inst_i[31:25];
-  wire [             11:0] funct12 = inst_i[31:20];
-  wire [              2:0] funct3 = inst_i[14:12];
-  // reg [`MD_OP_WIDTH-1:0]   md_req_op;
-  reg  [`ALU_OP_WIDTH-1:0] alu_op_arith;
+    wire [              6:0] opcode = inst_i[6:0];
+    wire [              6:0] funct7 = inst_i[31:25];
+    wire [             11:0] funct12 = inst_i[31:20];
+    wire [              2:0] funct3 = inst_i[14:12];
+    // reg [`MD_OP_WIDTH-1:0]   md_req_op;
+    reg  [`ALU_OP_WIDTH-1:0] alu_op_arith;
 
-  assign rd_o = inst_i[11:7];
-  assign rs1_o = inst_i[19:15];
-  assign rs2_o = inst_i[24:20];
+    assign rd_o = inst_i[11:7];
+    assign rs1_o = inst_i[19:15];
+    assign rs2_o = inst_i[24:20];
 
-  assign dmem_size_o = {1'b0, funct3[1:0]};
-  assign dmem_type_o = funct3;
+    assign dmem_size_o = {1'b0, funct3[1:0]};
+    assign dmem_type_o = funct3;
 
-  always @(*) begin
-    imm_type_o = `IMM_I;
-    src_a_sel_o = `SRC_A_RS1;
-    src_b_sel_o = `SRC_B_IMM;
-    wr_reg_o = 1'b0;
-    uses_rs1_o = 1'b1;
-    uses_rs2_o = 1'b0;
-    illegal_instruction_o = 1'b0;
-    //      	dmem_use = 1'b0;
-    //    	dmem_write = 1'b0;
-    rs_ent_o = `RS_ENT_ALU;
-    alu_op_o = `ALU_OP_ADD;
+    assign imm_type_o = (opcode == `RV32_LOAD) ? `IMM_I :
+                        (opcode == `RV32_STORE) ? `IMM_S :
+                        (opcode == `RV32_JAL) ? `IMM_J :
+                        (opcode == `RV32_JALR) ? `IMM_J :
+                        (opcode == `RV32_LUI) ? `IMM_U :
+                        (opcode == `RV32_AUIPC) ? `IMM_U :
+                        (opcode == `RV32_OP) ? `IMM_I :
+                        (opcode == `RV32_OP_IMM) ? `IMM_I :
+                        `IMM_I;
 
-    case (opcode)
-      `RV32_LOAD: begin
-        //          		dmem_use = 1'b1;
-        wr_reg_o = 1'b1;
-        rs_ent_o = `RS_ENT_LDST;
-        //           		wb_src_sel_DX = `WB_SRC_MEM;
-      end
-      `RV32_STORE: begin
-        uses_rs2_o = 1'b1;
-        imm_type_o = `IMM_S;
-        //           		dmem_use = 1'b1;
-        //          		dmem_write = 1'b1;
-        rs_ent_o   = `RS_ENT_LDST;
-      end
-      `RV32_BRANCH: begin
-        uses_rs2_o  = 1'b1;
-        //branch_taken_unkilled = cmp_true;
-        src_b_sel_o = `SRC_B_RS2;
-        case (funct3)
-          `RV32_FUNCT3_BEQ: alu_op_o = `ALU_OP_SEQ;
-          `RV32_FUNCT3_BNE: alu_op_o = `ALU_OP_SNE;
-          `RV32_FUNCT3_BLT: alu_op_o = `ALU_OP_SLT;
-          `RV32_FUNCT3_BLTU: alu_op_o = `ALU_OP_SLTU;
-          `RV32_FUNCT3_BGE: alu_op_o = `ALU_OP_SGE;
-          `RV32_FUNCT3_BGEU: alu_op_o = `ALU_OP_SGEU;
-          default: illegal_instruction_o = 1'b1;
-        endcase  // case (funct3)
-        rs_ent_o = `RS_ENT_BRANCH;
-      end
-      `RV32_JAL: begin
-        //           	jal_unkilled = 1'b1;
-        uses_rs1_o = 1'b0;
-        src_a_sel_o = `SRC_A_PC;
-        src_b_sel_o = `SRC_B_FOUR;
-        wr_reg_o = 1'b1;
-        rs_ent_o = `RS_ENT_JAL;
-      end
-      `RV32_JALR: begin
-        illegal_instruction_o = (funct3 != 0);
-        //           	jalr_unkilled = 1'b1;
-        src_a_sel_o = `SRC_A_PC;
-        src_b_sel_o = `SRC_B_FOUR;
-        wr_reg_o = 1'b1;
-        rs_ent_o = `RS_ENT_JALR;
-      end
+    assign src_a_sel_o = (opcode == `RV32_LOAD) ? `SRC_A_RS1 :
+                         (opcode == `RV32_STORE) ? `SRC_A_RS1 :
+                         (opcode == `RV32_JAL) ? `SRC_A_PC :
+                         (opcode == `RV32_JALR) ? `SRC_A_PC :
+                         (opcode == `RV32_LUI) ? `SRC_A_ZERO :
+                         (opcode == `RV32_AUIPC) ? `SRC_A_PC :
+                         (opcode == `RV32_OP) ? `SRC_A_RS1 :
+                         (opcode == `RV32_OP_IMM) ? `SRC_A_RS1 :
+                         `SRC_A_RS1;
 
-      `RV32_OP_IMM: begin
-        alu_op_o = alu_op_arith;
-        wr_reg_o = 1'b1;
-      end
-      `RV32_OP: begin
-        uses_rs2_o = 1'b1;
-        src_b_sel_o = `SRC_B_RS2;
-        alu_op_o = alu_op_arith;
-        wr_reg_o = 1'b1;
-        if (funct7 == `RV32_FUNCT7_MUL_DIV) begin
-          //              			uses_md_unkilled = 1'b1;
-          rs_ent_o = rs_ent_md;
-          //              			wb_src_sel_DX = `WB_SRC_MD;
-        end
-      end
+    assign src_b_sel_o = (opcode == `RV32_LOAD) ? `SRC_B_IMM :
+                         (opcode == `RV32_STORE) ? `SRC_B_IMM :
+                         (opcode == `RV32_JAL) ? `SRC_B_FOUR :
+                         (opcode == `RV32_JALR) ? `SRC_B_FOUR :
+                         (opcode == `RV32_LUI) ? `SRC_B_IMM :
+                         (opcode == `RV32_AUIPC) ? `SRC_B_IMM :
+                         (opcode == `RV32_OP) ? `SRC_B_RS2 :
+                         (opcode == `RV32_OP_IMM) ? `SRC_B_IMM :
+                         `SRC_B_IMM;
+    
+    assign wr_reg_o = (opcode == `RV32_LOAD) ? 1'b1 :
+                      (opcode == `RV32_STORE) ? 1'b0 :
+                      (opcode == `RV32_JAL) ? 1'b1 :
+                      (opcode == `RV32_JALR) ? 1'b1 :
+                      (opcode == `RV32_LUI) ? 1'b1 :
+                      (opcode == `RV32_AUIPC) ? 1'b1 :
+                      (opcode == `RV32_OP) ? 1'b1 :
+                      (opcode == `RV32_OP_IMM) ? 1'b1 :
+                      1'b0;
+    
+    assign uses_rs1_o = (opcode == `RV32_LOAD) ? 1'b1 :
+                        (opcode == `RV32_STORE) ? 1'b1 :
+                        (opcode == `RV32_JAL) ? 1'b0 :
+                        (opcode == `RV32_JALR) ? 1'b0 :
+                        (opcode == `RV32_LUI) ? 1'b0 :
+                        (opcode == `RV32_AUIPC) ? 1'b0 :
+                        (opcode == `RV32_OP) ? 1'b1 :
+                        (opcode == `RV32_OP_IMM) ? 1'b1 :
+                        1'b1;
+    
+    assign uses_rs2_o = (opcode == `RV32_LOAD) ? 1'b0 :
+                        (opcode == `RV32_STORE) ? 1'b1 :
+                        (opcode == `RV32_JAL) ? 1'b0 :
+                        (opcode == `RV32_JALR) ? 1'b0 :
+                        (opcode == `RV32_LUI) ? 1'b0 :
+                        (opcode == `RV32_AUIPC) ? 1'b0 :
+                        (opcode == `RV32_OP) ? 1'b1 :
+                        (opcode == `RV32_OP_IMM) ? 1'b0 :
+                        1'b0;
+    
+    assign illegal_instruction_o = (opcode == `RV32_LOAD) ? 1'b0 :
+                                   (opcode == `RV32_STORE) ? 1'b0 :
+                                   (opcode == `RV32_JAL) ? 1'b0 :
+                                   (opcode == `RV32_JALR) ? 1'b0 :
+                                   (opcode == `RV32_LUI) ? 1'b0 :
+                                   (opcode == `RV32_AUIPC) ? 1'b0 :
+                                   (opcode == `RV32_OP) ? 1'b0 :
+                                   (opcode == `RV32_OP_IMM) ? 1'b0 :
+                                   1'b1;
 
-      `RV32_AUIPC: begin
-        uses_rs1_o = 1'b0;
-        src_a_sel_o = `SRC_A_PC;
-        imm_type_o = `IMM_U;
-        wr_reg_o = 1'b1;
-      end
-      `RV32_LUI: begin
-        uses_rs1_o = 1'b0;
-        src_a_sel_o = `SRC_A_ZERO;
-        imm_type_o = `IMM_U;
-        wr_reg_o = 1'b1;
-      end
-      default: begin
-        illegal_instruction_o = 1'b1;
-      end
-    endcase  // case (opcode)
-  end  // always @ (*)
+    assign alu_op_o = (opcode == `RV32_LOAD) ? `ALU_OP_ADD :
+                      (opcode == `RV32_STORE) ? `ALU_OP_ADD :
+                      (opcode == `RV32_JAL) ? `ALU_OP_ADD :
+                      (opcode == `RV32_JALR) ? `ALU_OP_ADD :
+                      (opcode == `RV32_LUI) ? `ALU_OP_ADD :
+                      (opcode == `RV32_AUIPC) ? `ALU_OP_ADD :
+                      (opcode == `RV32_OP) ? alu_op_arith :
+                      (opcode == `RV32_OP_IMM) ? alu_op_arith :
+                      `ALU_OP_ADD;
 
-  assign add_or_sub = ((opcode == `RV32_OP) && (funct7[5])) ? `ALU_OP_SUB : `ALU_OP_ADD;
-  assign srl_or_sra = (funct7[5]) ? `ALU_OP_SRA : `ALU_OP_SRL;
+    assign rs_ent_o = (opcode == `RV32_LOAD) ? `RS_ENT_LDST :
+                      (opcode == `RV32_STORE) ? `RS_ENT_LDST :
+                      (opcode == `RV32_JAL) ? `RS_ENT_JAL :
+                      (opcode == `RV32_JALR) ? `RS_ENT_JALR :
+                      (opcode == `RV32_LUI) ? `RS_ENT_ALU :
+                      (opcode == `RV32_AUIPC) ? `RS_ENT_ALU :
+                      (opcode == `RV32_OP) ? `RS_ENT_ALU :
+                      (opcode == `RV32_OP_IMM) ? `RS_ENT_ALU :
+                      `RS_ENT_ALU;
 
-  always @(*) begin
-    case (funct3)
-      `RV32_FUNCT3_ADD_SUB: alu_op_arith = add_or_sub;
-      `RV32_FUNCT3_SLL: alu_op_arith = `ALU_OP_SLL;
-      `RV32_FUNCT3_SLT: alu_op_arith = `ALU_OP_SLT;
-      `RV32_FUNCT3_SLTU: alu_op_arith = `ALU_OP_SLTU;
-      `RV32_FUNCT3_XOR: alu_op_arith = `ALU_OP_XOR;
-      `RV32_FUNCT3_SRA_SRL: alu_op_arith = srl_or_sra;
-      `RV32_FUNCT3_OR: alu_op_arith = `ALU_OP_OR;
-      `RV32_FUNCT3_AND: alu_op_arith = `ALU_OP_AND;
-      default: alu_op_arith = `ALU_OP_ADD;
-    endcase  // case (funct3)
-  end  // always @ begin
+    assign add_or_sub = ((opcode == `RV32_OP) && (funct7[5])) ? `ALU_OP_SUB : `ALU_OP_ADD;
+    assign srl_or_sra = (funct7[5]) ? `ALU_OP_SRA : `ALU_OP_SRL;
 
+    assign alu_op_arith = (funct3 == `RV32_FUNCT3_ADD_SUB) ? add_or_sub :
+                          (funct3 == `RV32_FUNCT3_SLL) ? `ALU_OP_SLL :
+                          (funct3 == `RV32_FUNCT3_SLT) ? `ALU_OP_SLT :
+                          (funct3 == `RV32_FUNCT3_SLTU) ? `ALU_OP_SLTU :
+                          (funct3 == `RV32_FUNCT3_XOR) ? `ALU_OP_XOR :
+                          (funct3 == `RV32_FUNCT3_SRA_SRL) ? srl_or_sra :
+                          (funct3 == `RV32_FUNCT3_OR) ? `ALU_OP_OR :
+                          (funct3 == `RV32_FUNCT3_AND) ? `ALU_OP_AND :
+                          `ALU_OP_ADD;
 
-  //assign md_req_valid = uses_md;
-  assign rs_ent_md = (
+  
+    //assign md_req_valid = uses_md;
+    assign rs_ent_md = (
 		       (funct3 == `RV32_FUNCT3_MUL) ||
 		       (funct3 == `RV32_FUNCT3_MULH) ||
 		       (funct3 == `RV32_FUNCT3_MULHSU) ||
 		       (funct3 == `RV32_FUNCT3_MULHU)
 		       ) ? `RS_ENT_MUL : `RS_ENT_DIV;
 
-  always @(*) begin
-    md_req_op_o = `MD_OP_MUL;
-    md_req_in_1_signed_o = 0;
-    md_req_in_2_signed_o = 0;
-    md_req_out_sel_o = `MD_OUT_LO;
-    case (funct3)
-      `RV32_FUNCT3_MUL: begin
-      end
-      `RV32_FUNCT3_MULH: begin
-        md_req_in_1_signed_o = 1;
-        md_req_in_2_signed_o = 1;
-        md_req_out_sel_o = `MD_OUT_HI;
-      end
-      `RV32_FUNCT3_MULHSU: begin
-        md_req_in_1_signed_o = 1;
-        md_req_out_sel_o = `MD_OUT_HI;
-      end
-      `RV32_FUNCT3_MULHU: begin
-        md_req_out_sel_o = `MD_OUT_HI;
-      end
-      `RV32_FUNCT3_DIV: begin
-        md_req_op_o = `MD_OP_DIV;
-        md_req_in_1_signed_o = 1;
-        md_req_in_2_signed_o = 1;
-      end
-      `RV32_FUNCT3_DIVU: begin
-        md_req_op_o = `MD_OP_DIV;
-      end
-      `RV32_FUNCT3_REM: begin
-        md_req_op_o = `MD_OP_REM;
-        md_req_in_1_signed_o = 1;
-        md_req_in_2_signed_o = 1;
-        md_req_out_sel_o = `MD_OUT_REM;
-      end
-      `RV32_FUNCT3_REMU: begin
-        md_req_op_o = `MD_OP_REM;
-        md_req_out_sel_o = `MD_OUT_REM;
-      end
-    endcase
-  end
+    assign md_req_op_o = (funct3 == `RV32_FUNCT3_MUL) ? `MD_OP_MUL :
+                         (funct3 == `RV32_FUNCT3_MULH) ? `MD_OP_MUL :
+                         (funct3 == `RV32_FUNCT3_MULHSU) ? `MD_OP_MUL :
+                         (funct3 == `RV32_FUNCT3_MULHU) ? `MD_OP_MUL :
+                         (funct3 == `RV32_FUNCT3_DIV) ? `MD_OP_DIV :
+                         (funct3 == `RV32_FUNCT3_DIVU) ? `MD_OP_DIV :
+                         (funct3 == `RV32_FUNCT3_REM) ? `MD_OP_REM :
+                         (funct3 == `RV32_FUNCT3_REMU) ? `MD_OP_REM :
+                         `MD_OP_MUL;
 
+    assign md_req_in_1_signed_o = (funct3 == `RV32_FUNCT3_MUL) ? 0 :
+                                  (funct3 == `RV32_FUNCT3_MULH) ? 1 :
+                                  (funct3 == `RV32_FUNCT3_MULHSU) ? 1 :
+                                  (funct3 == `RV32_FUNCT3_MULHU) ? 0 :
+                                  (funct3 == `RV32_FUNCT3_DIV) ? 1 :
+                                  (funct3 == `RV32_FUNCT3_DIVU) ? 0 :
+                                  (funct3 == `RV32_FUNCT3_REM) ? 1 :
+                                  (funct3 == `RV32_FUNCT3_REMU) ? 0 :
+                                  0;
+
+    assign md_req_in_2_signed_o = (funct3 == `RV32_FUNCT3_MUL) ? 0 :
+                                  (funct3 == `RV32_FUNCT3_MULH) ? 1 :
+                                  (funct3 == `RV32_FUNCT3_MULHSU) ? 0 :
+                                  (funct3 == `RV32_FUNCT3_MULHU) ? 0 :
+                                  (funct3 == `RV32_FUNCT3_DIV) ? 1 :
+                                  (funct3 == `RV32_FUNCT3_DIVU) ? 0 :
+                                  (funct3 == `RV32_FUNCT3_REM) ? 1 :
+                                  (funct3 == `RV32_FUNCT3_REMU) ? 0 :
+                                  0;
+
+    assign md_req_out_sel_o = (funct3 == `RV32_FUNCT3_MUL) ? `MD_OUT_LO :
+                              (funct3 == `RV32_FUNCT3_MULH) ? `MD_OUT_HI :
+                              (funct3 == `RV32_FUNCT3_MULHSU) ? `MD_OUT_HI :
+                              (funct3 == `RV32_FUNCT3_MULHU) ? `MD_OUT_HI :
+                              (funct3 == `RV32_FUNCT3_DIV) ? `MD_OUT_LO :
+                              (funct3 == `RV32_FUNCT3_DIVU) ? `MD_OUT_LO :
+                              (funct3 == `RV32_FUNCT3_REM) ? `MD_OUT_REM :
+                              (funct3 == `RV32_FUNCT3_REMU) ? `MD_OUT_REM :
+                              `MD_OUT_LO;
 
 endmodule  // decoder
 `default_nettype wire
