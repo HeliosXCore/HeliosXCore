@@ -37,18 +37,18 @@ class VIDUnitTb : public VerilatorTb<VIDUnit> {
 
     void test1_verify() {
         if (sim_time == 55) {
-            ASSERT(dut->imm_type_1_o == IMM_U);
-            ASSERT(dut->rs1_1_o == 0x00);
-            ASSERT(dut->rs2_1_o == 0x00);
-            ASSERT(dut->rd_1_o == 0x05);
-            ASSERT(dut->src_a_sel_1_o == SRC_A_ZERO);
-            ASSERT(dut->src_b_sel_1_o == SRC_B_IMM);
-            ASSERT(dut->wr_reg_1_o == 1);
-            ASSERT(dut->uses_rs1_1_o == 0);
-            ASSERT(dut->uses_rs2_1_o == 0);
-            ASSERT(dut->illegal_instruction_1_o == 0);
-            ASSERT(dut->alu_op_1_o == ALU_OP_ADD);
-            ASSERT(dut->rs_ent_1_o == RS_ENT_ALU);
+            ASSERT(dut->imm_type_1_o == IMM_U, "imm_type error");
+            ASSERT(dut->rs1_1_o == 0x00, "rs1 error");
+            ASSERT(dut->rs2_1_o == 0x00, "rs2 error");
+            ASSERT(dut->rd_1_o == 0x05, "rd error");
+            ASSERT(dut->src_a_sel_1_o == SRC_A_ZERO, "src_a_sel error");
+            ASSERT(dut->src_b_sel_1_o == SRC_B_IMM, "src_b_sel error");
+            ASSERT(dut->wr_reg_1_o == 1, "wr_reg error");
+            ASSERT(dut->uses_rs1_1_o == 0, "uses_rs1 error");
+            ASSERT(dut->uses_rs2_1_o == 0, "uses_rs2 error");
+            ASSERT(dut->illegal_instruction_1_o == 0, "illegal instruction error");
+            ASSERT(dut->alu_op_1_o == ALU_OP_ADD, "alu_op error");
+            ASSERT(dut->rs_ent_1_o == RS_ENT_ALU, "rs_ent error");
             
             fmt::println("IDUnit test1 passed!");
         }
@@ -64,16 +64,16 @@ class VIDUnitTb : public VerilatorTb<VIDUnit> {
 
     void test2_verify() {
         if (sim_time == 65) {
-            ASSERT(dut->imm_type_1_o == IMM_J);
-            ASSERT(dut->rd_1_o == 0x01);
-            ASSERT(dut->src_a_sel_1_o == SRC_A_PC);
-            ASSERT(dut->src_b_sel_1_o == SRC_B_FOUR);
-            ASSERT(dut->wr_reg_1_o == 1);
-            ASSERT(dut->uses_rs1_1_o == 0);
-            ASSERT(dut->uses_rs2_1_o == 0);
-            ASSERT(dut->illegal_instruction_1_o == 0);
-            ASSERT(dut->alu_op_1_o == ALU_OP_ADD);
-            ASSERT(dut->rs_ent_1_o == RS_ENT_JAL);
+            ASSERT(dut->imm_type_1_o == IMM_J, "imm_type error");
+            ASSERT(dut->rd_1_o == 0x01, "rs1 error");
+            ASSERT(dut->src_a_sel_1_o == SRC_A_PC, "src_a_sel error");
+            ASSERT(dut->src_b_sel_1_o == SRC_B_FOUR, "src_b_sel error");
+            ASSERT(dut->wr_reg_1_o == 1, "wr_reg error");
+            ASSERT(dut->uses_rs1_1_o == 0, "uses_rs1 error");
+            ASSERT(dut->uses_rs2_1_o == 0, "uses_rs2 error");
+            ASSERT(dut->illegal_instruction_1_o == 0, "illegal instruction error");
+            ASSERT(dut->alu_op_1_o == ALU_OP_ADD, "alu_op error");
+            ASSERT(dut->rs_ent_1_o == RS_ENT_JAL, "rs_ent error");
 
             fmt::println("IDUnit test2 passed!");
         }
@@ -89,19 +89,19 @@ class VIDUnitTb : public VerilatorTb<VIDUnit> {
 
     void test3_verify() {
         if (sim_time == 75) {
-            ASSERT(dut->imm_type_1_o == IMM_I);
-            ASSERT(dut->rs1_1_o == 0x10);
-            ASSERT(dut->rd_1_o == 0x11);
-            ASSERT(dut->src_a_sel_1_o == SRC_A_RS1);
-            ASSERT(dut->src_b_sel_1_o == SRC_B_IMM);
-            ASSERT(dut->wr_reg_1_o == 1);
-            ASSERT(dut->uses_rs1_1_o == 1);
-            ASSERT(dut->uses_rs2_1_o == 0);
-            ASSERT(dut->illegal_instruction_1_o == 0);
-            ASSERT(dut->rs_ent_1_o == RS_ENT_LDST);
-            ASSERT(dut->alu_op_1_o == ALU_OP_ADD);
-            ASSERT(dut->dmem_size_1_o == 0x2);
-            ASSERT(dut->dmem_type_1_o == 0x2);
+            ASSERT(dut->imm_type_1_o == IMM_I, "imm_type error");
+            ASSERT(dut->rs1_1_o == 0x10, "rs1 error");
+            ASSERT(dut->rd_1_o == 0x11, "rd error");
+            ASSERT(dut->src_a_sel_1_o == SRC_A_RS1, "src_a_sel error");
+            ASSERT(dut->src_b_sel_1_o == SRC_B_IMM, "src_b_sel error");
+            ASSERT(dut->wr_reg_1_o == 1, "wr_reg error");
+            ASSERT(dut->uses_rs1_1_o == 1, "uses_rs1 error");
+            ASSERT(dut->uses_rs2_1_o == 0, "uses_rs2 error");
+            ASSERT(dut->illegal_instruction_1_o == 0, "illegal instruction error");
+            ASSERT(dut->rs_ent_1_o == RS_ENT_LDST, "rs_ent error");
+            ASSERT(dut->alu_op_1_o == ALU_OP_ADD, "alu_op error");
+            ASSERT(dut->dmem_size_1_o == 0x2, "dmem_size error");
+            ASSERT(dut->dmem_type_1_o == 0x2, "dmem_type error");
 
             fmt::println("IDUnit test3 passed!");
         }
@@ -117,19 +117,19 @@ class VIDUnitTb : public VerilatorTb<VIDUnit> {
 
     void test4_verify() {
         if (sim_time == 85) {
-            ASSERT(dut->imm_type_1_o == IMM_S);
-            ASSERT(dut->rs1_1_o == 0x10);
-            ASSERT(dut->rs2_1_o == 0x0f);
-            ASSERT(dut->src_a_sel_1_o == SRC_A_RS1);
-            ASSERT(dut->src_b_sel_1_o == SRC_B_IMM);
-            ASSERT(dut->wr_reg_1_o == 0);
-            ASSERT(dut->uses_rs1_1_o == 1);
-            ASSERT(dut->uses_rs2_1_o == 1);
-            ASSERT(dut->illegal_instruction_1_o == 0);
-            ASSERT(dut->alu_op_1_o == ALU_OP_ADD);
-            ASSERT(dut->rs_ent_1_o == RS_ENT_LDST);
-            ASSERT(dut->dmem_size_1_o == 0x2);
-            ASSERT(dut->dmem_type_1_o == 0x2);
+            ASSERT(dut->imm_type_1_o == IMM_S, "imm_type error");
+            ASSERT(dut->rs1_1_o == 0x10, "rs1 error");
+            ASSERT(dut->rs2_1_o == 0x0f, "rs2 error");
+            ASSERT(dut->src_a_sel_1_o == SRC_A_RS1, "src_a_sel error");
+            ASSERT(dut->src_b_sel_1_o == SRC_B_IMM, "src_b_sel error");
+            ASSERT(dut->wr_reg_1_o == 0, "wr_reg error");
+            ASSERT(dut->uses_rs1_1_o == 1, "uses_rs1 error");
+            ASSERT(dut->uses_rs2_1_o == 1, "uses_rs2 error");
+            ASSERT(dut->illegal_instruction_1_o == 0, "illegal instruction error");
+            ASSERT(dut->alu_op_1_o == ALU_OP_ADD, "alu_op error");
+            ASSERT(dut->rs_ent_1_o == RS_ENT_LDST, "rs_ent error");
+            ASSERT(dut->dmem_size_1_o == 0x2, "dmem_size error");
+            ASSERT(dut->dmem_type_1_o == 0x2, "dmem_type error");
 
             fmt::println("IDUnit test4 passed!");
         }
