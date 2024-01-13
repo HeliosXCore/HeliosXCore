@@ -1,109 +1,76 @@
-#include "fmt/core.h"
-#include "verilator_tb.hpp"
-#include "VImmDecoder.h"
-#include "VImmDecoder___024root.h"
-#include "error_handler.hpp"
-#include <iostream>
+#include <cstdlib>
+#include <memory>
 #include <verilated.h>
+#include <verilated_vcd_c.h>
+
+#include <stdlib.h>
+#include <assert.h>
+#include <iostream>
+
+#include "VImmDecoder.h"
 #include "decoder.hpp"
 
+#define MAX_SIM_TIME 300
+#define VERIF_START_TIME 7
 vluint64_t sim_time = 0;
 
-template <>
-void VerilatorTb<VDecoder>::initialize_signal() {
-    dut->inst = 0;
-    dut->imm_type = 0
-};
+int main(int argc, char **argv, char **env) {
+    srand(time(NULL));
+    Verilated::commandArgs(argc, argv);
+    auto dut = std::make_shared<VImmDecoder>();
 
-class VImmDecoderTb : public VerilatorTb<VImmDecoder> {
-   public:
-    VImmDecoderTb(uint64_t clock, uint64_t start_time, uint64_t end_time)
-        : VerilatorTb<VImmDecoder>(clock, start_time, end_time) {}
+    Verilated::traceEverOn(true);
+    auto m_trace = std::make_shared<VerilatedVcdC>();
+    dut->trace(m_trace.get(), 99);
 
-    void test1_input() {
-        if (sim_time == 50) {
+    m_trace->open("ImmDecoder.vcd");
+
+    while (sim_time < MAX_SIM_TIME) {
+        dut->eval();
+
+        if (sim_time == 5) {
             // type:U
             /* 0x800002b7,  // lui t0,0x80000 */
             dut->inst = 0x800002b7;
             dut->imm_type = IMM_U;
         }
-    }
-
-    void test1_verify() {
-        if (sim_time == 55) {
-            ASSERT(dut->imm == 0x80000000);           
-            fmt::println("ImmDecoder test1 passed!");
+        else if (sim_time == 10) {
+            assert(dut->imm == 0x80000000);
+            std::cout << "ImmDecoder Test 1 Pass!" << std::endl;
         }
-    }
 
-    void test2_input() {
-        if (sim_time == 60) {
-        // type: J
         /* 80000024:	374000ef          	jal	ra,80000398 <halt> */
+        // type: J
+        else if (sim_time == 15) {
             dut->inst = 0x374000ef;
             dut->imm_type = IMM_J;
         }
-    }
-
-    void test2_verify() {
-        if (sim_time == 65) {
-            ASSERT(dut->imm == 0x374);
-            fmt::println("ImmDecoder test2 passed!");
+        else if (sim_time == 20) {
+            assert(dut->imm == 0x374);
+            std::cout << "ImmDecoder Test 2 Pass!" << std::endl;
         }
-    }
-
-    void test3_input() {
-        if (sim_time == 70) {
-        // type:I
         /* 80000034:	00082883          	lw	a7,0(a6) */
+        // type:I
+        else if (sim_time == 25) {
             dut->inst = 0x00082883;
             dut->imm_type = IMM_I;
         }
-    }
-
-    void test3_verify() {
-        if (sim_time == 75) {
-            ASSERT(dut->imm == 0x0);
-            fmt::println("ImmDecoder test3 passed!");
+        else if (sim_time == 30) {
+            assert(dut->imm == 0x0);
+            std::cout << "ImmDecoder Test 3 Pass!" << std::endl;
         }
-    }
-
-    void test4_input() {
-        if (sim_time == 80) {
-        // type:S
         /* 80000074:	00f82023          	sw	a5,0(a6) */
+        // type:S
+        else if (sim_time == 35) {
             dut->inst = 0x00f82023;
             dut->imm_type = IMM_S;
         }
-    }
-
-    void test4_verify() {
-        if (sim_time == 85) {
-            ASSERT(dut->imm == 0x0);
-            fmt::println("ImmDecoder test4 passed!");
+        else if (sim_time == 40) {
+            assert(dut->imm == 0x0);
+            std::cout << "ImmDecoder Test 4 Pass!" << std::endl;
         }
+        sim_time++;
     }
 
-    void input() {
-        test1_input();
-        test2_input();
-        test3_input();
-        test4_input();
-    }
-
-    void verify_dut() {
-        test1_verify();
-        test2_verify();
-        test3_verify();
-        test4_verify();
-    }
-};
-
-int main(int argc, char **argv, char **env) {
-    srand(time(NULL));
-    Verilated::commandArgs(argc, argv);
-
-    std::shared_ptr<VImmDecoderTb> tb = std::make_shared<VImmDecoderTb>(5, 50, 1000);
-
-    tb->run("ImmDecoder.vcd");
+    m_trace->dump(sim_time);
 }
