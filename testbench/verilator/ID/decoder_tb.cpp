@@ -11,7 +11,7 @@ vluint64_t sim_time = 0;
 
 template <>
 void VerilatorTb<VDecoder>::initialize_signal() {
-    dut->inst1_i = 0;
+    dut->inst_i = 0;
 };
 
 class VDecoderTb : public VerilatorTb<VDecoder> {
@@ -23,24 +23,24 @@ class VDecoderTb : public VerilatorTb<VDecoder> {
         if (sim_time == 50) {
             // type:U
             /* 0x800002b7,  // lui t0,0x80000 */
-            dut->inst1_i = 0x800002b7;
+            dut->inst_i = 0x800002b7;
         }
     }
 
     void test1_verify() {
         if (sim_time == 55) {
-            ASSERT(dut->imm_type_1_o == IMM_U);
-            ASSERT(dut->rs1_1_o == inst1_i[19:15]);
-            ASSERT(dut->rs2_1_o == inst1_i[24:20]);
-            ASSERT(dut->rd_1_o == 0x05);
-            ASSERT(dut->src_a_sel_1_o == SRC_A_ZERO);
-            ASSERT(dut->src_b_sel_1_o == SRC_B_IMM);
-            ASSERT(dut->wr_reg_1_o == 1);
-            ASSERT(dut->uses_rs1_1_o == 0);
-            ASSERT(dut->uses_rs2_1_o == 0);
-            ASSERT(dut->illegal_instruction_1_o == 0);
-            ASSERT(dut->alu_op_1_o == ALU_OP_ADD);
-            ASSERT(dut->rs_ent_1_o == RS_ENT_ALU);
+            ASSERT(dut->imm_type_o == IMM_U);
+            ASSERT(dut->rs1_o == inst1_i[19:15]);
+            ASSERT(dut->rs2_o == inst1_i[24:20]);
+            ASSERT(dut->rd_o == 0x05);
+            ASSERT(dut->src_a_sel_o == SRC_A_ZERO);
+            ASSERT(dut->src_b_sel_o == SRC_B_IMM);
+            ASSERT(dut->wr_reg_o == 1);
+            ASSERT(dut->uses_rs1_o == 0);
+            ASSERT(dut->uses_rs2_o == 0);
+            ASSERT(dut->illegal_instruction_o == 0);
+            ASSERT(dut->alu_op_o == ALU_OP_ADD);
+            ASSERT(dut->rs_ent_o == RS_ENT_ALU);
             
             fmt::println("Decoder test1 passed!");
         }
@@ -50,22 +50,22 @@ class VDecoderTb : public VerilatorTb<VDecoder> {
         if (sim_time == 60) {
         // type: J
         /* 80000024:	374000ef          	jal	ra,80000398 <halt> */
-            dut->inst1_i = 0x374000ef;
+            dut->inst_i = 0x374000ef;
         }
     }
 
     void test2_verify() {
         if (sim_time == 65) {
-            ASSERT(dut->imm_type_1_o == IMM_J);
-            ASSERT(dut->rd_1_o == 0x01);
-            ASSERT(dut->src_a_sel_1_o == SRC_A_PC);
-            ASSERT(dut->src_b_sel_1_o == SRC_B_FOUR);
-            ASSERT(dut->wr_reg_1_o == 1);
-            ASSERT(dut->uses_rs1_1_o == 0);
-            ASSERT(dut->uses_rs2_1_o == 0);
-            ASSERT(dut->illegal_instruction_1_o == 0);
-            ASSERT(dut->alu_op_1_o == ALU_OP_ADD);
-            ASSERT(dut->rs_ent_1_o == RS_ENT_JAL);
+            ASSERT(dut->imm_type_o == IMM_J);
+            ASSERT(dut->rd_o == 0x01);
+            ASSERT(dut->src_a_sel_o == SRC_A_PC);
+            ASSERT(dut->src_b_sel_o == SRC_B_FOUR);
+            ASSERT(dut->wr_reg_o == 1);
+            ASSERT(dut->uses_rs1_o == 0);
+            ASSERT(dut->uses_rs2_o == 0);
+            ASSERT(dut->illegal_instruction_o == 0);
+            ASSERT(dut->alu_op_o == ALU_OP_ADD);
+            ASSERT(dut->rs_ent_o == RS_ENT_JAL);
 
             fmt::println("Decoder test2 passed!");
         }
@@ -75,7 +75,7 @@ class VDecoderTb : public VerilatorTb<VDecoder> {
         if (sim_time == 70) {
         // type:I
         /* 80000034:	00082883          	lw	a7,0(a6) */
-            dut->inst1_i = 0x00082883;
+            dut->inst_i = 0x00082883;
         }
     }
 
@@ -91,7 +91,7 @@ class VDecoderTb : public VerilatorTb<VDecoder> {
             ASSERT(dut->uses_rs2_o == 0);
             ASSERT(dut->illegal_instruction_o == 0);
             ASSERT(dut->rs_ent_o == RS_ENT_LDST);
-            ASSERT(dut->alu_op_1_o == ALU_OP_ADD);
+            ASSERT(dut->alu_op_o == ALU_OP_ADD);
             ASSERT(dut->dmem_size_o == 0x2);
             ASSERT(dut->dmem_type_o == 0x2);
 
@@ -103,7 +103,7 @@ class VDecoderTb : public VerilatorTb<VDecoder> {
         if (sim_time == 80) {
         // type:S
         /* 80000074:	00f82023          	sw	a5,0(a6) */
-            dut->inst1_i = 0x00f82023;
+            dut->inst_i = 0x00f82023;
         }
     }
 
@@ -118,7 +118,7 @@ class VDecoderTb : public VerilatorTb<VDecoder> {
             ASSERT(dut->uses_rs1_o == 1);
             ASSERT(dut->uses_rs2_o == 1);
             ASSERT(dut->illegal_instruction_o == 0);
-            ASSERT(dut->alu_op_1_o == ALU_OP_ADD);
+            ASSERT(dut->alu_op_o == ALU_OP_ADD);
             ASSERT(dut->rs_ent_o == RS_ENT_LDST);
             ASSERT(dut->dmem_size_o == 0x2);
             ASSERT(dut->dmem_type_o == 0x2);
