@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <iostream>
 
-#include "obj_dir/VDecoder.h"
+#include "VDecoder.h"
 #include "decoder.hpp"
 
 #define MAX_SIM_TIME 300
