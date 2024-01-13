@@ -26,4 +26,4 @@
 #define SRC_B_FOUR 2
 #define SRC_B_ZERO 3
 
-
+#define ALU_OP_ADD 0
