@@ -73,7 +73,6 @@ lint:
 	@verilator --lint-only -Irtl rtl/core/DP/Arf.v  \
 		rtl/core/DP/Rrf.v rtl/core/DP/RrfEntryAllocate.v rtl/core/DP/SrcOprManager.v \
 		rtl/core/DP/SyncRAM.v rtl/core/DP/ReNameUnit.v
-	@verilator --lint-only -Irtl rtl/core/ID/ImmDecoder.v /* verilator lint_off MULTITOP */
 	@verilator --lint-only -Irtl rtl/core/ID/Decoder.v rtl/core/ID/IDUnit.v
 
 
