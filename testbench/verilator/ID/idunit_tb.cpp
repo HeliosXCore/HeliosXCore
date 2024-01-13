@@ -13,6 +13,8 @@ template <>
 void VerilatorTb<VIDUnit>::initialize_signal() {
     dut->clk_i = 0;
     dut->reset_i = 1;
+    dut->kill_ID = 1;
+    dut->stall_DP = 1;
 
     dut->inst1_i = 0;
 };
@@ -25,6 +27,8 @@ class VIDUnitTb : public VerilatorTb<VIDUnit> {
     void test1_input() {
         if (sim_time == 50) {
             dut->reset_i = 0;
+            dut->kill_ID = 0;
+            dut->stall_DP = 0;
             // type:U
             /* 0x800002b7,  // lui t0,0x80000 */
             dut->inst1_i = 0x800002b7;
@@ -34,8 +38,8 @@ class VIDUnitTb : public VerilatorTb<VIDUnit> {
     void test1_verify() {
         if (sim_time == 55) {
             ASSERT(dut->imm_type_1_o == IMM_U);
-            ASSERT(dut->rs1_1_o == inst1_i[19:15]);
-            ASSERT(dut->rs2_1_o == inst1_i[24:20]);
+            ASSERT(dut->rs1_1_o == 0x00);
+            ASSERT(dut->rs2_1_o == 0x00);
             ASSERT(dut->rd_1_o == 0x05);
             ASSERT(dut->src_a_sel_1_o == SRC_A_ZERO);
             ASSERT(dut->src_b_sel_1_o == SRC_B_IMM);
@@ -85,19 +89,19 @@ class VIDUnitTb : public VerilatorTb<VIDUnit> {
 
     void test3_verify() {
         if (sim_time == 75) {
-            ASSERT(dut->imm_type_o == IMM_I);
-            ASSERT(dut->rs1_o == 0x10);
-            ASSERT(dut->rd_o == 0x11);
-            ASSERT(dut->src_a_sel_o == SRC_A_RS1);
-            ASSERT(dut->src_b_sel_o == SRC_B_IMM);
-            ASSERT(dut->wr_reg_o == 1);
-            ASSERT(dut->uses_rs1_o == 1);
-            ASSERT(dut->uses_rs2_o == 0);
-            ASSERT(dut->illegal_instruction_o == 0);
-            ASSERT(dut->rs_ent_o == RS_ENT_LDST);
+            ASSERT(dut->imm_type_1_o == IMM_I);
+            ASSERT(dut->rs1_1_o == 0x10);
+            ASSERT(dut->rd_1_o == 0x11);
+            ASSERT(dut->src_a_sel_1_o == SRC_A_RS1);
+            ASSERT(dut->src_b_sel_1_o == SRC_B_IMM);
+            ASSERT(dut->wr_reg_1_o == 1);
+            ASSERT(dut->uses_rs1_1_o == 1);
+            ASSERT(dut->uses_rs2_1_o == 0);
+            ASSERT(dut->illegal_instruction_1_o == 0);
+            ASSERT(dut->rs_ent_1_o == RS_ENT_LDST);
             ASSERT(dut->alu_op_1_o == ALU_OP_ADD);
-            ASSERT(dut->dmem_size_o == 0x2);
-            ASSERT(dut->dmem_type_o == 0x2);
+            ASSERT(dut->dmem_size_1_o == 0x2);
+            ASSERT(dut->dmem_type_1_o == 0x2);
 
             fmt::println("IDUnit test3 passed!");
         }
@@ -113,19 +117,19 @@ class VIDUnitTb : public VerilatorTb<VIDUnit> {
 
     void test4_verify() {
         if (sim_time == 85) {
-            ASSERT(dut->imm_type_o == IMM_S);
-            ASSERT(dut->rs1_o == 0x10);
-            ASSERT(dut->rs2_o == 0x0f);
-            ASSERT(dut->src_a_sel_o == SRC_A_RS1);
-            ASSERT(dut->src_b_sel_o == SRC_B_IMM);
-            ASSERT(dut->wr_reg_o == 0);
-            ASSERT(dut->uses_rs1_o == 1);
-            ASSERT(dut->uses_rs2_o == 1);
-            ASSERT(dut->illegal_instruction_o == 0);
+            ASSERT(dut->imm_type_1_o == IMM_S);
+            ASSERT(dut->rs1_1_o == 0x10);
+            ASSERT(dut->rs2_1_o == 0x0f);
+            ASSERT(dut->src_a_sel_1_o == SRC_A_RS1);
+            ASSERT(dut->src_b_sel_1_o == SRC_B_IMM);
+            ASSERT(dut->wr_reg_1_o == 0);
+            ASSERT(dut->uses_rs1_1_o == 1);
+            ASSERT(dut->uses_rs2_1_o == 1);
+            ASSERT(dut->illegal_instruction_1_o == 0);
             ASSERT(dut->alu_op_1_o == ALU_OP_ADD);
-            ASSERT(dut->rs_ent_o == RS_ENT_LDST);
-            ASSERT(dut->dmem_size_o == 0x2);
-            ASSERT(dut->dmem_type_o == 0x2);
+            ASSERT(dut->rs_ent_1_o == RS_ENT_LDST);
+            ASSERT(dut->dmem_size_1_o == 0x2);
+            ASSERT(dut->dmem_type_1_o == 0x2);
 
             fmt::println("IDUnit test4 passed!");
         }
