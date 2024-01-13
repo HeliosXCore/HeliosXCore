@@ -14,6 +14,9 @@ module IDUnit (
     input wire                         kill_DP,
 
     output wire [  `IMM_TYPE_WIDTH-1:0] imm_type_1_o,
+
+    output wire [        `DATA_LEN-1:0] imm_1_o,
+
     output wire [         `REG_SEL-1:0] rs1_1_o,
     output wire [         `REG_SEL-1:0] rs2_1_o,
     output wire [         `REG_SEL-1:0] rd_1_o,
@@ -34,6 +37,9 @@ module IDUnit (
 );
   //译码结果寄存器
     reg [  `IMM_TYPE_WIDTH-1:0] imm_type_1_id;
+
+    reg [        `DATA_LEN-1:0] imm_1_id;
+
     reg [         `REG_SEL-1:0] rs1_1_id;
     reg [         `REG_SEL-1:0] rs2_1_id;
     reg [         `REG_SEL-1:0] rd_1_id;
@@ -53,6 +59,9 @@ module IDUnit (
     reg [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1_id;
 
     wire [  `IMM_TYPE_WIDTH-1:0] imm_type_1;
+
+    wire [        `DATA_LEN-1:0] imm_1;
+
     wire [         `REG_SEL-1:0] rs1_1;
     wire [         `REG_SEL-1:0] rs2_1;
     wire [         `REG_SEL-1:0] rd_1;
@@ -135,9 +144,18 @@ module IDUnit (
         .md_req_out_sel_o(md_req_out_sel_1)
     );
 
+    ImmDecoder immdec1(
+        .inst(inst1_i),
+        .imm_type(imm_type_1),
+        .imm(imm_1)
+    )
+
     always @(posedge clk_i) begin
         if (reset_i | kill_ID) begin
           imm_type_1_id <= 0;
+
+          imm_1_id <= 0;
+
           rs1_1_id <= 0;
           rs2_1_id <= 0;
           rd_1_id <= 0;
@@ -157,6 +175,9 @@ module IDUnit (
           md_req_out_sel_1_id <= 0;
         end else if (~stall_DP) begin
           imm_type_1_id <= imm_type_1;
+
+          imm_1_id <= imm_1;
+
           rs1_1_id <= rs1_1;
           rs2_1_id <= rs2_1;
           rd_1_id <= rd_1;
@@ -178,6 +199,9 @@ module IDUnit (
     end
 
     assign imm_type_1_o = imm_type_1_id;
+
+    assign imm_1_o = imm_1_id;
+
     assign rs1_1_o = rs1_1_id;
     assign rs2_1_o = rs2_1_id;
     assign rd_1_o = rd_1_id;
