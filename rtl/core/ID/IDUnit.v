@@ -148,7 +148,7 @@ module IDUnit (
         .inst(inst1_i),
         .imm_type(imm_type_1),
         .imm(imm_1)
-    )；
+    );
 
     always @(posedge clk_i) begin
         if (reset_i | kill_ID) begin
