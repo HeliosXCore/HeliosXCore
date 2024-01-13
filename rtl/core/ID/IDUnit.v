@@ -167,7 +167,7 @@ module IDUnit (
           uses_rs2_1_id <= uses_rs2_1;
           illegal_instruction_1_id <= illegal_instruction_1;
           alu_op_1_id <= alu_op_1;
-          rs_ent_1_id <= inv1_if ? 0 : rs_ent_1;
+          rs_ent_1_id <= rs_ent_1;
           dmem_size_1_id <= dmem_size_1;
           dmem_type_1_id <= dmem_type_1;
           md_req_op_1_id <= md_req_op_1;
