@@ -10,7 +10,10 @@ make -j -C testbench/verilator/SW sim MODULE=RSAlu
 
 make -j -C testbench/verilator/EX sim MODULE=StoreBuffer
 
+make -j -C testbench/verilator/ID sim MODULE=Decoder
+
 # Stage 2: Run the pipeline stage tests.
 make -j sim STAGE=SW
 make -j sim STAGE=ROB
 make -j sim STAGE=DP
+make -j sim STAGE=ID
