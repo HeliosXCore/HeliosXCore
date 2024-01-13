@@ -10,20 +10,20 @@ TEST 	  ?=
 TESTBENCH ?=
 WAVE 	  ?=
 
-STAGE ?=ARF
-ifeq ($(STAGE), SRCOPRMANAGER)
+MODULE ?=ARF
+ifeq ($(MODULE), SRCOPRMANAGER)
 	TEST := SrcOprManager
 	TESTBENCH := DP/src_opr_manager_tb
 	WAVE := src_opr_manager.vcd
-else ifeq ($(STAGE), ARF)
+else ifeq ($(MODULE), ARF)
 	TEST := Arf
 	TESTBENCH := DP/arf_tb
 	WAVE := arf.vcd
-else ifeq ($(STAGE), RRF)
+else ifeq ($(MODULE), RRF)
 	TEST := Rrf
 	TESTBENCH := DP/rrf_tb
 	WAVE := rrf.vcd
-else ifeq ($(STAGE), RRF_ALLO)
+else ifeq ($(MODULE), RRF_ALLO)
 	TEST := RrfEntryAllocate
 	TESTBENCH := DP/rrfentry_allocate_tb
 	WAVE := rrfentry_allocate.vcd

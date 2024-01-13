@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <iostream>
 
-#include "build/VSrcOprManager.h"
+#include "VSrcOprManager.h"
 
 #define MAX_SIM_TIME 30
 #define VERIF_START_TIME 7

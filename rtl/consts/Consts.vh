@@ -10,14 +10,14 @@
 `define IMM_U `IMM_TYPE_WIDTH'd2
 `define IMM_J `IMM_TYPE_WIDTH'd3
 
-//Important Wire
+// Important Wire
 `define DATA_LEN 32
 `define INSN_LEN 32
 `define ADDR_LEN 32
 `define ISSUE_NUM 2
 `define ENTRY_POINT `ADDR_LEN'h0
 
-//Decoder
+// Decoder
 `define RS_ENT_SEL 3
 `define RS_ENT_ALU 1
 `define RS_ENT_BRANCH 2
@@ -62,13 +62,13 @@
 `define RRF_NUM_WIDTH 7
 `define RRF_NUM	`RRF_NUM_WIDTH'd64 
 
-
+// ALU 操作数 A 选择信号
 `define SRC_A_SEL_WIDTH 2
 `define SRC_A_RS1  `SRC_A_SEL_WIDTH'd0
 `define SRC_A_PC   `SRC_A_SEL_WIDTH'd1
 `define SRC_A_ZERO `SRC_A_SEL_WIDTH'd2
 
-
+// ALU 操作数 B 选择信号
 `define SRC_B_SEL_WIDTH 2
 `define SRC_B_RS2  `SRC_B_SEL_WIDTH'd0
 `define SRC_B_IMM  `SRC_B_SEL_WIDTH'd1

@@ -13,7 +13,7 @@ jobs:
   build:
     name: Verify
     runs-on: ubuntu-22.04
-    container: verilator/verilator:v5.018
+    container: jklincn/verilator_v5.018_with_fmt:v1
     steps:
 
     - uses: actions/checkout@v3
@@ -22,12 +22,14 @@ jobs:
 
     - name: Install dependencies
       run: |
-          apt-get update
-          apt-get install -y cmake make g++ git
+        apt-get update
+        apt-get install -y make g++ git
 
     - name: build fmt
       run: |
-        cd 3rd-party/fmt && mkdir build && cd build && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE .. && make
+        # cd 3rd-party/fmt && mkdir build && cd build && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE .. && make -j
+        rm -rf 3rd-party/fmt
+        tar xf /work/fmt.tar.gz -C 3rd-party/
     
     - name: verify
       run: |
