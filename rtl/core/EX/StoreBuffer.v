@@ -25,7 +25,7 @@ module StoreBuffer (
     // 3个表示位置的循环数组指针,0作为初始化使用，实际可用表项只有 31 项。
     reg [`STORE_BUFFER_ENT_NUM_BITS-1:0] used_ptr;  // 指示最新使用的表项
     reg [`STORE_BUFFER_ENT_NUM_BITS-1:0] complete_ptr;  // 指示最新已完成的指令
-    reg [`STORE_BUFFER_ENT_NUM_BITS-1:0] retire_ptr; // 指示最新已退休的指令
+    reg [`STORE_BUFFER_ENT_NUM_BITS-1:0] retire_ptr;  // 指示最新已退休的指令
 
     // 假设store buffer中已有5条store指令的信息，ROB已经提交了3条，内存实际已写入了1条，示意图如下。
     // ----------- 0       1       2       3       4       5      -----------
@@ -55,7 +55,7 @@ module StoreBuffer (
                 data[i] <= 0;
             end
         end else begin
-            mem_we <= 0;
+            mem_we  <= 0;
             hit_reg <= 0;
             if (issue_i) begin
                 // 有访存请求
@@ -70,7 +70,7 @@ module StoreBuffer (
                 end else begin
                     // load 指令，从 1 开始遍历
                     for (i = 1; i < `STORE_BUFFER_ENT_NUM; i = i + 1) begin
-                        if (valid[i] && address[i] == address_i ) begin
+                        if (valid[i] && address[i] == address_i) begin
                             hit_reg <= 1;
                             load_index <= i[`STORE_BUFFER_ENT_NUM_BITS-1:0];
                         end

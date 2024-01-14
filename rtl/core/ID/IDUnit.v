@@ -3,19 +3,19 @@
 `include "consts/ALU.vh"
 
 module IDUnit (
-    input wire [                 31:0] inst1_i,
-    input wire                         clk_i,
-    input wire                         reset_i,
-    input wire                         stall_IF,
-    input wire                         kill_IF,
-    input wire                         stall_ID,
-    input wire                         kill_ID,
-    input wire                         stall_DP,
-    input wire                         kill_DP,
+    input wire [31:0] inst1_i,
+    input wire        clk_i,
+    input wire        reset_i,
+    input wire        stall_IF,
+    input wire        kill_IF,
+    input wire        stall_ID,
+    input wire        kill_ID,
+    input wire        stall_DP,
+    input wire        kill_DP,
 
-    output reg [  `IMM_TYPE_WIDTH-1:0] imm_type_1_o,
+    output reg [`IMM_TYPE_WIDTH-1:0] imm_type_1_o,
 
-    output reg [        `DATA_LEN-1:0] imm_1_o,
+    output reg [`DATA_LEN-1:0] imm_1_o,
 
     output reg [         `REG_SEL-1:0] rs1_1_o,
     output reg [         `REG_SEL-1:0] rs2_1_o,
@@ -35,7 +35,7 @@ module IDUnit (
     output reg                         md_req_in_2_signed_1_o,
     output reg [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1_o
 );
-  //译码结果寄存器
+    //译码结果寄存器
     // reg [  `IMM_TYPE_WIDTH-1:0] imm_type_1_id;
 
     // reg [        `DATA_LEN-1:0] imm_1_id;
@@ -102,7 +102,7 @@ module IDUnit (
         .md_req_out_sel_o(md_req_out_sel_1)
     );
 
-    ImmDecoder immdec1(
+    ImmDecoder immdec1 (
         .inst(inst1_i),
         .imm_type(imm_type_1),
         .imm(imm_1)
@@ -110,45 +110,45 @@ module IDUnit (
 
     always @(posedge clk_i) begin
         if (reset_i | kill_ID) begin
-          imm_type_1_o <= 0;
-          imm_1_o <= 0;
-          rs1_1_o <= 0;
-          rs2_1_o <= 0;
-          rd_1_o <= 0;
-          src_a_sel_1_o <= 0;
-          src_b_sel_1_o <= 0;
-          wr_reg_1_o <= 0;
-          uses_rs1_1_o <= 0;
-          uses_rs2_1_o <= 0;
-          illegal_instruction_1_o <= 0;
-          alu_op_1_o <= 0;
-          rs_ent_1_o <= 0;
-          dmem_size_1_o <= 0;
-          dmem_type_1_o <= 0;
-          md_req_op_1_o <= 0;
-          md_req_in_1_signed_1_o <= 0;
-          md_req_in_2_signed_1_o <= 0;
-          md_req_out_sel_1_o <= 0;
+            imm_type_1_o <= 0;
+            imm_1_o <= 0;
+            rs1_1_o <= 0;
+            rs2_1_o <= 0;
+            rd_1_o <= 0;
+            src_a_sel_1_o <= 0;
+            src_b_sel_1_o <= 0;
+            wr_reg_1_o <= 0;
+            uses_rs1_1_o <= 0;
+            uses_rs2_1_o <= 0;
+            illegal_instruction_1_o <= 0;
+            alu_op_1_o <= 0;
+            rs_ent_1_o <= 0;
+            dmem_size_1_o <= 0;
+            dmem_type_1_o <= 0;
+            md_req_op_1_o <= 0;
+            md_req_in_1_signed_1_o <= 0;
+            md_req_in_2_signed_1_o <= 0;
+            md_req_out_sel_1_o <= 0;
         end else if (~stall_DP) begin
-          imm_type_1_o <= imm_type_1;
-          imm_1_o <= imm_1;
-          rs1_1_o <= rs1_1;
-          rs2_1_o <= rs2_1;
-          rd_1_o <= rd_1;
-          src_a_sel_1_o <= src_a_sel_1;
-          src_b_sel_1_o <= src_b_sel_1;
-          wr_reg_1_o <= wr_reg_1;
-          uses_rs1_1_o <= uses_rs1_1;
-          uses_rs2_1_o <= uses_rs2_1;
-          illegal_instruction_1_o <= illegal_instruction_1;
-          alu_op_1_o <= alu_op_1;
-          rs_ent_1_o <= rs_ent_1;
-          dmem_size_1_o <= dmem_size_1;
-          dmem_type_1_o <= dmem_type_1;
-          md_req_op_1_o <= md_req_op_1;
-          md_req_in_1_signed_1_o <= md_req_in_1_signed_1;
-          md_req_in_2_signed_1_o <= md_req_in_2_signed_1;
-          md_req_out_sel_1_o <= md_req_out_sel_1;
+            imm_type_1_o <= imm_type_1;
+            imm_1_o <= imm_1;
+            rs1_1_o <= rs1_1;
+            rs2_1_o <= rs2_1;
+            rd_1_o <= rd_1;
+            src_a_sel_1_o <= src_a_sel_1;
+            src_b_sel_1_o <= src_b_sel_1;
+            wr_reg_1_o <= wr_reg_1;
+            uses_rs1_1_o <= uses_rs1_1;
+            uses_rs2_1_o <= uses_rs2_1;
+            illegal_instruction_1_o <= illegal_instruction_1;
+            alu_op_1_o <= alu_op_1;
+            rs_ent_1_o <= rs_ent_1;
+            dmem_size_1_o <= dmem_size_1;
+            dmem_type_1_o <= dmem_type_1;
+            md_req_op_1_o <= md_req_op_1;
+            md_req_in_1_signed_1_o <= md_req_in_1_signed_1;
+            md_req_in_2_signed_1_o <= md_req_in_2_signed_1;
+            md_req_out_sel_1_o <= md_req_out_sel_1;
         end
     end
 
