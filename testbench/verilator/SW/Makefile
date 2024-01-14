@@ -46,7 +46,7 @@ sim:
 	@$(VERILATOR) $(VFLAGS) -cc $(RTLD)/$(TEST).v $(LDFLAGS) $(MODULES) \
 		--public \
 		--exe $(TESTBENCHD)/$(TESTBENCH).cpp $(IFLGAS) $(MACRO_FLAGS) -Mdir $(RTLOBJD)
-	make -C $(RTLOBJD) -f V$(TEST).mk V$(TEST)
+	@make -C $(RTLOBJD) -f V$(TEST).mk V$(TEST)
 	@./$(RTLOBJD)/V$(TEST) +verilator+rand+reset+2
 
 wave: sim
