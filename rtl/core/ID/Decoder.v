@@ -18,8 +18,6 @@ module Decoder (
     output wire                        illegal_instruction_o,  //表示该指令未在该处理器中定义
     output wire [   `ALU_OP_WIDTH-1:0] alu_op_o,               //ALU操作类型
     output wire [     `RS_ENT_SEL-1:0] rs_ent_o,               //保留站ID
-    //output reg 			  dmem_use,
-    //output reg 			  dmem_write,
 
     output wire [                2:0] dmem_size_o,  //决定Load/Store指令数据的大小
     output wire [`MEM_TYPE_WIDTH-1:0] dmem_type_o,  //决定Load/Store指令数据的大小
@@ -152,7 +150,6 @@ module Decoder (
                           `ALU_OP_ADD;
 
 
-    //assign md_req_valid = uses_md;
     assign rs_ent_md = ((funct3 == `RV32_FUNCT3_MUL) || (funct3 == `RV32_FUNCT3_MULH) || (funct3 == `RV32_FUNCT3_MULHSU) || (funct3 == `RV32_FUNCT3_MULHU)) ? `RS_ENT_MUL : `RS_ENT_DIV;
 
     assign md_req_op_o = (funct3 == `RV32_FUNCT3_MUL) ? `MD_OP_MUL :

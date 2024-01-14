@@ -35,28 +35,6 @@ module IDUnit (
     output reg                         md_req_in_2_signed_1_o,
     output reg [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1_o
 );
-    //译码结果寄存器
-    // reg [  `IMM_TYPE_WIDTH-1:0] imm_type_1_id;
-
-    // reg [        `DATA_LEN-1:0] imm_1_id;
-
-    // reg [         `REG_SEL-1:0] rs1_1_id;
-    // reg [         `REG_SEL-1:0] rs2_1_id;
-    // reg [         `REG_SEL-1:0] rd_1_id;
-    // reg [ `SRC_A_SEL_WIDTH-1:0] src_a_sel_1_id;
-    // reg [ `SRC_B_SEL_WIDTH-1:0] src_b_sel_1_id;
-    // reg                         wr_reg_1_id;
-    // reg                         uses_rs1_1_id;
-    // reg                         uses_rs2_1_id;
-    // reg                         illegal_instruction_1_id;
-    // reg [    `ALU_OP_WIDTH-1:0] alu_op_1_id;
-    // reg [      `RS_ENT_SEL-1:0] rs_ent_1_id;
-    // reg [                  2:0] dmem_size_1_id;
-    // reg [  `MEM_TYPE_WIDTH-1:0] dmem_type_1_id;
-    // reg [     `MD_OP_WIDTH-1:0] md_req_op_1_id;
-    // reg                         md_req_in_1_signed_1_id;
-    // reg                         md_req_in_2_signed_1_id;
-    // reg [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1_id;
 
     wire [  `IMM_TYPE_WIDTH-1:0] imm_type_1;
 
