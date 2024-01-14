@@ -1,34 +1,29 @@
 CXX		:= g++
 VERILATOR := verilator
-RTLD	?= ../../../rtl/core/SW
+RTLD	?= ../../../rtl/core/ID
 RTLOBJD	:= build
-TESTBENCHD	:= ../../../testbench/verilator/SW
+TESTBENCHD	:= ../../../testbench/verilator/ID
 
 TEST 	  ?=
 TESTBENCH ?=
 WAVE 	  ?=
 
 
-MODULE ?= AllocateUnit
-ifeq ($(MODULE), AllocateUnit)
-	TEST := AllocateUnit
-	TESTBENCH := allocate_unit_tb
+MODULE ?= Decoder
+ifeq ($(MODULE), Decoder)
+	TEST := Decoder
+	TESTBENCH := decoder_tb
 	MODULES := 
-	WAVE := allocate_unit.vcd
-else ifeq ($(MODULE), RSAluEntry)
-	TEST := RSAluEntry
-	TESTBENCH := rs_alu_entry_tb
-	MODULES := $(RTLD)/SourceManager.v 
-	WAVE := rs_alu_entry.vcd
-else ifeq ($(MODULE), RSAlu)
-	TEST := RSAlu
-	TESTBENCH := rs_alu_tb
-	MODULES := $(RTLD)/SourceManager.v $(RTLD)/RSAluEntry.v
-	WAVE := rs_alu.vcd
+	WAVE := Decoder.vcd
+else ifeq ($(MODULE), ImmDecoder)
+	TEST := ImmDecoder
+	TESTBENCH := immdecoder_tb
+	MODULES := 
+	WAVE := ImmDecoder.vcd
 endif
 
 VIGNOREW 	:= 
-VINCULDES	:= -I../../../rtl/ -I../../../rtl/core/SW/
+VINCULDES	:= -I../../../rtl/ -I../../../rtl/core/ID/
 VFLAGS 		:= --trace --x-assign unique --x-initial unique $(VIGNOREW) $(VINCULDES)
 PFLAGS		:= -GREQ_LEN=4 -GGRANT_LEN=2
 IFLGAS		:= -CFLAGS -I../../../../testbench/verilator -CFLAGS -I../../../../3rd-party/fmt/include
@@ -46,7 +41,7 @@ sim:
 	@$(VERILATOR) $(VFLAGS) -cc $(RTLD)/$(TEST).v $(LDFLAGS) $(MODULES) \
 		--public \
 		--exe $(TESTBENCHD)/$(TESTBENCH).cpp $(IFLGAS) $(MACRO_FLAGS) -Mdir $(RTLOBJD)
-	make -C $(RTLOBJD) -f V$(TEST).mk V$(TEST)
+	@make -C $(RTLOBJD) -f V$(TEST).mk V$(TEST)
 	@./$(RTLOBJD)/V$(TEST) +verilator+rand+reset+2
 
 wave: sim
