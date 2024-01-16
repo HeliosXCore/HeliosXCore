@@ -17,6 +17,7 @@ module MemAccessTop (
 
     wire [`ADDR_LEN-1:0] mem_access_load_address; // load 地址，传给 mem
     wire [`DATA_LEN-1:0] mem_access_load_data_from_data_memory; // 从 mem 中读取的数据
+    wire mem_access_store_buffer_mem_en; // store buffer 要写入 mem 的地址
     wire [`ADDR_LEN-1:0] mem_access_store_buffer_write_address; // store buffer 要写入 mem 的地址
     wire [`DATA_LEN-1:0] mem_access_store_buffer_write_data; // store buffer 要写入 mem 的数据
 
@@ -33,6 +34,7 @@ module MemAccessTop (
 
         .rrf_we_o                      ( rrf_we_o                       ),
         .rob_we_o                      ( rob_we_o                       ),
+        .store_buffer_mem_we_o  ( mem_access_store_buffer_mem_en   ),
         .store_buffer_write_address_o  ( mem_access_store_buffer_write_address   ),
         .store_buffer_write_data_o     ( mem_access_store_buffer_write_data      ),
         .load_address_o                ( mem_access_load_address                 ),
@@ -41,6 +43,7 @@ module MemAccessTop (
 
     DataMemory data_memory(
         .clk_i                   ( clk_i               ),
+        .en_i   (mem_access_store_buffer_mem_en),
         .write_address_i               ( mem_access_store_buffer_write_address   ),
         .write_data_i            ( mem_access_store_buffer_write_data ),
         .read_address_i               ( mem_access_load_address   ),

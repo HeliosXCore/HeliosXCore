@@ -31,7 +31,6 @@ module BranchUnit (
     wire [`DATA_LEN-1:0] compare_result;
 
     // 判断是否满足跳转条件，其中 JAL 和 JALR 是无条件跳转，恒为 1
-    // 只用最低一位就可以判断条件吗?
     assign if_jump_o = ((opcode_i == `RV32_JAL) || (opcode_i == `RV32_JALR)) ? 1 : compare_result[0];
 
     // 计算跳转目标地址，其中 JALR 由 src1 给出基址
