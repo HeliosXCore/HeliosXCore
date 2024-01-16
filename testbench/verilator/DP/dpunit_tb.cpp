@@ -121,7 +121,7 @@ int main(int argc, char **argv, char **env) {
                 std::cout << tmp2 << std::endl;
                 assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
                 assert(dut->src1_srcopmanager_out_srcmanager_in_o == 13);
-                std::cout << "Rrf Test 5 Pass!" << std::endl;
+                std::cout << "RenameUnit Test 5 Pass!" << std::endl;
 
                 dut->completed_dstnum_rob_out_arf_in_i = 2;
                 dut->completed_we_rob_out_arf_in_i = 1;
@@ -133,7 +133,7 @@ int main(int argc, char **argv, char **env) {
                 assert(dut->src2_srcopmanager_out_srcmanager_in_o == 0);
                 assert(dut->rdy2_srcopmanager_out_srcmanager_in_o == 1);
                 assert(dut->rrf_allocatable_o == 1);
-                std::cout << "Rrf Test 6 Pass!" << std::endl;
+                std::cout << "RenameUnit Test 6 Pass!" << std::endl;
             }
         }
 
