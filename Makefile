@@ -5,6 +5,7 @@ STAGE ?= SW
 RTLOBJD	:= build
 ifeq ($(STAGE), SW)
 include testbench/verilator/SW/sw.mk
+include testbench/verilator/SW/sw.mk
 else ifeq ($(STAGE), ROB)
 include testbench/verilator/ROB/rob.mk
 else ifeq ($(STAGE), DP)

@@ -3,3 +3,4 @@
 *.vcd
 tags
 .DS_Store
+3rd-party/fmt/
