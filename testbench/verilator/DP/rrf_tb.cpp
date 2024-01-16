@@ -20,9 +20,9 @@ void dut_reset(std::shared_ptr<VRrf> dut, vluint64_t &sim_time) {
         dut->reset_i = 1;
         dut->rs1_rrftag_i = 0;
         dut->rs2_rrftag_i = 0;
-        dut->forward_rrf_we_i = 0;
-        dut->forward_rrftag_i = 0;
-        dut->forward_rrfdata_i = 0;
+        dut->forward_rrf_we_alu1_i = 0;
+        dut->forward_rrftag_alu1_i = 0;
+        dut->forward_rrfdata_alu1_i = 0;
         dut->allocate_rrf_en_i = 0;
         dut->allocate_rrftag_i = 0;
         dut->completed_dst_rrftag_i = 0;
@@ -81,16 +81,16 @@ int main(int argc, char **argv, char **env) {
                 assert(dut->rs2_rrfvalid_o == 0);
                 std::cout << "Rrf Test 3 Pass!" << std::endl;
 
-                dut->forward_rrf_we_i = 1;
-                dut->forward_rrftag_i = rrftag_rand_1;
-                dut->forward_rrfdata_i = 11;
+                dut->forward_rrf_we_alu1_i = 1;
+                dut->forward_rrftag_alu1_i = rrftag_rand_1;
+                dut->forward_rrfdata_alu1_i = 11;
             }
             if (posedge_cnt == 6) {
                 dut->rs1_rrftag_i = rrftag_rand_1;
 
-                dut->forward_rrf_we_i = 1;
-                dut->forward_rrftag_i = rrftag_rand_2;
-                dut->forward_rrfdata_i = 12;
+                dut->forward_rrf_we_alu1_i = 1;
+                dut->forward_rrftag_alu1_i = rrftag_rand_2;
+                dut->forward_rrfdata_alu1_i = 12;
             }
             if (posedge_cnt == 7) {
                 assert(dut->rs1_rrfdata_o == 11);

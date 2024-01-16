@@ -10,7 +10,7 @@ TEST 	  ?=
 TESTBENCH ?=
 WAVE 	  ?=
 
-MODULE ?=ARF
+MODULE ?=RRF
 ifeq ($(MODULE), SRCOPRMANAGER)
 	TEST := SrcOprManager
 	TESTBENCH := DP/src_opr_manager_tb

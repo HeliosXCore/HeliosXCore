@@ -22,9 +22,28 @@ module ReNameUnit (
     input wire [`REG_SEL-1:0] dstnum_setbusy_decoder_out_arf_in_i,
     input wire dst_en_setbusy_decoder_out_arf_in_i,
 
-    input wire forward_rrf_we_alu_out_rrf_in_i,
-    input wire [`RRF_SEL-1:0] forward_rrftag_RsAlu_out_rrf_in_i,
-    input wire [`DATA_LEN-1:0] forward_rrfdata_alu_out_rrf_in_i,
+    input wire forward_rrf_we_alu1_out_rrf_in_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_RsAlu1_out_rrf_in_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_alu1_out_rrf_in_i,
+
+    input wire forward_rrf_we_alu2_out_rrf_in_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_RsAlu2_out_rrf_in_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_alu2_out_rrf_in_i,
+
+
+    input wire forward_rrf_we_ldst_out_rrf_in_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_RsLdst_out_rrf_in_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_ldst_out_rrf_in_i,
+
+
+    input wire forward_rrf_we_mul_out_rrf_in_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_RsMul_out_rrf_in_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_mul_out_rrf_in_i,
+
+
+    input wire forward_rrf_we_branch_out_rrf_in_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_RsBranch_out_rrf_in_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_branch_out_rrf_in_i,
 
     input wire allocate_rrf_en_i,
 
@@ -87,9 +106,26 @@ module ReNameUnit (
       .rs1_rrfvalid_o(rs1_rrfvalid_rrf_out_srcopmanager_in),
       .rs2_rrfvalid_o(rs2_rrfvalid_rrf_out_srcopmanager_in),
 
-      .forward_rrf_we_i (forward_rrf_we_alu_out_rrf_in_i),
-      .forward_rrftag_i (forward_rrftag_RsAlu_out_rrf_in_i),
-      .forward_rrfdata_i(forward_rrfdata_alu_out_rrf_in_i),
+
+      .forward_rrf_we_alu1_i (forward_rrf_we_alu1_out_rrf_in_i),
+      .forward_rrftag_alu1_i (forward_rrftag_RsAlu1_out_rrf_in_i),
+      .forward_rrfdata_alu1_i(forward_rrfdata_alu1_out_rrf_in_i),
+
+      .forward_rrf_we_alu2_i (forward_rrf_we_alu2_out_rrf_in_i),
+      .forward_rrftag_alu2_i (forward_rrftag_RsAlu2_out_rrf_in_i),
+      .forward_rrfdata_alu2_i(forward_rrfdata_alu2_out_rrf_in_i),
+
+      .forward_rrf_we_ldst_i (forward_rrf_we_ldst_out_rrf_in_i),
+      .forward_rrftag_ldst_i (forward_rrftag_RsLdst_out_rrf_in_i),
+      .forward_rrfdata_ldst_i(forward_rrfdata_ldst_out_rrf_in_i),
+
+      .forward_rrf_we_mul_i (forward_rrf_we_mul_out_rrf_in_i),
+      .forward_rrftag_mul_i (forward_rrftag_RsMul_out_rrf_in_i),
+      .forward_rrfdata_mul_i(forward_rrfdata_mul_out_rrf_in_i),
+
+      .forward_rrf_we_branch_i (forward_rrf_we_branch_out_rrf_in_i),
+      .forward_rrftag_branch_i (forward_rrftag_RsBranch_out_rrf_in_i),
+      .forward_rrfdata_branch_i(forward_rrfdata_branch_out_rrf_in_i),
 
       .allocate_rrf_en_i(allocate_rrf_en_i),
       .allocate_rrftag_i(allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in),

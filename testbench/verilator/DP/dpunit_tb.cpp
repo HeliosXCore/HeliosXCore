@@ -28,9 +28,9 @@ void dut_reset(std::shared_ptr<VReNameUnit> dut, vluint64_t &sim_time) {
         dut->completed_we_rob_out_arf_in_i = 0;
         dut->dstnum_setbusy_decoder_out_arf_in_i = 0;
         dut->dst_en_setbusy_decoder_out_arf_in_i = 0;
-        dut->forward_rrf_we_alu_out_rrf_in_i = 0;
-        dut->forward_rrftag_RsAlu_out_rrf_in_i = 0;
-        dut->forward_rrfdata_alu_out_rrf_in_i = 0;
+        dut->forward_rrf_we_alu1_out_rrf_in_i = 0;
+        dut->forward_rrftag_RsAlu1_out_rrf_in_i = 0;
+        dut->forward_rrfdata_alu1_out_rrf_in_i = 0;
         dut->allocate_rrf_en_i = 0;
         dut->src1_eq_zero_decoder_out_srcopmanager_in_i = 0;
         dut->src2_eq_zero_decoder_out_srcopmanager_in_i = 0;
@@ -83,9 +83,9 @@ int main(int argc, char **argv, char **env) {
                 assert(dut->freenum_RrfEntryAllocate_out_rob_in_o == 63);
                 std::cout << "ReNameUnit Test 2 Pass!" << std::endl;
 
-                dut->forward_rrf_we_alu_out_rrf_in_i = 1;
-                dut->forward_rrftag_RsAlu_out_rrf_in_i = tmp1_allocate_rrftag;
-                dut->forward_rrfdata_alu_out_rrf_in_i = 13;
+                dut->forward_rrf_we_alu1_out_rrf_in_i = 1;
+                dut->forward_rrftag_RsAlu1_out_rrf_in_i = tmp1_allocate_rrftag;
+                dut->forward_rrfdata_alu1_out_rrf_in_i = 13;
 
                 dut->dstnum_setbusy_decoder_out_arf_in_i = 4;
                 dut->dst_en_setbusy_decoder_out_arf_in_i = 1;
@@ -104,9 +104,9 @@ int main(int argc, char **argv, char **env) {
                 assert(dut->freenum_RrfEntryAllocate_out_rob_in_o == 61);
                 std::cout << "ReNameUnit Test 3 Pass!" << std::endl;
 
-                dut->forward_rrf_we_alu_out_rrf_in_i = 1;
-                dut->forward_rrftag_RsAlu_out_rrf_in_i = tmp2_allocate_rrftag;
-                dut->forward_rrfdata_alu_out_rrf_in_i = 16;
+                dut->forward_rrf_we_alu1_out_rrf_in_i = 1;
+                dut->forward_rrftag_RsAlu1_out_rrf_in_i = tmp2_allocate_rrftag;
+                dut->forward_rrfdata_alu1_out_rrf_in_i = 16;
 
                 assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
                 std::cout << "ReNameUnit Test 4 Pass!" << std::endl;
