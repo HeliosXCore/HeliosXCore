@@ -50,44 +50,44 @@ module Rrf (
     output wire [`DATA_LEN-1:0] data_to_arfdata_o
 );
 
-  reg [ `RRF_NUM-1:0] rrf_valid;
-  reg [`DATA_LEN-1:0] rrf_data  [`RRF_NUM-1:0];
+    reg [ `RRF_NUM-1:0] rrf_valid;
+    reg [`DATA_LEN-1:0] rrf_data  [`RRF_NUM-1:0];
 
-  // 读rrf
-  // 读rrf.data
-  assign rs1_rrfdata_o  = rrf_data[rs1_rrftag_i];
-  assign rs2_rrfdata_o  = rrf_data[rs2_rrftag_i];
-  // 读rrf.valid
-  assign rs1_rrfvalid_o = rrf_valid[rs1_rrftag_i];
-  assign rs2_rrfvalid_o = rrf_valid[rs2_rrftag_i];
+    // 读rrf
+    // 读rrf.data
+    assign rs1_rrfdata_o  = rrf_data[rs1_rrftag_i];
+    assign rs2_rrfdata_o  = rrf_data[rs2_rrftag_i];
+    // 读rrf.valid
+    assign rs1_rrfvalid_o = rrf_valid[rs1_rrftag_i];
+    assign rs2_rrfvalid_o = rrf_valid[rs2_rrftag_i];
 
 
-  // 写执行部件的前递结果
-  always @(posedge clk_i) begin
-    if (reset_i) begin
-      rrf_valid <= 0;
-    end else begin
-      if (forward_rrf_we_alu1_i) begin
-        rrf_data[forward_rrftag_alu1_i]  <= forward_rrfdata_alu1_i;
-        rrf_valid[forward_rrftag_alu1_i] <= 1'b1;
-      end
-      if (forward_rrf_we_alu2_i) begin
-        rrf_data[forward_rrftag_alu2_i]  <= forward_rrfdata_alu2_i;
-        rrf_valid[forward_rrftag_alu2_i] <= 1'b1;
-      end
+    // 写执行部件的前递结果
+    always @(posedge clk_i) begin
+        if (reset_i) begin
+            rrf_valid <= 0;
+        end else begin
+            if (forward_rrf_we_alu1_i) begin
+                rrf_data[forward_rrftag_alu1_i]  <= forward_rrfdata_alu1_i;
+                rrf_valid[forward_rrftag_alu1_i] <= 1'b1;
+            end
+            if (forward_rrf_we_alu2_i) begin
+                rrf_data[forward_rrftag_alu2_i]  <= forward_rrfdata_alu2_i;
+                rrf_valid[forward_rrftag_alu2_i] <= 1'b1;
+            end
+        end
+
     end
 
-  end
 
-
-  // 当为目的寄存器分配了空闲rrf entry后，需要更新
-  always @(posedge clk_i) begin
-    if (allocate_rrf_en_i) begin
-      rrf_valid[allocate_rrftag_i] <= 1'b0;
+    // 当为目的寄存器分配了空闲rrf entry后，需要更新
+    always @(posedge clk_i) begin
+        if (allocate_rrf_en_i) begin
+            rrf_valid[allocate_rrftag_i] <= 1'b0;
+        end
     end
-  end
 
-  // 读数据给arfdata
-  assign data_to_arfdata_o = rrf_data[completed_dst_rrftag_i];
+    // 读数据给arfdata
+    assign data_to_arfdata_o = rrf_data[completed_dst_rrftag_i];
 endmodule
 `default_nettype wire
