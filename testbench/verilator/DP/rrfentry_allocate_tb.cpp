@@ -52,39 +52,32 @@ int main(int argc, char **argv, char **env) {
                 assert(dut->rrfptr_o == 0);
                 assert(dut->nextrrfcyc_o == 0);
                 std::cout << "Rrf_alloc Test 1 Pass!" << std::endl;
-            }
-            if (posedge_cnt == 4) {
+            } else if (posedge_cnt == 4) {
                 assert(dut->freenum_o == 62);
                 std::cout << "Rrf_alloc Test 2 Pass!" << std::endl;
 
                 dut->stall_dp_i = 1;
-            }
-            if (posedge_cnt >= 5 && posedge_cnt < 8) {
+            } else if (posedge_cnt >= 5 && posedge_cnt < 8) {
                 assert(dut->freenum_o == 62);
                 std::cout << "Rrf_alloc Test 3 Pass!" << std::endl;
-            }
-            if (posedge_cnt == 8) {
+            } else if (posedge_cnt == 8) {
                 dut->stall_dp_i = 0;
-            }
-            if (posedge_cnt == 9) {
+            } else if (posedge_cnt == 9) {
                 assert(dut->freenum_o == 61);
                 std::cout << "Rrf_alloc Test 4 Pass!" << std::endl;
-            }
-            if (posedge_cnt == 10) {
+            } else if (posedge_cnt == 10) {
                 assert(dut->freenum_o == 60);
                 std::cout << "Rrf_alloc Test 5 Pass!" << std::endl;
 
                 dut->stall_dp_i = 1;
                 dut->com_inst_num_i = 3;
-            }
-            if (posedge_cnt == 11) {
+            } else if (posedge_cnt == 11) {
                 assert(dut->freenum_o == 63);
                 std::cout << "Rrf_alloc Test 6 Pass!" << std::endl;
 
                 dut->stall_dp_i = 0;
                 dut->com_inst_num_i = 0;
-            }
-            if (posedge_cnt == 12) {
+            } else if (posedge_cnt == 12) {
                 assert(dut->freenum_o == 62);
                 std::cout << "Rrf_alloc Test 7 Pass!" << std::endl;
             }

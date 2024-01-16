@@ -63,50 +63,43 @@ int main(int argc, char **argv, char **env) {
                 /* dut->rs1_rrftag_i = rrftag_rand_1; */
                 /* rrftag_rand_2 = rand() % 64; */
                 /* dut->rs2_rrftag_i = rrftag_rand_2; */
-            }
-            if (posedge_cnt == 3) {
+            } else if (posedge_cnt == 3) {
                 dut->rs1_rrftag_i = rrftag_rand_1;
 
                 rrftag_rand_2 = rand() % 64;
                 dut->allocate_rrf_en_i = 1;
                 dut->allocate_rrftag_i = rrftag_rand_2;
-            }
-            if (posedge_cnt == 4) {
+            } else if (posedge_cnt == 4) {
                 assert(dut->rs1_rrfvalid_o == 0);
                 std::cout << "Rrf Test 2 Pass!" << std::endl;
 
                 dut->rs2_rrftag_i = rrftag_rand_2;
-            }
-            if (posedge_cnt == 5) {
+            } else if (posedge_cnt == 5) {
                 assert(dut->rs2_rrfvalid_o == 0);
                 std::cout << "Rrf Test 3 Pass!" << std::endl;
 
                 dut->forward_rrf_we_alu1_i = 1;
                 dut->forward_rrftag_alu1_i = rrftag_rand_1;
                 dut->forward_rrfdata_alu1_i = 11;
-            }
-            if (posedge_cnt == 6) {
+            } else if (posedge_cnt == 6) {
                 dut->rs1_rrftag_i = rrftag_rand_1;
 
                 dut->forward_rrf_we_alu1_i = 1;
                 dut->forward_rrftag_alu1_i = rrftag_rand_2;
                 dut->forward_rrfdata_alu1_i = 12;
-            }
-            if (posedge_cnt == 7) {
+            } else if (posedge_cnt == 7) {
                 assert(dut->rs1_rrfdata_o == 11);
                 assert(dut->rs1_rrfvalid_o == 1);
                 std::cout << "Rrf Test 4 Pass!" << std::endl;
 
                 dut->rs2_rrftag_i = rrftag_rand_2;
-            }
-            if (posedge_cnt == 8) {
+            } else if (posedge_cnt == 8) {
                 assert(dut->rs2_rrfdata_o == 12);
                 assert(dut->rs2_rrfvalid_o == 1);
                 std::cout << "Rrf Test 5 Pass!" << std::endl;
 
                 dut->completed_dst_rrftag_i = rrftag_rand_2;
-            }
-            if (posedge_cnt == 9) {
+            } else if (posedge_cnt == 9) {
                 assert(dut->data_to_arfdata_o == 12);
                 std::cout << "Rrf Test 6 Pass!" << std::endl;
             }

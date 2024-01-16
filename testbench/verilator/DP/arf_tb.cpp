@@ -65,11 +65,9 @@ int main(int argc, char **argv, char **env) {
                 rrftag_rand = rand() % 64;
                 dut->dst_rrftag_setbusy_i = rrftag_rand;
                 dut->dst_en_setbusy_i = 1;
-            }
-            if (posedge_cnt == 3) {
+            } else if (posedge_cnt == 3) {
                 dut->rs1_i = dst_rand;
-            }
-            if (posedge_cnt == 4) {
+            } else if (posedge_cnt == 4) {
                 assert(dut->rs1_arf_rrftag_o == rrftag_rand);
                 assert(dut->rs1_arf_busy_o == 1);
                 std::cout << "Arf Test 2 Pass!" << std::endl;
@@ -78,11 +76,9 @@ int main(int argc, char **argv, char **env) {
                 dut->from_rrfdata_i = 13;
                 dut->completed_dst_rrftag_i = rrftag_rand;
                 dut->completed_we_i = 1;
-            }
-            if (posedge_cnt == 5) {
+            } else if (posedge_cnt == 5) {
                 dut->rs1_i = dst_rand;
-            }
-            if (posedge_cnt == 6) {
+            } else if (posedge_cnt == 6) {
                 assert(dut->rs1_arf_data_o == 13);
                 std::cout << "Arf Test 3 Pass!" << std::endl;
             }

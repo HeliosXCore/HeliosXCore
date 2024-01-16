@@ -60,6 +60,8 @@ int main(int argc, char **argv, char **env) {
         vluint64_t rrftag_rand_2;
         if (dut->clk_i == 1) {
             posedge_cnt++;
+            vluint64_t tmp1_allocate_rrftag;
+            vluint64_t tmp2_allocate_rrftag;
             if (posedge_cnt == 2) {
                 assert(dut->rrf_allocatable_o == 1);
                 assert(dut->freenum_RrfEntryAllocate_out_rob_in_o == 64);
@@ -70,10 +72,7 @@ int main(int argc, char **argv, char **env) {
                 dut->dstnum_setbusy_decoder_out_arf_in_i = 2;
                 dut->dst_en_setbusy_decoder_out_arf_in_i = 1;
                 dut->allocate_rrf_en_i = 1;
-            }
-            vluint64_t tmp1_allocate_rrftag;
-            vluint64_t tmp2_allocate_rrftag;
-            if (posedge_cnt == 3) {
+            } else if (posedge_cnt == 3) {
                 tmp1_allocate_rrftag =
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
                 std::cout << tmp1_allocate_rrftag << std::endl;
@@ -90,11 +89,9 @@ int main(int argc, char **argv, char **env) {
                 dut->dstnum_setbusy_decoder_out_arf_in_i = 4;
                 dut->dst_en_setbusy_decoder_out_arf_in_i = 1;
                 dut->allocate_rrf_en_i = 1;
-            }
-            if (posedge_cnt == 4) {
+            } else if (posedge_cnt == 4) {
                 dut->rs1_decoder_out_arf_in_i = 2;
-            }
-            if (posedge_cnt == 5) {
+            } else if (posedge_cnt == 5) {
                 tmp2_allocate_rrftag =
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
                 std::cout << tmp1_allocate_rrftag << std::endl;
@@ -110,11 +107,9 @@ int main(int argc, char **argv, char **env) {
 
                 assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
                 std::cout << "ReNameUnit Test 4 Pass!" << std::endl;
-            }
-            if (posedge_cnt == 6) {
+            } else if (posedge_cnt == 6) {
                 dut->rs2_decoder_out_arf_in_i = 4;
-            }
-            if (posedge_cnt == 7) {
+            } else if (posedge_cnt == 7) {
                 vluint64_t tmp1 = dut->rdy1_srcopmanager_out_srcmanager_in_o;
                 vluint64_t tmp2 = dut->src1_srcopmanager_out_srcmanager_in_o;
                 std::cout << tmp1 << std::endl;
@@ -128,8 +123,7 @@ int main(int argc, char **argv, char **env) {
                 dut->com_inst_num_rob_out_RrfEntryAllocate_in_i = 1;
 
                 dut->src2_eq_zero_decoder_out_srcopmanager_in_i = 1;
-            }
-            if (posedge_cnt == 8) {
+            } else if (posedge_cnt == 8) {
                 assert(dut->src2_srcopmanager_out_srcmanager_in_o == 0);
                 assert(dut->rdy2_srcopmanager_out_srcmanager_in_o == 1);
                 assert(dut->rrf_allocatable_o == 1);
