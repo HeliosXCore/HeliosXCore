@@ -10,7 +10,7 @@ TEST 	  ?=
 TESTBENCH ?=
 WAVE 	  ?=
 
-MODULE ?=RRF
+MODULE ?=RSREQUESTGEN
 ifeq ($(MODULE), SRCOPRMANAGER)
 	TEST := SrcOprManager
 	TESTBENCH := DP/src_opr_manager_tb
@@ -27,6 +27,10 @@ else ifeq ($(MODULE), RRF_ALLO)
 	TEST := RrfEntryAllocate
 	TESTBENCH := DP/rrfentry_allocate_tb
 	WAVE := rrfentry_allocate.vcd
+else ifeq ($(MODULE), RSREQUESTGEN)
+	TEST := RSRequestGen
+	TESTBENCH := DP/rs_request_gen_tb
+	WAVE := rs_request_gen.vcd
 endif
 
 # CFLAGS	:= -Wall 
