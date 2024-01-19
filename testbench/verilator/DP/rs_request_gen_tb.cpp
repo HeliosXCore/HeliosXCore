@@ -16,9 +16,7 @@
 vluint64_t sim_time = 0;
 
 void dut_reset(std::shared_ptr<VRSRequestGen> dut, vluint64_t &sim_time) {
-    dut->reset_i = 0;
     if (sim_time >= 0 && sim_time < 5) {
-        dut->reset_i = 1;
         dut->inst1_rs_type_i = 0;
         dut->inst2_rs_type_i = 0;
     }

@@ -1,7 +1,6 @@
 `include "consts/Consts.vh"
 `default_nettype none
 module RSRequestGen (
-    input wire reset_i,
     // 指令对应的保留站类型
     input wire [`RS_ENT_SEL-1:0] inst1_rs_type_i,
     input wire [`RS_ENT_SEL-1:0] inst2_rs_type_i,
