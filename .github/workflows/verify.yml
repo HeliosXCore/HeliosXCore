@@ -1,0 +1,36 @@
+name: Verify CI
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+  pull_request:
+    paths:
+      - '**.md'
+      - 'LICENSE'
+
+jobs:
+  build:
+    name: Verify
+    runs-on: ubuntu-22.04
+    container: jklincn/verilator_v5.018_with_fmt:v1
+    steps:
+
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive 
+
+    - name: Install dependencies
+      run: |
+        apt-get update
+        apt-get install -y make g++ git
+
+    - name: build fmt
+      run: |
+        # cd 3rd-party/fmt && mkdir build && cd build && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE .. && make -j
+        rm -rf 3rd-party/fmt
+        tar xf /work/fmt.tar.gz -C 3rd-party/
+    
+    - name: verify
+      run: |
+        bash ./scripts/verify.sh

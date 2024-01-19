@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="MemAccessTopTB_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="MemAccessTopTB" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="121.101 ns"></ZoomEndTime>
+      <Cursor1Time time="110.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="178"></NameColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="15" />
+   <wvobject fp_name="/MemAccessTopTB/clk_i" type="logic">
+      <obj_property name="ElementShortName">clk_i</obj_property>
+      <obj_property name="ObjectShortName">clk_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/reset_i" type="logic">
+      <obj_property name="ElementShortName">reset_i</obj_property>
+      <obj_property name="ObjectShortName">reset_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/src1_i" type="array">
+      <obj_property name="ElementShortName">src1_i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">src1_i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/imm_i" type="array">
+      <obj_property name="ElementShortName">imm_i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">imm_i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/effective_address" type="array">
+      <obj_property name="ElementShortName">effective_address[31:0]</obj_property>
+      <obj_property name="ObjectShortName">effective_address[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/src2_i" type="array">
+      <obj_property name="ElementShortName">src2_i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">src2_i[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/if_write_rrf_i" type="logic">
+      <obj_property name="ElementShortName">if_write_rrf_i</obj_property>
+      <obj_property name="ObjectShortName">if_write_rrf_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/issue_i" type="logic">
+      <obj_property name="ElementShortName">issue_i</obj_property>
+      <obj_property name="ObjectShortName">issue_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/is_store" type="logic">
+      <obj_property name="ElementShortName">is_store</obj_property>
+      <obj_property name="ObjectShortName">is_store</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/hit_store_buffer" type="logic">
+      <obj_property name="ElementShortName">hit_store_buffer</obj_property>
+      <obj_property name="ObjectShortName">hit_store_buffer</obj_property>
+   </wvobject>
+   <wvobject fp_name="group430" type="group">
+      <obj_property name="label">store buffer</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/address_i" type="array">
+         <obj_property name="ElementShortName">address_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">address_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/write_data_i" type="array">
+         <obj_property name="ElementShortName">write_data_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">write_data_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/complete_i" type="logic">
+         <obj_property name="ElementShortName">complete_i</obj_property>
+         <obj_property name="ObjectShortName">complete_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/hit" type="logic">
+         <obj_property name="ElementShortName">hit</obj_property>
+         <obj_property name="ObjectShortName">hit</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/load_index" type="array">
+         <obj_property name="ElementShortName">load_index[4:0]</obj_property>
+         <obj_property name="ObjectShortName">load_index[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/read_data_o" type="array">
+         <obj_property name="ElementShortName">read_data_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">read_data_o[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/write_address_o" type="array">
+         <obj_property name="ElementShortName">write_address_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">write_address_o[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/write_data_o" type="array">
+         <obj_property name="ElementShortName">write_data_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">write_data_o[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/empty_ptr" type="array">
+         <obj_property name="ElementShortName">empty_ptr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">empty_ptr[4:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/complete_ptr" type="array">
+         <obj_property name="ElementShortName">complete_ptr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">complete_ptr[4:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/address" type="array">
+         <obj_property name="ElementShortName">address[31:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">address[31:0][31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/data" type="array">
+         <obj_property name="ElementShortName">data[31:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">data[31:0][31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/tmp_address" type="array">
+         <obj_property name="ElementShortName">tmp_address[31:0]</obj_property>
+         <obj_property name="ObjectShortName">tmp_address[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/mem_access_unit/store_buffer/tmp_data" type="array">
+         <obj_property name="ElementShortName">tmp_data[31:0]</obj_property>
+         <obj_property name="ObjectShortName">tmp_data[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group416" type="group">
+      <obj_property name="label">data_memory</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/data_memory/write_address_i" type="array">
+         <obj_property name="ElementShortName">write_address_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">write_address_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/data_memory/write_data_i" type="array">
+         <obj_property name="ElementShortName">write_data_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">write_data_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/data_memory/read_address_i" type="array">
+         <obj_property name="ElementShortName">read_address_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">read_address_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/MemAccessTopTB/mem_access_top/data_memory/read_date_o" type="array">
+         <obj_property name="ElementShortName">read_date_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">read_date_o[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/load_data_o" type="array">
+      <obj_property name="ElementShortName">load_data_o[31:0]</obj_property>
+      <obj_property name="ObjectShortName">load_data_o[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/rob_we_o" type="logic">
+      <obj_property name="ElementShortName">rob_we_o</obj_property>
+      <obj_property name="ObjectShortName">rob_we_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MemAccessTopTB/rrf_we_o" type="logic">
+      <obj_property name="ElementShortName">rrf_we_o</obj_property>
+      <obj_property name="ObjectShortName">rrf_we_o</obj_property>
+   </wvobject>
+</wave_config>
