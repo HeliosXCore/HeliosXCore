@@ -2,3 +2,10 @@
 build/*
 *.vcd
 tags
+**/work/*
+**/.cache/*
+**/build/*
+.tags
+*.json
+3rd-party/fmt
+.gitignore
