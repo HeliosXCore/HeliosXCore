@@ -53,7 +53,28 @@ module ReNameUnit (
     output wire [`DATA_LEN-1:0] src1_srcopmanager_out_srcmanager_in_o,
     output wire rdy1_srcopmanager_out_srcmanager_in_o,
     output wire [`DATA_LEN-1:0] src2_srcopmanager_out_srcmanager_in_o,
-    output wire rdy2_srcopmanager_out_srcmanager_in_o
+    output wire rdy2_srcopmanager_out_srcmanager_in_o,
+
+
+    // RSRequestGen 模块代码
+    input wire [`RS_ENT_SEL-1:0] inst1_RsType_decoder_out_RSRequestGen_in_i,
+    input wire [`RS_ENT_SEL-1:0] inst2_RsType_decoder_out_RSRequestGen_in_i,
+
+    output wire    req1_alu_o,
+    output wire    req2_alu_o,
+    output wire [1:0]   req_alunum_RSRequestGen_out_SWUnit_in_o,
+
+    output wire    req1_branch_o,
+    output wire    req2_branch_o,
+    output wire [1:0]   req_branchnum_RSRequestGen_out_SWUnit_in_o,
+
+    output wire    req1_mul_o,
+    output wire    req2_mul_o,
+    output wire [1:0]   req_mulnum_RSRequestGen_out_SWUnit_in_o,
+
+    output wire    req1_ldst_o,
+    output wire    req2_ldst_o,
+    output wire [1:0]   req_ldstnum_RSRequestGen_out_SWUnit_in_o
 );
 
     wire [`DATA_LEN-1:0] rs1_arfdata_arf_out_srcopmanager_in;
@@ -168,5 +189,25 @@ module ReNameUnit (
         .nextrrfcyc_o(nextrrfcyc_o)
     );
 
+    RSRequestGen rs_request_gen (
+        .inst1_rs_type_i(inst1_RsType_decoder_out_RSRequestGen_in_i),
+        .inst2_rs_type_i(inst2_RsType_decoder_out_RSRequestGen_in_i),
+
+        .req1_alu_o  (req1_alu_o),
+        .req2_alu_o  (req2_alu_o),
+        .req_alunum_o(req_alunum_RSRequestGen_out_SWUnit_in_o),
+
+        .req1_branch_o  (req1_branch_o),
+        .req2_branch_o  (req2_branch_o),
+        .req_branchnum_o(req_branchnum_RSRequestGen_out_SWUnit_in_o),
+
+        .req1_mul_o  (req1_mul_o),
+        .req2_mul_o  (req2_mul_o),
+        .req_mulnum_o(req_mulnum_RSRequestGen_out_SWUnit_in_o),
+
+        .req1_ldst_o  (req1_ldst_o),
+        .req2_ldst_o  (req2_ldst_o),
+        .req_ldstnum_o(req_ldstnum_RSRequestGen_out_SWUnit_in_o)
+    );
 endmodule
 `default_nettype none
