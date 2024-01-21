@@ -49,7 +49,7 @@ module IFUnit (
    PipelineIF pipeline_if(
 		       .clk_i(clk_i),
 		       .reset_i(reset_i),
-	   	    .pc_i(pc_i),
+	   	       .pc_i(pc_i),
 		       .npc_o(npc),
 		       .inst1_o(inst1),
 //		       .inst2_o(inst2_o),
