@@ -14,7 +14,7 @@ make -j -C testbench/verilator/SW sim MODULE=RSAlu
 # Execute Stage Modules
 make -j -C testbench/verilator/EX sim MODULE=StoreBuffer
 
-# make -j -C testbench/verilator/IF sim MODULE=PipelineIF
+make -j -C testbench/verilator/IF sim MODULE=PipelineIF
 
 
 # Stage 2: Run the pipeline stage tests.
@@ -24,4 +24,4 @@ make -j sim STAGE=SW
 make -j sim STAGE=EX
 make -j sim STAGE=ROB
 
-# make -j sim STAGE=IF
+make -j sim STAGE=IF
