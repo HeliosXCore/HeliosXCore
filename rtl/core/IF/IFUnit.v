@@ -2,10 +2,16 @@
 `include "consts/ALU.vh"
 
 module IFUnit (
-   input wire 			  clk_i,
-   input wire 			  reset_i,
+   input wire 			clk_i,
+   input wire 			reset_i,
    input wire [2*`INSN_LEN-1:0] idata_i,
-   input wire [`ADDR_LEN-1:0] pc_i,
+   input wire [`ADDR_LEN-1:0] 	pc_i,
+   input wire 			stall_IF,
+   input wire 			kill_IF,
+   input wire 			stall_ID,
+   input wire 			kill_ID,
+   input wire 			stall_DP,
+   input wire 			kill_DP,	
 
    output wire [`ADDR_LEN-1:0] npc_o,
    output wire [`INSN_LEN-1:0] inst1_o
@@ -25,13 +31,6 @@ module IFUnit (
    //reg [`INSN_LEN-1:0] inst2_if;
    //reg 			    inv1_if;
    //reg 			    inv2_if;
-
-   wire  stall_IF;
-   wire  kill_IF;
-   wire  stall_ID;
-   wire  kill_ID;
-   wire  stall_DP;
-   wire  kill_DP;
 
    assign stall_IF = stall_ID | stall_DP;
     //assign kill_IF = prmiss;
