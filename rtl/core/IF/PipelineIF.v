@@ -28,10 +28,6 @@ module Selector(
 
 	assign inst1_o = (sel_i == 1'b0) ? idata_i[31:0] :
 			 (sel_i == 1'b1) ? idata_i[63:32] :
-			 //(sel_i == 2'b00) ? idata_i[31:0] :
-			 //(sel_i == 2'b01) ? idata_i[63:32] :
-			 //(sel_i == 2'b10) ? idata_i[95:64] :
-			 //(sel_i == 2'b11) ? idata_i[127:96] :
 			 `INSN_LEN'h0;
    
 endmodule
