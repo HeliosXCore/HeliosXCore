@@ -92,7 +92,6 @@ class VIFUnitTb : public VerilatorTb<VIFUnit> {
 int main(int argc, char **argv, char **env) {
     srand(time(NULL));
     Verilated::commandArgs(argc, argv);
-
     std::shared_ptr<VIFUnitTb> tb = std::make_shared<VIFUnitTb>(5, 50, 1000);
 
     tb->run("IFUnit.vcd");
