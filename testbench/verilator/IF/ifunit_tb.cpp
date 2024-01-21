@@ -14,6 +14,9 @@ void VerilatorTb<VIFUnit>::initialize_signal() {
     dut->reset_i = 1;
     dut->pc_i = 0;
     dut->idata_i = 0;
+
+    dut->stall_IF = 1;
+    dut->kill_IF = 1;
 };
 
 class VIFUnitTb : public VerilatorTb<VIFUnit> {
@@ -24,6 +27,8 @@ class VIFUnitTb : public VerilatorTb<VIFUnit> {
     void test1_input() {
         if (sim_time == 50) {
             dut->reset_i = 0;
+            dut->stall_IF = 0;
+            dut->kill_IF = 0;
 
             dut->pc_i = 0x000f4048;
             dut->idata_i = 0x0000000526300100;
