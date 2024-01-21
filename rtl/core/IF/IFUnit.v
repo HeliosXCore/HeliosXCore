@@ -4,7 +4,7 @@
 module IFUnit (
    input wire 			  clk_i,
    input wire 			  reset_i,
-   input wire [4*`INSN_LEN-1:0] idata_i,
+   input wire [2*`INSN_LEN-1:0] idata_i,
    input wire [`ADDR_LEN-1:0] pc_i,
 
    output wire [`ADDR_LEN-1:0] npc_o,
