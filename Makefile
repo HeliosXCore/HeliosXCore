@@ -75,3 +75,4 @@ lint:
 		rtl/core/DP/SyncRAM.v rtl/core/DP/ReNameUnit.v
 	@verilator --lint-only -Irtl rtl/core/ID/ImmDecoder.v rtl/core/ID/Decoder.v rtl/core/ID/IDUnit.v
 
+
