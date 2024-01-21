@@ -26,7 +26,7 @@ class VIFUnitTb : public VerilatorTb<VIFUnit> {
             dut->reset_i = 0;
 
             dut->pc_i = 0x000f4048;
-            dut->idata_i = 0x0000000526300100ffdff06f00202423;
+            dut->idata_i = 0x0000000526300100;
         }
     }
 
@@ -42,7 +42,7 @@ class VIFUnitTb : public VerilatorTb<VIFUnit> {
     void test2_input() {
         if (sim_time == 60) {
             dut->pc_i = 0x000f2620;
-            dut->idata_i = 0x0000000526300100ffdff06fc2804365;
+            dut->idata_i = 0xffdff06fc2804365;
         }
     }
 
@@ -58,7 +58,7 @@ class VIFUnitTb : public VerilatorTb<VIFUnit> {
     void test3_input() {
         if (sim_time == 70) {
             dut->pc_i = 0x000f0717;
-            dut->idata_i = 0x0000000526300100ffdff06f00202423;
+            dut->idata_i = 0xffdff06f00202423;
         }
     }
 
