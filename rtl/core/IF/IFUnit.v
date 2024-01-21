@@ -32,8 +32,8 @@ module IFUnit (
    //reg 			    inv1_if;
    //reg 			    inv2_if;
 
-   assign stall_IF = stall_ID | stall_DP;
-    //assign kill_IF = prmiss;
+   //assign stall_IF = stall_ID | stall_DP;
+   //assign kill_IF = prmiss;
    
    always @ (posedge clk_i) begin
       if (reset_i) begin
