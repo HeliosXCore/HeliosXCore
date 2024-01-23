@@ -34,46 +34,39 @@ int main(int argc, char **argv, char **env) {
             dut->rrf_valid_i = 0;
             dut->rrf_data_i = 13;
             dut->src_eq_zero_i = 0;
-        }
-        if (sim_time == 6) {
+        } else if (sim_time == 10) {
             assert(dut->src_o == 12);
             assert(dut->ready_o == 1);
             std::cout << "SrcOpeManager Test 1 Pass!" << std::endl;
-        }
-        if (sim_time == 7) {
+        } else if (sim_time == 15) {
             dut->src_eq_zero_i = 1;
             dut->arf_busy_i = 1;
             dut->arf_data_i = 12;
             dut->arf_rrftag_i = 11;
             dut->rrf_valid_i = 0;
             dut->rrf_data_i = 13;
-        }
-        if (sim_time == 8) {
+        } else if (sim_time == 20) {
             assert(dut->src_o == 0);
             assert(dut->ready_o == 1);
             std::cout << "SrcOpeManager Test 2 Pass!" << std::endl;
-        }
-        if (sim_time == 9) {
+        } else if (sim_time == 25) {
             dut->src_eq_zero_i = 0;
             dut->arf_busy_i = 1;
             dut->arf_data_i = 12;
             dut->arf_rrftag_i = 11;
             dut->rrf_valid_i = 0;
             dut->rrf_data_i = 13;
-        }
-        if (sim_time == 10) {
+        } else if (sim_time == 30) {
             assert(dut->ready_o == 0);
             std::cout << "SrcOpeManager Test 3 Pass!" << std::endl;
-        }
-        if (sim_time == 11) {
+        } else if (sim_time == 35) {
             dut->src_eq_zero_i = 0;
             dut->arf_busy_i = 1;
             dut->arf_data_i = 12;
             dut->arf_rrftag_i = 11;
             dut->rrf_valid_i = 1;
             dut->rrf_data_i = 13;
-        }
-        if (sim_time == 12) {
+        } else if (sim_time == 40) {
             assert(dut->src_o == 13);
             assert(dut->ready_o == 1);
             std::cout << "SrcOpeManager Test 4 Pass!" << std::endl;
