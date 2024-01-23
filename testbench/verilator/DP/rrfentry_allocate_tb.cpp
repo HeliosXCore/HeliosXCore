@@ -38,8 +38,10 @@ int main(int argc, char **argv, char **env) {
 
     while (sim_time < MAX_SIM_TIME) {
         dut_reset(dut, sim_time);
-        dut->clk_i = !dut->clk_i;
 
+        if ((sim_time % 5) == 0) {
+            dut->clk_i = !dut->clk_i;
+        }
         dut->eval();
 
         vluint64_t rrftag_rand_1;
