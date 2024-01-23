@@ -17,13 +17,33 @@ module ReNameUnit (
     input wire [1:0] com_inst_num_rob_out_RrfEntryAllocate_in_i,
     input wire [`REG_SEL-1:0] completed_dstnum_rob_out_arf_in_i,
     input wire completed_we_rob_out_arf_in_i,
+    input wire [`RRF_SEL-1:0] completed_dst_rrftag_rob_out_arfANDrrf_in,
 
     input wire [`REG_SEL-1:0] dstnum_setbusy_decoder_out_arf_in_i,
     input wire dst_en_setbusy_decoder_out_arf_in_i,
 
-    input wire forward_rrf_we_alu_out_rrf_in_i,
-    input wire [`RRF_SEL-1:0] forward_rrftag_RsAlu_out_rrf_in_i,
-    input wire [`DATA_LEN-1:0] forward_rrfdata_alu_out_rrf_in_i,
+    input wire forward_rrf_we_alu1_out_rrf_in_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_RsAlu1_out_rrf_in_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_alu1_out_rrf_in_i,
+
+    input wire forward_rrf_we_alu2_out_rrf_in_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_RsAlu2_out_rrf_in_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_alu2_out_rrf_in_i,
+
+
+    input wire forward_rrf_we_ldst_out_rrf_in_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_RsLdst_out_rrf_in_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_ldst_out_rrf_in_i,
+
+
+    input wire forward_rrf_we_mul_out_rrf_in_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_RsMul_out_rrf_in_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_mul_out_rrf_in_i,
+
+
+    input wire forward_rrf_we_branch_out_rrf_in_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_RsBranch_out_rrf_in_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_branch_out_rrf_in_i,
 
     input wire allocate_rrf_en_i,
 
@@ -33,7 +53,28 @@ module ReNameUnit (
     output wire [`DATA_LEN-1:0] src1_srcopmanager_out_srcmanager_in_o,
     output wire rdy1_srcopmanager_out_srcmanager_in_o,
     output wire [`DATA_LEN-1:0] src2_srcopmanager_out_srcmanager_in_o,
-    output wire rdy2_srcopmanager_out_srcmanager_in_o
+    output wire rdy2_srcopmanager_out_srcmanager_in_o,
+
+
+    // RSRequestGen 模块代码
+    input wire [`RS_ENT_SEL-1:0] inst1_RsType_decoder_out_RSRequestGen_in_i,
+    input wire [`RS_ENT_SEL-1:0] inst2_RsType_decoder_out_RSRequestGen_in_i,
+
+    output wire    req1_alu_o,
+    output wire    req2_alu_o,
+    output wire [1:0]   req_alunum_RSRequestGen_out_SWUnit_in_o,
+
+    output wire    req1_branch_o,
+    output wire    req2_branch_o,
+    output wire [1:0]   req_branchnum_RSRequestGen_out_SWUnit_in_o,
+
+    output wire    req1_mul_o,
+    output wire    req2_mul_o,
+    output wire [1:0]   req_mulnum_RSRequestGen_out_SWUnit_in_o,
+
+    output wire    req1_ldst_o,
+    output wire    req2_ldst_o,
+    output wire [1:0]   req_ldstnum_RSRequestGen_out_SWUnit_in_o
 );
 
     wire [`DATA_LEN-1:0] rs1_arfdata_arf_out_srcopmanager_in;
@@ -44,7 +85,6 @@ module ReNameUnit (
     wire [`RRF_SEL-1:0] rs2_arf_rrftag_arf_out_srcopmanagerANDrrf_in;
 
     wire [`DATA_LEN-1:0] from_rrfdata_rrf_out_arf_in;
-    reg [`RRF_SEL-1:0] completed_dst_rrftag_rob_out_arfANDrrf_in;
 
 
     wire [`RRF_SEL-1:0] allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in;
@@ -87,9 +127,26 @@ module ReNameUnit (
         .rs1_rrfvalid_o(rs1_rrfvalid_rrf_out_srcopmanager_in),
         .rs2_rrfvalid_o(rs2_rrfvalid_rrf_out_srcopmanager_in),
 
-        .forward_rrf_we_i (forward_rrf_we_alu_out_rrf_in_i),
-        .forward_rrftag_i (forward_rrftag_RsAlu_out_rrf_in_i),
-        .forward_rrfdata_i(forward_rrfdata_alu_out_rrf_in_i),
+
+        .forward_rrf_we_alu1_i (forward_rrf_we_alu1_out_rrf_in_i),
+        .forward_rrftag_alu1_i (forward_rrftag_RsAlu1_out_rrf_in_i),
+        .forward_rrfdata_alu1_i(forward_rrfdata_alu1_out_rrf_in_i),
+
+        .forward_rrf_we_alu2_i (forward_rrf_we_alu2_out_rrf_in_i),
+        .forward_rrftag_alu2_i (forward_rrftag_RsAlu2_out_rrf_in_i),
+        .forward_rrfdata_alu2_i(forward_rrfdata_alu2_out_rrf_in_i),
+
+        .forward_rrf_we_ldst_i (forward_rrf_we_ldst_out_rrf_in_i),
+        .forward_rrftag_ldst_i (forward_rrftag_RsLdst_out_rrf_in_i),
+        .forward_rrfdata_ldst_i(forward_rrfdata_ldst_out_rrf_in_i),
+
+        .forward_rrf_we_mul_i (forward_rrf_we_mul_out_rrf_in_i),
+        .forward_rrftag_mul_i (forward_rrftag_RsMul_out_rrf_in_i),
+        .forward_rrfdata_mul_i(forward_rrfdata_mul_out_rrf_in_i),
+
+        .forward_rrf_we_branch_i (forward_rrf_we_branch_out_rrf_in_i),
+        .forward_rrftag_branch_i (forward_rrftag_RsBranch_out_rrf_in_i),
+        .forward_rrfdata_branch_i(forward_rrfdata_branch_out_rrf_in_i),
 
         .allocate_rrf_en_i(allocate_rrf_en_i),
         .allocate_rrftag_i(allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in),
@@ -132,5 +189,25 @@ module ReNameUnit (
         .nextrrfcyc_o(nextrrfcyc_o)
     );
 
+    RSRequestGen rs_request_gen (
+        .inst1_rs_type_i(inst1_RsType_decoder_out_RSRequestGen_in_i),
+        .inst2_rs_type_i(inst2_RsType_decoder_out_RSRequestGen_in_i),
+
+        .req1_alu_o  (req1_alu_o),
+        .req2_alu_o  (req2_alu_o),
+        .req_alunum_o(req_alunum_RSRequestGen_out_SWUnit_in_o),
+
+        .req1_branch_o  (req1_branch_o),
+        .req2_branch_o  (req2_branch_o),
+        .req_branchnum_o(req_branchnum_RSRequestGen_out_SWUnit_in_o),
+
+        .req1_mul_o  (req1_mul_o),
+        .req2_mul_o  (req2_mul_o),
+        .req_mulnum_o(req_mulnum_RSRequestGen_out_SWUnit_in_o),
+
+        .req1_ldst_o  (req1_ldst_o),
+        .req2_ldst_o  (req2_ldst_o),
+        .req_ldstnum_o(req_ldstnum_RSRequestGen_out_SWUnit_in_o)
+    );
 endmodule
 `default_nettype none

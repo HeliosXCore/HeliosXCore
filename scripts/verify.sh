@@ -7,6 +7,8 @@ make -j -C testbench/verilator/DP sim MODULE=SRCOPRMANAGER
 make -j -C testbench/verilator/DP sim MODULE=ARF
 make -j -C testbench/verilator/DP sim MODULE=RRF
 make -j -C testbench/verilator/DP sim MODULE=RRF_ALLO
+make -j -C testbench/verilator/DP sim MODULE=RSREQUESTGEN
+
 # Select and Wakeup Stage Modules
 make -j -C testbench/verilator/SW sim MODULE=AllocateUnit
 make -j -C testbench/verilator/SW sim MODULE=RSAluEntry
@@ -25,3 +27,4 @@ make -j sim STAGE=EX
 make -j sim STAGE=ROB
 
 make -j sim STAGE=IF
+

@@ -18,9 +18,25 @@ module Rrf (
 
 
     // 执行部件前递回来的执行结果
-    input wire forward_rrf_we_i,
-    input wire [`RRF_SEL-1:0] forward_rrftag_i,
-    input wire [`DATA_LEN-1:0] forward_rrfdata_i,
+    input wire forward_rrf_we_alu1_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_alu1_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_alu1_i,
+
+    input wire forward_rrf_we_alu2_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_alu2_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_alu2_i,
+
+    input wire forward_rrf_we_ldst_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_ldst_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_ldst_i,
+
+    input wire forward_rrf_we_mul_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_mul_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_mul_i,
+
+    input wire forward_rrf_we_branch_i,
+    input wire [`RRF_SEL-1:0] forward_rrftag_branch_i,
+    input wire [`DATA_LEN-1:0] forward_rrfdata_branch_i,
 
 
     // 为目的寄存器分配的空闲rrf enty
@@ -50,10 +66,17 @@ module Rrf (
     always @(posedge clk_i) begin
         if (reset_i) begin
             rrf_valid <= 0;
-        end else if (forward_rrf_we_i) begin
-            rrf_data[forward_rrftag_i]  <= forward_rrfdata_i;
-            rrf_valid[forward_rrftag_i] <= 1'b1;
+        end else begin
+            if (forward_rrf_we_alu1_i) begin
+                rrf_data[forward_rrftag_alu1_i]  <= forward_rrfdata_alu1_i;
+                rrf_valid[forward_rrftag_alu1_i] <= 1'b1;
+            end
+            if (forward_rrf_we_alu2_i) begin
+                rrf_data[forward_rrftag_alu2_i]  <= forward_rrfdata_alu2_i;
+                rrf_valid[forward_rrftag_alu2_i] <= 1'b1;
+            end
         end
+
     end
 
 
