@@ -9,7 +9,7 @@
 
 #include "VSrcOprManager.h"
 
-#define MAX_SIM_TIME 30
+#define MAX_SIM_TIME 300
 #define VERIF_START_TIME 7
 vluint64_t sim_time = 0;
 

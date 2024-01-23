@@ -58,6 +58,9 @@ int main(int argc, char **argv, char **env) {
         dut_reset(dut, sim_time);
         if ((sim_time % 5) == 0) {
             dut->clk_i = !dut->clk_i;
+            if (dut->clk_i == 1) {
+                posedge_cnt++;
+            }
         }
 
         dut->eval();
@@ -65,10 +68,9 @@ int main(int argc, char **argv, char **env) {
         vluint64_t rrftag_rand_1;
         vluint64_t rrftag_rand_2;
         if (dut->clk_i == 1) {
-            posedge_cnt++;
             vluint64_t tmp1_allocate_rrftag;
             vluint64_t tmp2_allocate_rrftag;
-            if (posedge_cnt == 2) {
+            if (posedge_cnt == 2 && sim_time == 10) {
                 assert(dut->rrf_allocatable_o == 1);
                 assert(dut->freenum_RrfEntryAllocate_out_rob_in_o == 64);
                 assert(dut->rrfptr_RrfEntryAllocate_out_rob_in_o == 0);
@@ -80,7 +82,7 @@ int main(int argc, char **argv, char **env) {
                 dut->allocate_rrf_en_i = 1;
 
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_ALU;
-            } else if (posedge_cnt == 3) {
+            } else if (posedge_cnt == 3 && sim_time == 20) {
                 tmp1_allocate_rrftag =
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
                 std::cout << tmp1_allocate_rrftag << std::endl;
@@ -107,10 +109,10 @@ int main(int argc, char **argv, char **env) {
                 dut->dst_en_setbusy_decoder_out_arf_in_i = 1;
                 dut->allocate_rrf_en_i = 1;
 
-            } else if (posedge_cnt == 4) {
+            } else if (posedge_cnt == 4 && sim_time == 30) {
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_LDST;
                 dut->rs1_decoder_out_arf_in_i = 2;
-            } else if (posedge_cnt == 5) {
+            } else if (posedge_cnt == 5 && sim_time == 40) {
                 tmp2_allocate_rrftag =
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
                 std::cout << tmp1_allocate_rrftag << std::endl;
@@ -135,10 +137,10 @@ int main(int argc, char **argv, char **env) {
 
                 assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
                 std::cout << "ReNameUnit Test 4 Pass!" << std::endl;
-            } else if (posedge_cnt == 6) {
+            } else if (posedge_cnt == 6 && sim_time == 50) {
                 dut->rs2_decoder_out_arf_in_i = 4;
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_MUL;
-            } else if (posedge_cnt == 7) {
+            } else if (posedge_cnt == 7 && sim_time == 60) {
                 vluint64_t tmp1 = dut->rdy1_srcopmanager_out_srcmanager_in_o;
                 vluint64_t tmp2 = dut->src1_srcopmanager_out_srcmanager_in_o;
                 std::cout << tmp1 << std::endl;
@@ -163,7 +165,7 @@ int main(int argc, char **argv, char **env) {
                 dut->src2_eq_zero_decoder_out_srcopmanager_in_i = 1;
 
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_BRANCH;
-            } else if (posedge_cnt == 8) {
+            } else if (posedge_cnt == 8 && sim_time == 70) {
                 assert(dut->src2_srcopmanager_out_srcmanager_in_o == 0);
                 assert(dut->rdy2_srcopmanager_out_srcmanager_in_o == 1);
                 assert(dut->rrf_allocatable_o == 1);

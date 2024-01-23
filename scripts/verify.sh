@@ -1,3 +1,5 @@
+set -e
+
 # Stage 1: Run the unit tests.
 # Fetch Stage Modules
 make -j -C testbench/verilator/IF sim MODULE=PipelineIF
