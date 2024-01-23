@@ -1,6 +1,6 @@
 #include "fmt/core.h"
 #include "verilator_tb.hpp"
-#include "VPipelinIF.h"
+#include "VPipelineIF.h"
 #include "VPipelineIF___024root.h"
 #include "error_handler.hpp"
 #include <iostream>
@@ -32,9 +32,10 @@ class VPipelineIFTb : public VerilatorTb<VPipelineIF> {
 
     void test1_verify() {
         if (sim_time == 55) {
-            ASSERT(dut->npc_o==0x000f404c,"npc error");
-            ASSERT(dut->inst1_o==0x26300100,"inst1 error");
-            
+            ASSERT(dut->npc_o == 0x000f404c, "npc error");
+            ASSERT(dut->inst1_o == 0x26300100, "inst1 error");
+            ASSERT(dut->npc_o == 0x000f404c, "npc error");
+            ASSERT(dut->inst1_o == 0x26300100, "inst1 error");
             fmt::println("PipelineIF test1 passed!");
         }
     }
@@ -48,9 +49,10 @@ class VPipelineIFTb : public VerilatorTb<VPipelineIF> {
 
     void test2_verify() {
         if (sim_time == 65) {
-            ASSERT(dut->npc_o==0x000f2624,"npc error");
-            ASSERT(dut->inst1_o==0xc2804365,"inst1 error");
-
+            ASSERT(dut->npc_o == 0x000f2624, "npc error");
+            ASSERT(dut->inst1_o == 0xc2804365, "inst1 error");
+            ASSERT(dut->npc_o == 0x000f2624, "npc error");
+            ASSERT(dut->inst1_o == 0xc2804365, "inst1 error");
             fmt::println("PipelineIF test2 passed!");
         }
     }
@@ -64,9 +66,8 @@ class VPipelineIFTb : public VerilatorTb<VPipelineIF> {
 
     void test3_verify() {
         if (sim_time == 75) {
-            ASSERT(dut->npc_o==0x000f071b,"npc error");
-            ASSERT(dut->inst1_o==0xffdff06f,"inst1 error");
-
+            ASSERT(dut->npc_o == 0x000f071b, "npc error");
+            ASSERT(dut->inst1_o == 0xffdff06f, "inst1 error");
             fmt::println("PipelineIF test3 passed!");
         }
     }
@@ -87,8 +88,8 @@ class VPipelineIFTb : public VerilatorTb<VPipelineIF> {
 int main(int argc, char **argv, char **env) {
     srand(time(NULL));
     Verilated::commandArgs(argc, argv);
-
-    std::shared_ptr<VPipelineIFTb> tb = std::make_shared<VPipelineIFTb>(5, 50, 1000);
+    std::shared_ptr<VPipelineIFTb> tb =
+        std::make_shared<VPipelineIFTb>(5, 50, 1000);
 
     tb->run("PipelineIF.vcd");
 }
