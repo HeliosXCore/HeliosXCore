@@ -44,15 +44,19 @@ int main(int argc, char **argv, char **env) {
 
     while (sim_time < MAX_SIM_TIME) {
         dut_reset(dut, sim_time);
-        dut->clk_i = !dut->clk_i;
+        if ((sim_time % 5) == 0) {
+            dut->clk_i = !dut->clk_i;
+            if (dut->clk_i == 1) {
+                posedge_cnt++;
+            }
+        }
 
         dut->eval();
 
         vluint64_t rrftag_rand_1;
         vluint64_t rrftag_rand_2;
         if (dut->clk_i == 1) {
-            posedge_cnt++;
-            if (posedge_cnt == 2) {
+            if (posedge_cnt == 2 && sim_time == 10) {
                 assert(dut->rs1_rrfvalid_o == 0);
                 assert(dut->rs2_rrfvalid_o == 0);
                 std::cout << "Rrf Test 1 Pass!" << std::endl;
@@ -63,43 +67,43 @@ int main(int argc, char **argv, char **env) {
                 /* dut->rs1_rrftag_i = rrftag_rand_1; */
                 /* rrftag_rand_2 = rand() % 64; */
                 /* dut->rs2_rrftag_i = rrftag_rand_2; */
-            } else if (posedge_cnt == 3) {
+            } else if (posedge_cnt == 3 && sim_time == 20) {
                 dut->rs1_rrftag_i = rrftag_rand_1;
 
                 rrftag_rand_2 = rand() % 64;
                 dut->allocate_rrf_en_i = 1;
                 dut->allocate_rrftag_i = rrftag_rand_2;
-            } else if (posedge_cnt == 4) {
+            } else if (posedge_cnt == 4 && sim_time == 30) {
                 assert(dut->rs1_rrfvalid_o == 0);
                 std::cout << "Rrf Test 2 Pass!" << std::endl;
 
                 dut->rs2_rrftag_i = rrftag_rand_2;
-            } else if (posedge_cnt == 5) {
+            } else if (posedge_cnt == 5 && sim_time == 40) {
                 assert(dut->rs2_rrfvalid_o == 0);
                 std::cout << "Rrf Test 3 Pass!" << std::endl;
 
                 dut->forward_rrf_we_alu1_i = 1;
                 dut->forward_rrftag_alu1_i = rrftag_rand_1;
                 dut->forward_rrfdata_alu1_i = 11;
-            } else if (posedge_cnt == 6) {
+            } else if (posedge_cnt == 6 && sim_time == 50) {
                 dut->rs1_rrftag_i = rrftag_rand_1;
 
                 dut->forward_rrf_we_alu1_i = 1;
                 dut->forward_rrftag_alu1_i = rrftag_rand_2;
                 dut->forward_rrfdata_alu1_i = 12;
-            } else if (posedge_cnt == 7) {
+            } else if (posedge_cnt == 7 && sim_time == 60) {
                 assert(dut->rs1_rrfdata_o == 11);
                 assert(dut->rs1_rrfvalid_o == 1);
                 std::cout << "Rrf Test 4 Pass!" << std::endl;
 
                 dut->rs2_rrftag_i = rrftag_rand_2;
-            } else if (posedge_cnt == 8) {
+            } else if (posedge_cnt == 8 && sim_time == 70) {
                 assert(dut->rs2_rrfdata_o == 12);
                 assert(dut->rs2_rrfvalid_o == 1);
                 std::cout << "Rrf Test 5 Pass!" << std::endl;
 
                 dut->completed_dst_rrftag_i = rrftag_rand_2;
-            } else if (posedge_cnt == 9) {
+            } else if (posedge_cnt == 9 && sim_time == 80) {
                 assert(dut->data_to_arfdata_o == 12);
                 std::cout << "Rrf Test 6 Pass!" << std::endl;
             }

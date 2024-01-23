@@ -1,4 +1,8 @@
+set -e
+
 # Stage 1: Run the unit tests.
+# Fetch Stage Modules
+make -j -C testbench/verilator/IF sim MODULE=PipelineIF
 # Decode Stage Modules
 make -j -C testbench/verilator/ID sim MODULE=ImmDecoder
 make -j -C testbench/verilator/ID sim MODULE=Decoder
@@ -16,6 +20,7 @@ make -j -C testbench/verilator/SW sim MODULE=RSAlu
 make -j -C testbench/verilator/EX sim MODULE=StoreBuffer
 
 # Stage 2: Run the pipeline stage tests.
+make -j sim STAGE=IF
 make -j sim STAGE=ID
 make -j sim STAGE=DP
 make -j sim STAGE=SW

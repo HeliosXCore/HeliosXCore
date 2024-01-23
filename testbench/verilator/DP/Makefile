@@ -10,7 +10,7 @@ TEST 	  ?=
 TESTBENCH ?=
 WAVE 	  ?=
 
-MODULE ?=RSREQUESTGEN
+MODULE ?= RSREQUESTGEN
 ifeq ($(MODULE), SRCOPRMANAGER)
 	TEST := SrcOprManager
 	TESTBENCH := DP/src_opr_manager_tb
@@ -33,7 +33,7 @@ else ifeq ($(MODULE), RSREQUESTGEN)
 	WAVE := rs_request_gen.vcd
 endif
 
-# CFLAGS	:= -Wall 
+CFLAGS      := 
 VIGNOREW 	:= 
 VINCULDES	:= -I../../../rtl/ -I../../../rtl/core/DP/
 VFLAGS 		:= --trace --x-assign unique --x-initial unique $(VIGNOREW) $(VINCULDES)
@@ -46,14 +46,19 @@ VFormater := verible-verilog-format
 FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
 VSRC 	  := $(shell find ../../../rtl -name "*.v")
 
+DEBUG ?= N
+ifeq ($(DEBUG), Y)
+	CFLAGS += -CFLAGS -DDEBUG
+endif
+
 .PHONY: sim wave clean format
 
 cc:
-	@$(VERILATOR) $(VFLAGS) -cc $(RTLD)/$(TEST).v -Mdir $(RTLOBJD)
+	@$(VERILATOR) $(CFLAGS) $(VFLAGS) -cc $(RTLD)/$(TEST).v -Mdir $(RTLOBJD)
 
 sim: 
 	@mkdir -p $(RTLOBJD)
-	@$(VERILATOR) $(VFLAGS) -cc $(RTLD)/$(TEST).v $(LDFLAGS) \
+	@$(VERILATOR) $(CFLAGS) $(VFLAGS) -cc $(RTLD)/$(TEST).v $(LDFLAGS) \
 		--public \
 		--exe $(TESTBENCHD)/$(TESTBENCH).cpp $(IFLGAS) $(MACRO_FLAGS) -Mdir $(RTLOBJD)
 	@make -C $(RTLOBJD) -f V$(TEST).mk V$(TEST)
