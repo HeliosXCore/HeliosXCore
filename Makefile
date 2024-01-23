@@ -13,6 +13,8 @@ else ifeq ($(STAGE), EX)
 include testbench/verilator/EX/ex.mk
 else ifeq ($(STAGE), ID)
 include testbench/verilator/ID/id.mk
+else ifeq($(STAGE), IF)
+include testbench/verilator/IF/if.mk
 endif
 
 DEBUG ?= N
