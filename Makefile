@@ -13,6 +13,8 @@ else ifeq ($(STAGE), EX)
 include testbench/verilator/EX/ex.mk
 else ifeq ($(STAGE), ID)
 include testbench/verilator/ID/id.mk
+else ifeq ($(STAGE), IF)
+include testbench/verilator/IF/if.mk
 endif
 
 DEBUG ?= N
@@ -74,4 +76,4 @@ lint:
 		rtl/core/DP/Rrf.v rtl/core/DP/RrfEntryAllocate.v rtl/core/DP/SrcOprManager.v \
 		rtl/core/DP/SyncRAM.v rtl/core/DP/ReNameUnit.v rtl/core/DP/RSRequestGen.v
 	@verilator --lint-only -Irtl rtl/core/ID/ImmDecoder.v rtl/core/ID/Decoder.v rtl/core/ID/IDUnit.v
-
+  @verilator --lint-only -Irtl rtl/core/IF/PipelineIF.v rtl/core/IF/IFUnit.v
