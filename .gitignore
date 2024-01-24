@@ -3,3 +3,5 @@
 *.vcd
 tags
 .DS_Store
+*.json
+*.tags

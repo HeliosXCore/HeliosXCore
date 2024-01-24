@@ -13,6 +13,9 @@ module ReNameUnit (
     output wire [`RRF_SEL:0] freenum_RrfEntryAllocate_out_rob_in_o,
     output wire [`RRF_SEL-1:0] rrfptr_RrfEntryAllocate_out_rob_in_o,
     output wire nextrrfcyc_o,
+    // 为dst分配的重命名寄存器的rrftag
+    output wire [`RRF_SEL-1:0] dst_rrftag_o,
+    output wire dst_en_o,
 
     input wire [1:0] com_inst_num_rob_out_RrfEntryAllocate_in_i,
     input wire [`REG_SEL-1:0] completed_dstnum_rob_out_arf_in_i,
@@ -76,6 +79,8 @@ module ReNameUnit (
     output wire    req2_ldst_o,
     output wire [1:0]   req_ldstnum_RSRequestGen_out_SWUnit_in_o
 );
+    // decoder传递来的dst使能信号，表示是否需要写回dst
+    assign dst_en_o = dst_en_setbusy_decoder_out_arf_in_i;
 
     wire [`DATA_LEN-1:0] rs1_arfdata_arf_out_srcopmanager_in;
     wire [`DATA_LEN-1:0] rs2_arfdata_arf_out_srcopmanager_in;
@@ -87,7 +92,14 @@ module ReNameUnit (
     wire [`DATA_LEN-1:0] from_rrfdata_rrf_out_arf_in;
 
 
+    reg [`RRF_SEL-1:0] dst_rrftag;
     wire [`RRF_SEL-1:0] allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in;
+    assign dst_rrftag_o = dst_rrftag;
+
+    always @(posedge clk_i) begin
+        dst_rrftag <= allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in;
+    end
+
     Arf arf (
         .clk_i  (clk_i),
         .reset_i(reset_i),
