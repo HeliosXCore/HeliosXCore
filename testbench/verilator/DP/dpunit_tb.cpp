@@ -92,7 +92,6 @@ int main(int argc, char **argv, char **env) {
 
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_ALU;
             } else if (posedge_cnt == 3 && sim_time == 20) {
-            } else if (posedge_cnt == 3 && sim_time == 20) {
                 tmp1_allocate_rrftag =
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
 
@@ -126,10 +125,8 @@ int main(int argc, char **argv, char **env) {
                 dut->allocate_rrf_en_i = 1;
 
             } else if (posedge_cnt == 4 && sim_time == 30) {
-            } else if (posedge_cnt == 4 && sim_time == 30) {
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_LDST;
                 dut->rs1_decoder_out_arf_in_i = 2;
-            } else if (posedge_cnt == 5 && sim_time == 40) {
             } else if (posedge_cnt == 5 && sim_time == 40) {
                 tmp2_allocate_rrftag =
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
@@ -167,7 +164,6 @@ int main(int argc, char **argv, char **env) {
             } else if (posedge_cnt == 6 && sim_time == 50) {
                 dut->rs2_decoder_out_arf_in_i = 4;
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_MUL;
-            } else if (posedge_cnt == 7 && sim_time == 60) {
             } else if (posedge_cnt == 7 && sim_time == 60) {
                 vluint64_t tmp1 = dut->rdy1_srcopmanager_out_srcmanager_in_o;
                 vluint64_t tmp2 = dut->src1_srcopmanager_out_srcmanager_in_o;
