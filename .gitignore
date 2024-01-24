@@ -3,3 +3,6 @@
 *.vcd
 tags
 .DS_Store
+*.json
+.gitignore
+*.tags

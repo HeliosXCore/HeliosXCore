@@ -1,7 +1,9 @@
+#include <cstdio>
 #include <cstdlib>
 #include <memory>
 #include <sys/types.h>
 #include <verilated.h>
+
 #include <verilated_vcd_c.h>
 
 #include <stdlib.h>
@@ -71,11 +73,15 @@ int main(int argc, char **argv, char **env) {
             vluint64_t tmp1_allocate_rrftag;
             vluint64_t tmp2_allocate_rrftag;
             if (posedge_cnt == 2 && sim_time == 10) {
+#ifndef DEBUG
+                assert(dut->dst_en_o == 0);
+
                 assert(dut->rrf_allocatable_o == 1);
                 assert(dut->freenum_RrfEntryAllocate_out_rob_in_o == 64);
                 assert(dut->rrfptr_RrfEntryAllocate_out_rob_in_o == 0);
                 assert(dut->nextrrfcyc_o == 0);
                 std::cout << "ReNameUnit Test 1 Pass!" << std::endl;
+#endif  // !DEBUG
 
                 dut->dstnum_setbusy_decoder_out_arf_in_i = 2;
                 dut->dst_en_setbusy_decoder_out_arf_in_i = 1;
@@ -85,7 +91,12 @@ int main(int argc, char **argv, char **env) {
             } else if (posedge_cnt == 3 && sim_time == 20) {
                 tmp1_allocate_rrftag =
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
-                std::cout << tmp1_allocate_rrftag << std::endl;
+
+#ifndef DEBUG
+                assert(dut->dst_en_o == 1);
+
+                printf("dut->dst_rrftag_o:%u\n", dut->dst_rrftag_o);
+                assert(dut->dst_rrftag_o == 0);
 
                 assert(dut->rrfptr_RrfEntryAllocate_out_rob_in_o == 1);
                 assert(dut->rrf_allocatable_o == 1);
@@ -100,6 +111,7 @@ int main(int argc, char **argv, char **env) {
                 assert(dut->req1_mul_o == 0);
                 assert(dut->req_mulnum_RSRequestGen_out_SWUnit_in_o == 0);
                 std::cout << "ReNameUnit Test 2 Pass!" << std::endl;
+#endif
 
                 dut->forward_rrf_we_alu1_out_rrf_in_i = 1;
                 dut->forward_rrftag_RsAlu1_out_rrf_in_i = tmp1_allocate_rrftag;
@@ -117,6 +129,12 @@ int main(int argc, char **argv, char **env) {
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
                 std::cout << tmp1_allocate_rrftag << std::endl;
 
+#ifndef DEBUG
+                assert(dut->dst_en_o == 1);
+
+                printf("dut->dst_rrftag_o:%u\n", dut->dst_rrftag_o);
+                assert(dut->dst_rrftag_o == 2);
+
                 assert(dut->rrfptr_RrfEntryAllocate_out_rob_in_o == 3);
                 assert(dut->rrf_allocatable_o == 1);
                 assert(dut->freenum_RrfEntryAllocate_out_rob_in_o == 61);
@@ -130,13 +148,16 @@ int main(int argc, char **argv, char **env) {
                 assert(dut->req1_mul_o == 0);
                 assert(dut->req_mulnum_RSRequestGen_out_SWUnit_in_o == 0);
                 std::cout << "ReNameUnit Test 3 Pass!" << std::endl;
+#endif
 
                 dut->forward_rrf_we_alu1_out_rrf_in_i = 1;
                 dut->forward_rrftag_RsAlu1_out_rrf_in_i = tmp2_allocate_rrftag;
                 dut->forward_rrfdata_alu1_out_rrf_in_i = 16;
 
+#ifndef DEBUG
                 assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
                 std::cout << "ReNameUnit Test 4 Pass!" << std::endl;
+#endif
             } else if (posedge_cnt == 6 && sim_time == 50) {
                 dut->rs2_decoder_out_arf_in_i = 4;
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_MUL;
@@ -145,6 +166,7 @@ int main(int argc, char **argv, char **env) {
                 vluint64_t tmp2 = dut->src1_srcopmanager_out_srcmanager_in_o;
                 std::cout << tmp1 << std::endl;
                 std::cout << tmp2 << std::endl;
+#ifndef DEBUG
                 assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
                 assert(dut->src1_srcopmanager_out_srcmanager_in_o == 13);
 
@@ -157,6 +179,7 @@ int main(int argc, char **argv, char **env) {
                 assert(dut->req1_mul_o == 1);
                 assert(dut->req_mulnum_RSRequestGen_out_SWUnit_in_o == 1);
                 std::cout << "RenameUnit Test 5 Pass!" << std::endl;
+#endif
 
                 dut->completed_dstnum_rob_out_arf_in_i = 2;
                 dut->completed_we_rob_out_arf_in_i = 1;
@@ -166,6 +189,7 @@ int main(int argc, char **argv, char **env) {
 
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_BRANCH;
             } else if (posedge_cnt == 8 && sim_time == 70) {
+#ifndef DEBUG
                 assert(dut->src2_srcopmanager_out_srcmanager_in_o == 0);
                 assert(dut->rdy2_srcopmanager_out_srcmanager_in_o == 1);
                 assert(dut->rrf_allocatable_o == 1);
@@ -179,6 +203,7 @@ int main(int argc, char **argv, char **env) {
                 assert(dut->req1_mul_o == 0);
                 assert(dut->req_mulnum_RSRequestGen_out_SWUnit_in_o == 0);
                 std::cout << "RenameUnit Test 6 Pass!" << std::endl;
+#endif
             }
         }
 
