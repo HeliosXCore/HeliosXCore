@@ -3,18 +3,22 @@ VERILATOR := verilator
 STAGE ?= SW
 
 RTLOBJD	:= build
-ifeq ($(STAGE), SW)
-include testbench/verilator/SW/sw.mk
-else ifeq ($(STAGE), ROB)
-include testbench/verilator/ROB/rob.mk
-else ifeq ($(STAGE), DP)
-include testbench/verilator/DP/dp.mk
-else ifeq ($(STAGE), EX)
-include testbench/verilator/EX/ex.mk
+
+
+ifeq ($(STAGE), IF)
+include testbench/verilator/IF/if.mk
 else ifeq ($(STAGE), ID)
 include testbench/verilator/ID/id.mk
-else ifeq ($(STAGE), IF)
-include testbench/verilator/IF/if.mk
+else ifeq ($(STAGE), DP)
+include testbench/verilator/DP/dp.mk
+else ifeq ($(STAGE), SW)
+include testbench/verilator/SW/sw.mk
+else ifeq ($(STAGE), EX)
+include testbench/verilator/EX/ex.mk
+else ifeq ($(STAGE), ROB)
+include testbench/verilator/ROB/rob.mk
+else ifeq ($(STAGE), PIPELINE)
+include testbench/verilator/heliosx.mk
 endif
 
 DEBUG ?= N
