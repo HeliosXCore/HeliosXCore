@@ -1,6 +1,6 @@
 `include "consts/ALU.vh"
 `include "consts/Consts.vh"
-`include "consts/Opcodes.vh"
+`include "consts/RV32Opcodes.vh"
 
 module BranchUnit (
     (* IO_BUFFER_TYPE = "none" *) input wire clk_i,
@@ -50,7 +50,7 @@ module BranchUnit (
         end
     end
 
-    ALU comparator (
+    Alu comparator (
         .op (alu_op_i),
         .in1(src1_i),
         .in2(src2_i),

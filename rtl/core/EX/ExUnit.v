@@ -1,6 +1,6 @@
 `include "consts/Consts.vh"
 `include "consts/ALU.vh"
-`include "consts/Opcodes.vh"
+`include "consts/RV32Opcodes.vh"
 
 module ExUnit (
     (* IO_BUFFER_TYPE = "none" *) input wire clk_i,

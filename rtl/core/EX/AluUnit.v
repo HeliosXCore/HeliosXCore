@@ -51,7 +51,7 @@ module AluUnit (
         .alu_src_b(src_b)
     );
 
-    ALU alu (
+    Alu alu (
         .op (alu_op_i),
         .in1(src_a),
         .in2(src_b),

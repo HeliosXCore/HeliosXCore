@@ -65,15 +65,6 @@ clean:
 	@rm *.vcd
 
 lint:
-	@verilator --lint-only -Irtl rtl/core/SW/SourceManager.v rtl/core/SW/RSAluEntry.v \
-			rtl/core/SW/RSAlu.v rtl/core/SW/OldestFinder.v rtl/core/SW/AllocateUnit.v \
-			rtl/core/SW/RSAccessMemEntry.v rtl/core/SW/RSAccessMem.v rtl/core/SW/InorderAllocIssueUnit.v \
-			rtl/core/SW/Searcher.v rtl/core/SW/SwUnit.v 
-	@verilator --lint-only -Irtl rtl/core/EX/*.v
-	@verilator --lint-only -Irtl rtl/core/COM/SingleInstROB.v
-	@verilator --lint-only -Irtl rtl/core/COM/ROB.v
-	@verilator --lint-only -Irtl rtl/core/DP/Arf.v  \
-		rtl/core/DP/Rrf.v rtl/core/DP/RrfEntryAllocate.v rtl/core/DP/SrcOprManager.v \
-		rtl/core/DP/SyncRAM.v rtl/core/DP/ReNameUnit.v rtl/core/DP/RSRequestGen.v
-	@verilator --lint-only -Irtl rtl/core/ID/ImmDecoder.v rtl/core/ID/Decoder.v rtl/core/ID/IDUnit.v
+	@verilator --lint-only -Irtl rtl/core/IF/*.v rtl/core/ID/*.v rtl/core/DP/*.v \
+	rtl/core/SW/*.v rtl/core/EX/*.v rtl/core/COM/SingleInstROB.v rtl/HeliosX.v
 
