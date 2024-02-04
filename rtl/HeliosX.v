@@ -5,7 +5,8 @@ module HeliosX (
     input wire clk_i,
     input wire reset_i,
 
-    output reg [`ADDR_LEN-1:0] pc_o,
+    // output reg [`ADDR_LEN-1:0] pc_o,
+    output wire [`ADDR_LEN-1:0] iaddr_o,
 
     input wire [2*`INSN_LEN-1:0] idata_i,
 
@@ -145,6 +146,14 @@ module HeliosX (
     wire arfwe_1;
     wire [`REG_SEL-1:0] dst_arf_1;
 
+    // always @(posedge clk_i) begin
+    //     if(reset_i)begin
+    //         pc_o <= `ENTRY_POINT;
+    //     end else begin
+    //         pc_o <= npc;
+    //     end
+    // end
+
 
     //IF stage
     IFUnit u_IFUnit (
@@ -152,8 +161,6 @@ module HeliosX (
         .clk_i(clk_i),
         .reset_i(reset_i),
         .idata_i(idata_i),
-        //需要给定pc初始化
-        .pc_i(),
         .stall_IF(stall_IF),
         .kill_IF(stall_IF),
         .stall_ID(stall_ID),
@@ -163,8 +170,8 @@ module HeliosX (
 
         //output
         .npc_o  (npc),
-        .inst1_o(inst1)
-
+        .inst1_o(inst1),
+        .iaddr_o(iaddr_o)
     );
 
 
