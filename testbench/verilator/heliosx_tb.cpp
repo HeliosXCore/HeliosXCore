@@ -1,6 +1,6 @@
 #include "error_handler.hpp"
 #include "verilator_tb.hpp"
-#include "mem_sim.h"
+#include "mem_sim.hpp"
 #include "consts.hpp"
 #include "VHeliosX.h"
 #include "VHeliosX___024root.h"
