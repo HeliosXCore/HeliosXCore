@@ -4,7 +4,7 @@
 module IFUnit (
     input wire    clk_i,
     input wire    reset_i,
-    input wire [2*`INSN_LEN-1:0] idata_i,
+    input wire    [`INSN_LEN-1:0] idata_i,
     input wire    stall_IF,
     input wire    kill_IF,
     input wire    stall_ID,
@@ -12,19 +12,19 @@ module IFUnit (
     input wire    stall_DP,
     input wire    kill_DP,
 
-    output reg [`ADDR_LEN-1:0] npc_o,
-    output reg [`INSN_LEN-1:0] inst1_o,
+    output reg  [`ADDR_LEN-1:0] npc_o,
+    output reg  [`INSN_LEN-1:0] inst_o,
     output wire [`ADDR_LEN-1:0] iaddr_o
 );
 
     wire [`ADDR_LEN-1:0] npc;
-    wire [`INSN_LEN-1:0] inst1;
+    wire [`INSN_LEN-1:0] inst;
 
     reg  [`ADDR_LEN-1:0] pc_if;
     reg  [`ADDR_LEN-1:0] pc;
 
     always @(posedge clk_i) begin
-        if(reset_i)begin
+        if (reset_i) begin
             pc <= `ENTRY_POINT;
         end else begin
             pc <= npc;
@@ -46,18 +46,18 @@ module IFUnit (
         .reset_i(reset_i),
         .pc_i(pc),
         .npc_o(npc),
-        .inst1_o(inst1),
+        .inst_o(inst),
         .idata_i(idata_i)
     );
 
     always @(posedge clk_i) begin
         if (reset_i | kill_IF) begin
-            pc_if   <= 0;
-            inst1_o <= 0;
+            pc_if  <= 0;
+            inst_o <= 0;
 
         end else if (~stall_IF) begin
-            pc_if   <= pc;
-            inst1_o <= inst1;
+            pc_if  <= pc;
+            inst_o <= inst;
         end
     end
 

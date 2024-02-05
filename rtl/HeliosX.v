@@ -8,14 +8,14 @@ module HeliosX (
     // output reg [`ADDR_LEN-1:0] pc_o,
     output wire [`ADDR_LEN-1:0] iaddr_o,
 
-    input wire [2*`INSN_LEN-1:0] idata_i,
+    input wire [`INSN_LEN-1:0] idata_i,
 
     output wire dmem_we_o,
     output wire [`DATA_LEN-1:0] dmem_wdata_o,
     output wire [`ADDR_LEN-1:0] dmem_waddr_o,
     output wire [`ADDR_LEN-1:0] dmem_raddr_o,
     input wire [`DATA_LEN-1:0] dmem_rdata_i
-    
+
 );
 
     //暂停信号、kill信号
@@ -38,7 +38,7 @@ module HeliosX (
 
     //IF阶段传出的信号
     wire [`ADDR_LEN-1:0] npc;
-    wire [`INSN_LEN-1:0] inst1;
+    wire [`INSN_LEN-1:0] inst;
 
     //ID阶段传出的信号
     wire [`IMM_TYPE_WIDTH-1:0] imm_type_1;
@@ -171,7 +171,7 @@ module HeliosX (
 
         //output
         .npc_o  (npc),
-        .inst1_o(inst1),
+        .inst_o(inst),
         .iaddr_o(iaddr_o)
     );
 
@@ -182,7 +182,7 @@ module HeliosX (
     //ID stage
     IDUnit u_IDUnit (
         //input
-        .inst1_i(inst1),
+        .inst1_i(inst),
         .clk_i(clk_i),
         .reset_i(reset_i),
         .stall_IF(stall_IF),
