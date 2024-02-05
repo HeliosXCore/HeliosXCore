@@ -20,24 +20,15 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
         Instruction inst_o;
         uint32_t inst_value_o;
 
-        if (sim_time % 10 == 0) {
-            mem->fetch(1, dut->iaddr_o, inst_o, inst_value_o);
-        }
-
         if (sim_time == 100) {
             dut->reset_i = 0;
-            fmt::println("sim_time: {}, inst_o: {:#x}, iaddr_o: {:#x}",
-                         sim_time, inst_o.instructions[0], dut->iaddr_o);
-            dut->idata_i = static_cast<uint64_t>(inst_o.instructions[1]) << 32 |
-                           inst_o.instructions[0];
-        } else if (sim_time == 110) {
-            fmt::println("sim_time: {}, inst_o: {:#x}, iaddr_o: {:#x}",
-                         sim_time, inst_o.instructions[0], dut->iaddr_o);
-            dut->idata_i = static_cast<uint64_t>(inst_o.instructions[1]) << 32 |
-                           inst_o.instructions[0];
-        } else if (sim_time == 120) {
-            fmt::println("sim_time: {}, inst_o: {:#x}, iaddr_o: {:#x}",
-                         sim_time, inst_o.instructions[0], dut->iaddr_o);
+        }
+
+        if (sim_time % 10 == 0) {
+            mem->fetch(1, dut->iaddr_o, inst_o, inst_value_o);
+            fmt::println(
+                "sim_time: {}, inst_o: {:#x}, inst_value_o: {}, iaddr_o: {:#x}",
+                sim_time, inst_o.instructions[0], inst_value_o, dut->iaddr_o);
             dut->idata_i = static_cast<uint64_t>(inst_o.instructions[1]) << 32 |
                            inst_o.instructions[0];
         }
@@ -68,12 +59,14 @@ int main(int argc, char **argv, char **env) {
         0x00860433,  // add s0, a2, s0
         0x3a100713,  // li a4, 929
         0x01600793,  // li a5, 22
-        0x00f70533,  // add a0, a4, a5
+        0x00f70533   // add a0, a4, a5
     };
 
     std::shared_ptr<Memory> mem = std::make_shared<Memory>(0, 0x10000);
-    mem->load(0, (const char *)img, sizeof(img) * sizeof(uint32_t));
-
+    mem->load(0, (const char *)img, sizeof(img));
+    for (int i = 0; i < sizeof(img); i += 4) {
+        fmt::println("mem[{}]: {:#x}", i, mem.get()->operator[](i));
+    }
     srand(time(NULL));
     Verilated::commandArgs(argc, argv);
 

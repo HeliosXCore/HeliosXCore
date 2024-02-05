@@ -14,7 +14,8 @@ class Memory {
    public:
     Memory(uint32_t base_addr, uint32_t size)
         : base_addr(base_addr), size(size) {
-        mem = std::make_unique<char>(size);
+        mem = std::make_unique<char[]>(size);
+        memset(mem.get(), 0, size);
         next_ack = 0;
         next_data = 0;
     }
@@ -30,11 +31,11 @@ class Memory {
             in.close();
         }
     }
+
     void load(uint32_t addr, const char *buf, size_t n) {
-        for (int i = 0; i < n; i++) {
-            auto ptr = mem.get();
-            ptr[addr + i - base_addr] = buf[i];
-        }
+        auto ptr = mem.get();
+        memcpy(ptr + addr - base_addr, buf, n);
+        size = n;
     }
 
     void apply(uint32_t wb_cycle, uint32_t wb_we, uint32_t wb_addr,
@@ -101,7 +102,7 @@ class Memory {
         return *(uint32_t *)(mem.get() + addr - base_addr);
     }
 
-    std::unique_ptr<char> mem;
+    std::unique_ptr<char[]> mem;
     uint32_t base_addr;
     uint32_t size;
     int next_ack;
