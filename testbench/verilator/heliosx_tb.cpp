@@ -13,7 +13,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
     void initialize_signal() override {
         dut->reset_i = 1;
         dut->idata_i = 0;
-        dut->dmem_data_i = 0;
+        dut->dmem_rdata_i = 0;
     }
 
     void input() override {

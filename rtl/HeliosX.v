@@ -10,11 +10,12 @@ module HeliosX (
 
     input wire [2*`INSN_LEN-1:0] idata_i,
 
-    output wire [`DATA_LEN-1:0] dmem_wdata_o,
     output wire dmem_we_o,
-    output wire [`ADDR_LEN-1:0] dmem_addr_o,
-
-    input wire [`DATA_LEN-1:0] dmem_data_i
+    output wire [`DATA_LEN-1:0] dmem_wdata_o,
+    output wire [`ADDR_LEN-1:0] dmem_waddr_o,
+    output wire [`ADDR_LEN-1:0] dmem_raddr_o,
+    input wire [`DATA_LEN-1:0] dmem_rdata_i
+    
 );
 
     //暂停信号、kill信号
@@ -408,14 +409,14 @@ module HeliosX (
         .mem_access_if_write_rrf_i(exe_mem_dst_val),
         .mem_access_issue_i(exe_mem_issue),
         .mem_access_complete_i(),
-        .mem_access_load_data_from_data_memory_i(dmem_data_i),
+        .mem_access_load_data_from_data_memory_i(dmem_rdata_i),
         .mem_access_rrf_tag_i(exe_mem_rrf_tag),
         // MemAccess 输出
         .mem_access_rrf_we_o(mem_access_rrf_we),
         .mem_access_rob_we_o(),
-        .mem_access_load_address_o(),
+        .mem_access_load_address_o(dmem_raddr_o),
         .mem_access_store_buffer_mem_we_o(dmem_we_o),
-        .mem_access_store_buffer_write_address_o(dmem_addr_o),
+        .mem_access_store_buffer_write_address_o(dmem_waddr_o),
         .mem_access_store_buffer_write_data_o(dmem_wdata_o),
         .mem_access_load_data_o(mem_access_load_data),
         .mem_access_rrf_tag_o(mem_access_rrf_tag)
