@@ -19,26 +19,43 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
     void input() override {
         Instruction inst_o;
         uint32_t inst_value_o;
+
+        if (sim_time % 10 == 0) {
+            mem->fetch(1, dut->iaddr_o, inst_o, inst_value_o);
+        }
+
         if (sim_time == 100) {
             dut->reset_i = 0;
-            mem->fetch(1, dut->iaddr_o, inst_o, inst_value_o);
-            ASSERT(inst_o.instructions[0] == 0, "inst_o error");
+            fmt::println("sim_time: {}, inst_o: {:#x}, iaddr_o: {:#x}",
+                         sim_time, inst_o.instructions[0], dut->iaddr_o);
+            dut->idata_i = static_cast<uint64_t>(inst_o.instructions[1]) << 32 |
+                           inst_o.instructions[0];
         } else if (sim_time == 110) {
-            mem->fetch(1, dut->iaddr_o, inst_o, inst_value_o);
-            fmt::println("inst_o: {:#x}, iaddr_o: {:#x}",
-                         inst_o.instructions[0], dut->iaddr_o);
+            fmt::println("sim_time: {}, inst_o: {:#x}, iaddr_o: {:#x}",
+                         sim_time, inst_o.instructions[0], dut->iaddr_o);
             dut->idata_i = static_cast<uint64_t>(inst_o.instructions[1]) << 32 |
                            inst_o.instructions[0];
         } else if (sim_time == 120) {
-            mem->fetch(1, dut->iaddr_o, inst_o, inst_value_o);
-            fmt::println("inst_o: {:#x}, iaddr_o: {:#x}",
-                         inst_o.instructions[0], dut->iaddr_o);
+            fmt::println("sim_time: {}, inst_o: {:#x}, iaddr_o: {:#x}",
+                         sim_time, inst_o.instructions[0], dut->iaddr_o);
             dut->idata_i = static_cast<uint64_t>(inst_o.instructions[1]) << 32 |
                            inst_o.instructions[0];
         }
     }
 
-    void verify_dut() override {}
+    void verify_dut() override {
+        if (sim_time == 115) {
+            // sim_time 110: 00000413
+            ASSERT(dut->rootp->HeliosX__DOT__imm_1 == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__imm_1);
+        } else if (sim_time == 125) {
+            // sim_time 120: 74300613
+            ASSERT(dut->rootp->HeliosX__DOT__imm_1 == 1859,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__imm_1);
+        }
+    }
 
    protected:
     std::shared_ptr<Memory> mem;

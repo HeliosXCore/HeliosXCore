@@ -89,7 +89,11 @@ class Memory {
         next_ack = 0;
         if (cycle) {
             next_ack = 1;
-            next_inst = *(Instruction *)(mem.get() + pc - base_addr);
+            if (pc - base_addr < size) {
+                next_inst = *(Instruction *)(mem.get() + pc - base_addr);
+            } else {
+                next_inst = {0};
+            }
         }
     }
 
