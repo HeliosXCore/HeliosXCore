@@ -52,7 +52,214 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
         }
     }
 
-    void dispatch_test() {}
+    void dispatch_test() {
+        if (sim_time == 135) {
+            // sim_time 110: 00000413
+            ASSERT(dut->rootp->HeliosX__DOT__rrf_allocatable == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            // 下面这个信号，应当是要传给ROB的
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
+                    63,
+                "sim_time: {} Error Imm Type {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in);
+
+            ASSERT(dut->rootp->HeliosX__DOT__nextrrfcyc == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__nextrrfcyc);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_en == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in);
+
+            ASSERT(dut->rootp->HeliosX__DOT__req1_alu == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__req1_alu);
+
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in);
+        } else if (sim_time == 145) {
+            // sim_time 120: 74300613
+            // li a2, 1859
+            ASSERT(dut->rootp->HeliosX__DOT__rrf_allocatable == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            // 下面这个信号，应当是要传给ROB的
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
+                    62,
+                "sim_time: {} Error Imm Type {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in ==
+                    2,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in);
+
+            ASSERT(dut->rootp->HeliosX__DOT__nextrrfcyc == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__nextrrfcyc);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_en == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in);
+
+            ASSERT(dut->rootp->HeliosX__DOT__req1_alu == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__req1_alu);
+
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in);
+        } else if (sim_time == 155) {
+            // sim_time 130: 00860433
+            ASSERT(dut->rootp->HeliosX__DOT__rrf_allocatable == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            // 下面这个信号，应当是要传给ROB的
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
+                    61,
+                "sim_time: {} Error Imm Type {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in ==
+                    3,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in);
+
+            ASSERT(dut->rootp->HeliosX__DOT__nextrrfcyc == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__nextrrfcyc);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 2,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_en == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in);
+
+            ASSERT(dut->rootp->HeliosX__DOT__req1_alu == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__req1_alu);
+
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in);
+        }
+    }
 
     void wakeup_test() {}
 
