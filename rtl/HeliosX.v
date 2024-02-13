@@ -146,6 +146,7 @@ module HeliosX (
     wire [`ROB_SEL-1:0] commit_ptr_1;
     wire arfwe_1;
     wire [`REG_SEL-1:0] dst_arf_1;
+    wire[1:0]    comnum;
 
     // always @(posedge clk_i) begin
     //     if(reset_i)begin
@@ -237,7 +238,7 @@ module HeliosX (
         .dst_rrftag_o(dst_rrftag),
         .dst_en_o(dst_en),
         //input
-        .com_inst_num_rob_out_RrfEntryAllocate_in_i(),
+        .com_inst_num_rob_out_RrfEntryAllocate_in_i(comnum),
         .completed_dstnum_rob_out_arf_in_i(dst_arf_1),
         .completed_we_rob_out_arf_in_i(arfwe_1),
         .completed_dst_rrftag_rob_out_arfANDrrf_in(commit_ptr_1),
@@ -439,7 +440,8 @@ module HeliosX (
         //output
         .commit_ptr_1_o(commit_ptr_1),
         .arfwe_1_o(arfwe_1),
-        .dst_arf_1_o(dst_arf_1)
+        .dst_arf_1_o(dst_arf_1),
+        .comnum_o(comnum)
     );
 
 
