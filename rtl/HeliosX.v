@@ -146,7 +146,7 @@ module HeliosX (
     wire [`ROB_SEL-1:0] commit_ptr_1;
     wire arfwe_1;
     wire [`REG_SEL-1:0] dst_arf_1;
-    wire[1:0]    comnum;
+    wire    comnum;
 
     // always @(posedge clk_i) begin
     //     if(reset_i)begin

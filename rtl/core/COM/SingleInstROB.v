@@ -13,7 +13,7 @@ module SingleInstROB (
     output reg [`ROB_SEL-1:0] commit_ptr_1_o,
     output wire arfwe_1_o,
     output wire [`REG_SEL-1:0] dst_arf_1_o,
-    output wire[1:0]    comnum_o
+    output wire   comnum_o
 
 );
 
