@@ -194,6 +194,7 @@ module ReNameUnit (
         .reset_i(reset_i),
         .com_inst_num_i(com_inst_num_rob_out_RrfEntryAllocate_in_i),
         .stall_dp_i(stall_dp_i),
+        .req_en_i(dst_en_setbusy_decoder_out_arf_in_i),
         .rrf_allocatable_o(rrf_allocatable_o),
         .freenum_o(freenum_RrfEntryAllocate_out_rob_in_o),
         .dst_rename_rrftag_o(allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in),

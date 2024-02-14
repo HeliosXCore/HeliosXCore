@@ -13,6 +13,8 @@ module IFUnit (
     input wire    kill_DP,
 
     output reg  [`ADDR_LEN-1:0] npc_o,
+    //实际上npc_o这里并没有起到什么作用
+    //output wire [`ADDR_LEN-1:0] npc_o,
     output reg  [`INSN_LEN-1:0] inst_o,
     output wire [`ADDR_LEN-1:0] iaddr_o
 );
@@ -20,7 +22,7 @@ module IFUnit (
     wire [`ADDR_LEN-1:0] npc;
     wire [`INSN_LEN-1:0] inst;
 
-    reg  [`ADDR_LEN-1:0] pc_if;
+    // reg  [`ADDR_LEN-1:0] pc_if;
     reg  [`ADDR_LEN-1:0] pc;
 
     always @(posedge clk_i) begin
@@ -30,6 +32,9 @@ module IFUnit (
             pc <= npc;
         end
     end
+
+
+    //assign iaddr_o = reset_i ? `ENTRY_POINT : stall_IF ? pc : npc;
 
     always @(posedge clk_i) begin
         if (reset_i) begin
@@ -52,11 +57,12 @@ module IFUnit (
 
     always @(posedge clk_i) begin
         if (reset_i | kill_IF) begin
-            pc_if  <= 0;
+            // 这个感觉不需要啊
+            // pc_if  <= 0;
             inst_o <= 0;
 
         end else if (~stall_IF) begin
-            pc_if  <= pc;
+            // pc_if  <= pc;
             inst_o <= inst;
         end
     end

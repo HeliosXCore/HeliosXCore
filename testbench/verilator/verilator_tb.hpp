@@ -66,10 +66,10 @@ class VerilatorTb {
             if ((sim_time % clock) == 0) {
                 tick();
             }
+            eval();
             if (posedge()) {
                 input();
             }
-            eval();
 #ifndef WAVE
             verify_dut();
 #endif

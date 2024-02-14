@@ -12,6 +12,8 @@ module RrfEntryAllocate (
     // 前一周期的DP是否成功，也即为目的寄存器分配free rrf entry是否成功了
     input wire stall_dp_i,
 
+    input wire req_en_i,
+
     output wire                rrf_allocatable_o,
     output reg  [  `RRF_SEL:0] freenum_o,
     output wire [`RRF_SEL-1:0] dst_rename_rrftag_o,
@@ -19,7 +21,7 @@ module RrfEntryAllocate (
     output reg                 nextrrfcyc_o
 );
 
-    wire [1:0] reqnum = 1;
+    wire [1:0] reqnum = {1'b0, req_en_i};
     /* wire [`RRF_SEL-1:0] rrfptr_next = ((rrfptr_o + {5'b0,reqnum})%`RRF_NUM) ; */
     // 由于consts.vh中的常量没有显示的定义位宽，会导致这里lint过不去，始终报位宽
     // 不一制的warning

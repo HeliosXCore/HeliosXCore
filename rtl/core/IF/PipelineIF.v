@@ -10,8 +10,10 @@ module PipelineIF (
     output wire [`INSN_LEN-1:0] inst_o
 );
 
-    assign npc_o  = pc_i + 4;
-    assign inst_o = idata_i;
+    // assign inst_o = idata_i;
+    assign inst_o = reset_i ? 0 : idata_i;
+    // assign npc_o  = pc_i + 4;
+    assign npc_o  = reset_i ? 0 : pc_i + 4;
 
     // Selector selector (
     //     .sel_i  (pc_i[2:2]),

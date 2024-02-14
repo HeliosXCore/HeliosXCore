@@ -6,3 +6,5 @@ tags
 *.json
 *.tags
 **/.cache/
+*gtkw*
+*work*

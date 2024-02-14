@@ -232,27 +232,13 @@ module HeliosX (
 
         //output
         .rrf_allocatable_o(rrf_allocatable),
-        // TODO: 这里应该是要连起来的
-        // 貌似一条指令不需要这个
         .freenum_RrfEntryAllocate_out_rob_in_o(),
         .rrfptr_RrfEntryAllocate_out_rob_in_o(rrfptr_RrfEntryAllocate_out_rob_in),
         .nextrrfcyc_o(nextrrfcyc),
         .dst_rrftag_o(dst_rrftag),
         .dst_en_o(dst_en),
         //input
-        .com_inst_num_rob_out_RrfEntryAllocate_in_i(1),
-        .completed_dstnum_rob_out_arf_in_i(dst_arf_1),
-        .completed_we_rob_out_arf_in_i(arfwe_1),
-        .completed_dst_rrftag_rob_out_arfANDrrf_in(commit_ptr_1),
-        //output
-        .rrf_allocatable_o(rrf_allocatable),
-        .freenum_RrfEntryAllocate_out_rob_in_o(),
-        .rrfptr_RrfEntryAllocate_out_rob_in_o(rrfptr_RrfEntryAllocate_out_rob_in),
-        .nextrrfcyc_o(nextrrfcyc),
-        .dst_rrftag_o(dst_rrftag),
-        .dst_en_o(dst_en),
-        //input
-        .com_inst_num_rob_out_RrfEntryAllocate_in_i(comnum),
+        .com_inst_num_rob_out_RrfEntryAllocate_in_i({1'b0, comnum}),
         .completed_dstnum_rob_out_arf_in_i(dst_arf_1),
         .completed_we_rob_out_arf_in_i(arfwe_1),
         .completed_dst_rrftag_rob_out_arfANDrrf_in(commit_ptr_1),
