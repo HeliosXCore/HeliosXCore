@@ -217,7 +217,13 @@ module HeliosX (
     );
 
 
-
+    // 为了解决时序问题，这里加一个reg,形成一个周期的延迟
+    reg [`REG_SEL-1:0] rs1_dp_reg;
+    reg [`REG_SEL-1:0] rs2_dp_reg;
+    always @(posedge clk_i) begin
+        rs1_dp_reg <= rs1_1;
+        rs2_dp_reg <= rs2_1;
+    end
 
 
     //DP stage
@@ -225,8 +231,8 @@ module HeliosX (
         //input
         .clk_i(clk_i),
         .reset_i(reset_i),
-        .rs1_decoder_out_arf_in_i(rs1_1),
-        .rs2_decoder_out_arf_in_i(rs2_1),
+        .rs1_decoder_out_arf_in_i(rs1_dp_reg),
+        .rs2_decoder_out_arf_in_i(rs2_dp_reg),
 
         .stall_dp_i(stall_DP),
 
@@ -267,8 +273,12 @@ module HeliosX (
         .forward_rrfdata_branch_out_rrf_in_i(),
         .allocate_rrf_en_i(),
 
-        .src1_eq_zero_decoder_out_srcopmanager_in_i(uses_rs1_1),
-        .src2_eq_zero_decoder_out_srcopmanager_in_i(uses_rs2_1),
+        // TODO:
+        // uses_rs1_1,uses_rs2_1这两个信号应该是连接到ALU的
+        //.src1_eq_zero_decoder_out_srcopmanager_in_i(uses_rs1_1),
+        //.src2_eq_zero_decoder_out_srcopmanager_in_i(uses_rs2_1),
+        .src1_eq_zero_decoder_out_srcopmanager_in_i((rs1_dp_reg == 0) ? 1 : 0),
+        .src2_eq_zero_decoder_out_srcopmanager_in_i((rs2_dp_reg == 0) ? 1 : 0),
 
         //output
         .src1_srcopmanager_out_srcmanager_in_o(src1_srcopmanager_out_srcmanager_in),

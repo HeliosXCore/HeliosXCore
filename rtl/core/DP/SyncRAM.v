@@ -21,9 +21,10 @@ module SyncRAM2r2w #(
 
     reg [BRAM_DATA_WIDTH-1:0] mem[0:DATA_DEPTH-1];
 
+    assign rdata1 = mem[raddr1];
+    assign rdata2 = mem[raddr2];
+
     always @(posedge clk_i) begin
-        rdata1 <= mem[raddr1];
-        rdata2 <= mem[raddr2];
         if (we1) mem[waddr1] <= wdata1;
         if (we2) mem[waddr2] <= wdata2;
     end

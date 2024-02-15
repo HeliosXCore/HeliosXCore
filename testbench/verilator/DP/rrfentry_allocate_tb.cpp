@@ -20,6 +20,7 @@ void dut_reset(std::shared_ptr<VRrfEntryAllocate> dut, vluint64_t &sim_time) {
         dut->reset_i = 1;
         dut->com_inst_num_i = 0;
         dut->stall_dp_i = 0;
+        dut->req_en_i = 0;
     }
 }
 
@@ -57,24 +58,25 @@ int main(int argc, char **argv, char **env) {
                 assert(dut->nextrrfcyc_o == 0);
                 std::cout << "Rrf_alloc Test 1 Pass!" << std::endl;
             } else if (posedge_cnt == 4 && sim_time == 30) {
-                assert(dut->freenum_o == 62);
+                assert(dut->freenum_o == 64);
                 std::cout << "Rrf_alloc Test 2 Pass!" << std::endl;
 
                 dut->stall_dp_i = 1;
+                dut->req_en_i = 1;
             } else if (posedge_cnt >= 5 && posedge_cnt < 8 && sim_time == 40) {
-                assert(dut->freenum_o == 62);
+                assert(dut->freenum_o == 64);
                 std::cout << "Rrf_alloc Test 3 Pass!" << std::endl;
             } else if (posedge_cnt == 8 && sim_time == 70) {
                 dut->stall_dp_i = 0;
             } else if (posedge_cnt == 9 && sim_time == 80) {
-                assert(dut->freenum_o == 61);
+                assert(dut->freenum_o == 63);
                 std::cout << "Rrf_alloc Test 4 Pass!" << std::endl;
             } else if (posedge_cnt == 10 && sim_time == 90) {
-                assert(dut->freenum_o == 60);
+                assert(dut->freenum_o == 62);
                 std::cout << "Rrf_alloc Test 5 Pass!" << std::endl;
 
                 dut->stall_dp_i = 1;
-                dut->com_inst_num_i = 3;
+                dut->com_inst_num_i = 1;
             } else if (posedge_cnt == 11 && sim_time == 100) {
                 assert(dut->freenum_o == 63);
                 std::cout << "Rrf_alloc Test 6 Pass!" << std::endl;

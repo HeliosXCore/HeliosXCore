@@ -1,6 +1,10 @@
 `include "consts/Consts.vh"
 `default_nettype none
 
+// TODO:目前考虑到一个问题：
+// 目前nextrrfcyc_o这个变量的代码写的感觉不对，在第一个循环的情况下，应该不会
+// 有问题，但是一旦开始循环分配了，就有问题了。
+//
 // 暂时不考虑分支预测的话，每个时钟周期都会分配一个rrf entry
 module RrfEntryAllocate (
     input wire clk_i,
