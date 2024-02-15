@@ -26,3 +26,6 @@ make -j sim STAGE=DP
 make -j sim STAGE=SW
 make -j sim STAGE=EX
 make -j sim STAGE=ROB
+
+# Stage 3: Run the whole pipeline tests.
+make -j sim STAGE=PIPELINE
