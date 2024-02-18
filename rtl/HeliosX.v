@@ -298,14 +298,14 @@ module HeliosX (
         .req1_branch_o(),
         .req2_branch_o(),
         .req_branchnum_RSRequestGen_out_SWUnit_in_o(),
+
         .req1_mul_o(),
         .req2_mul_o(),
-
         .req_mulnum_RSRequestGen_out_SWUnit_in_o(),
 
-        .req1_ldst_o(),
-        .req2_ldst_o(),
-        .req_ldstnum_RSRequestGen_out_SWUnit_in_o()
+        .req1_ldst_o(req1_ldst),
+        .req2_ldst_o(req2_ldst),
+        .req_ldstnum_RSRequestGen_out_SWUnit_in_o(req_ldstnum_RSRequestGen_out_SWUnit_in)
 
     );
 
