@@ -324,7 +324,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(
                 dut->rootp
                         ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
-                    62,
+                    61,
                 "sim_time: {} Error Imm Type {:#x}", sim_time,
                 dut->rootp
                     ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
