@@ -366,21 +366,23 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             // 可以断言一下试试，此刻，src2应该就是arf_data
             // 确实是这样，下面这个断言是对的。
             // 所以src==0这个断言就先注释掉
-            ASSERT(
-                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in ==
-                    get_arf_data(getRegIdx("s0")),
-                "sim_time: {} Error Imm {:#x}", sim_time,
-                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
+            //
+            // ROB的时序好像又对了。难蹦。下面这个assert先注释掉
+            // ASSERT(
+            //     dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in
+            //     ==
+            //         get_arf_data(getRegIdx("s0")),
+            //     "sim_time: {} Error Imm {:#x}", sim_time,
+            //     dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
 
             // 感觉srcopmanager这个模块对于第一条和第三条指令这种
-            // 两个目的寄存器重合的情况没有很好的处理 为s0分配的rrftag,应当是0
-            /* ASSERT( */
-            /*     dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in
-             * == */
-            /*         0, */
-            /*     "sim_time: {} Error Imm {:#x}", sim_time, */
-            /*     dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
-             */
+            // 两个目的寄存器重合的情况没有很好的处理
+            // 为s0分配的rrftag,应当是0
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
 
             // 此时还没有写回，所以rdy应该是0
             /* ASSERT( */

@@ -79,8 +79,111 @@ module ReNameUnit (
     output wire    req2_ldst_o,
     output wire [1:0]   req_ldstnum_RSRequestGen_out_SWUnit_in_o
 );
+
+    reg  rrf_allocatable_reg;
+    wire rrf_allocatable_wire;
+    assign rrf_allocatable_o = rrf_allocatable_reg;
+
+    reg  [`RRF_SEL-1:0] dst_rrftag_reg;
+    wire [`RRF_SEL-1:0] allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in;
+    assign dst_rrftag_o = dst_rrftag_reg;
+
+    reg  dst_en_reg;
+    wire dst_en_wire;
+    assign dst_en_o = dst_en_reg;
+
+    reg  [`DATA_LEN-1:0] src1_srcopmanager_out_srcmanager_in_reg;
+    wire [`DATA_LEN-1:0] src1_srcopmanager_out_srcmanager_in_wire;
+    assign src1_srcopmanager_out_srcmanager_in_o = src1_srcopmanager_out_srcmanager_in_reg;
+
+    reg  [`DATA_LEN-1:0] src2_srcopmanager_out_srcmanager_in_reg;
+    wire [`DATA_LEN-1:0] src2_srcopmanager_out_srcmanager_in_wire;
+    assign src2_srcopmanager_out_srcmanager_in_o = src2_srcopmanager_out_srcmanager_in_reg;
+
+    reg  rdy1_srcopmanager_out_srcmanager_in_reg;
+    wire rdy1_srcopmanager_out_srcmanager_in_wire;
+    assign rdy1_srcopmanager_out_srcmanager_in_o = rdy1_srcopmanager_out_srcmanager_in_reg;
+
+    reg  rdy2_srcopmanager_out_srcmanager_in_reg;
+    wire rdy2_srcopmanager_out_srcmanager_in_wire;
+    assign rdy2_srcopmanager_out_srcmanager_in_o = rdy2_srcopmanager_out_srcmanager_in_reg;
+
+    reg  req1_alu_reg;
+    wire req1_alu_wire;
+    assign req1_alu_o = req1_alu_reg;
+
+    reg  req2_alu_reg;
+    wire req2_alu_wire;
+    assign req2_alu_o = req2_alu_reg;
+
+    reg  [1:0] req_alunum_RSRequestGen_out_SWUnit_in_reg;
+    wire [1:0] req_alunum_RSRequestGen_out_SWUnit_in_wire;
+    assign req_alunum_RSRequestGen_out_SWUnit_in_o = req_alunum_RSRequestGen_out_SWUnit_in_reg;
+
+    reg  req1_branch_reg;
+    wire req1_branch_wire;
+    assign req1_branch_o = req1_branch_reg;
+
+    reg  req2_branch_reg;
+    wire req2_branch_wire;
+    assign req2_branch_o = req2_branch_reg;
+
+    reg  [1:0] req_branchnum_RSRequestGen_out_SWUnit_in_reg;
+    wire [1:0] req_branchnum_RSRequestGen_out_SWUnit_in_wire;
+    assign req_branchnum_RSRequestGen_out_SWUnit_in_o = req_branchnum_RSRequestGen_out_SWUnit_in_reg;
+
+    reg  req1_mul_reg;
+    wire req1_mul_wire;
+    assign req1_mul_o = req1_mul_reg;
+
+    reg  req2_mul_reg;
+    wire req2_mul_wire;
+    assign req2_mul_o = req2_mul_reg;
+
+    reg  [1:0] req_mulnum_RSRequestGen_out_SWUnit_in_reg;
+    wire [1:0] req_mulnum_RSRequestGen_out_SWUnit_in_wire;
+    assign req_mulnum_RSRequestGen_out_SWUnit_in_o = req_mulnum_RSRequestGen_out_SWUnit_in_reg;
+
+    reg  req1_ldst_reg;
+    wire req1_ldst_wire;
+    assign req1_ldst_o = req1_ldst_reg;
+
+    reg  req2_ldst_reg;
+    wire req2_ldst_wire;
+    assign req2_ldst_o = req2_ldst_reg;
+
+    reg  [1:0] req_ldstnum_RSRequestGen_out_SWUnit_in_reg;
+    wire [1:0] req_ldstnum_RSRequestGen_out_SWUnit_in_wire;
+    assign req_ldstnum_RSRequestGen_out_SWUnit_in_o = req_ldstnum_RSRequestGen_out_SWUnit_in_reg;
+
+    always @(posedge clk_i) begin
+        rrf_allocatable_reg <= rrf_allocatable_wire;
+
+        dst_rrftag_reg <= allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in;
+        dst_en_reg <= dst_en_wire;
+
+        src1_srcopmanager_out_srcmanager_in_reg <= src1_srcopmanager_out_srcmanager_in_wire;
+        src2_srcopmanager_out_srcmanager_in_reg <= src2_srcopmanager_out_srcmanager_in_wire;
+        rdy1_srcopmanager_out_srcmanager_in_reg <= rdy1_srcopmanager_out_srcmanager_in_wire;
+        rdy2_srcopmanager_out_srcmanager_in_reg <= rdy2_srcopmanager_out_srcmanager_in_wire;
+
+        req1_alu_reg <= req1_alu_wire;
+        req2_alu_reg <= req2_alu_wire;
+        req_alunum_RSRequestGen_out_SWUnit_in_reg <= req_alunum_RSRequestGen_out_SWUnit_in_wire;
+
+        req1_mul_reg <= req1_mul_wire;
+        req2_mul_reg <= req2_mul_wire;
+        req_mulnum_RSRequestGen_out_SWUnit_in_reg <= req_mulnum_RSRequestGen_out_SWUnit_in_wire;
+
+        req1_ldst_reg <= req1_ldst_wire;
+        req2_ldst_reg <= req2_ldst_wire;
+        req_ldstnum_RSRequestGen_out_SWUnit_in_reg <= req_ldstnum_RSRequestGen_out_SWUnit_in_wire;
+    end
+
+
+
     // decoder传递来的dst使能信号，表示是否需要写回dst
-    assign dst_en_o = dst_en_setbusy_decoder_out_arf_in_i;
+    assign dst_en_wire = dst_en_setbusy_decoder_out_arf_in_i;
 
     wire [`DATA_LEN-1:0] rs1_arfdata_arf_out_srcopmanager_in;
     wire [`DATA_LEN-1:0] rs2_arfdata_arf_out_srcopmanager_in;
@@ -92,13 +195,6 @@ module ReNameUnit (
     wire [`DATA_LEN-1:0] from_rrfdata_rrf_out_arf_in;
 
 
-    reg [`RRF_SEL-1:0] dst_rrftag;
-    wire [`RRF_SEL-1:0] allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in;
-    assign dst_rrftag_o = dst_rrftag;
-
-    always @(posedge clk_i) begin
-        dst_rrftag <= allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in;
-    end
 
     Arf arf (
         .clk_i  (clk_i),
@@ -174,8 +270,8 @@ module ReNameUnit (
         .rrf_valid_i(rs1_rrfvalid_rrf_out_srcopmanager_in),
         .rrf_data_i(rs1_rrfdata_rrf_out_srcopmanager_in),
         .src_eq_zero_i(src1_eq_zero_decoder_out_srcopmanager_in_i),
-        .src_o(src1_srcopmanager_out_srcmanager_in_o),
-        .ready_o(rdy1_srcopmanager_out_srcmanager_in_o)
+        .src_o(src1_srcopmanager_out_srcmanager_in_wire),
+        .ready_o(rdy1_srcopmanager_out_srcmanager_in_wire)
     );
 
     SrcOprManager src_op_manager2 (
@@ -185,8 +281,8 @@ module ReNameUnit (
         .rrf_valid_i(rs2_rrfvalid_rrf_out_srcopmanager_in),
         .rrf_data_i(rs2_rrfdata_rrf_out_srcopmanager_in),
         .src_eq_zero_i(src2_eq_zero_decoder_out_srcopmanager_in_i),
-        .src_o(src2_srcopmanager_out_srcmanager_in_o),
-        .ready_o(rdy2_srcopmanager_out_srcmanager_in_o)
+        .src_o(src2_srcopmanager_out_srcmanager_in_wire),
+        .ready_o(rdy2_srcopmanager_out_srcmanager_in_wire)
     );
 
     RrfEntryAllocate rrf_alloc (
@@ -195,7 +291,7 @@ module ReNameUnit (
         .com_inst_num_i(com_inst_num_rob_out_RrfEntryAllocate_in_i),
         .stall_dp_i(stall_dp_i),
         .req_en_i(dst_en_setbusy_decoder_out_arf_in_i),
-        .rrf_allocatable_o(rrf_allocatable_o),
+        .rrf_allocatable_o(rrf_allocatable_wire),
         .freenum_o(freenum_RrfEntryAllocate_out_rob_in_o),
         .dst_rename_rrftag_o(allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in),
         .rrfptr_o(rrfptr_RrfEntryAllocate_out_rob_in_o),
@@ -206,21 +302,21 @@ module ReNameUnit (
         .inst1_rs_type_i(inst1_RsType_decoder_out_RSRequestGen_in_i),
         .inst2_rs_type_i(inst2_RsType_decoder_out_RSRequestGen_in_i),
 
-        .req1_alu_o  (req1_alu_o),
-        .req2_alu_o  (req2_alu_o),
-        .req_alunum_o(req_alunum_RSRequestGen_out_SWUnit_in_o),
+        .req1_alu_o  (req1_alu_wire),
+        .req2_alu_o  (req2_alu_wire),
+        .req_alunum_o(req_alunum_RSRequestGen_out_SWUnit_in_wire),
 
-        .req1_branch_o  (req1_branch_o),
-        .req2_branch_o  (req2_branch_o),
-        .req_branchnum_o(req_branchnum_RSRequestGen_out_SWUnit_in_o),
+        .req1_branch_o  (req1_branch_wire),
+        .req2_branch_o  (req2_branch_wire),
+        .req_branchnum_o(req_branchnum_RSRequestGen_out_SWUnit_in_wire),
 
-        .req1_mul_o  (req1_mul_o),
-        .req2_mul_o  (req2_mul_o),
-        .req_mulnum_o(req_mulnum_RSRequestGen_out_SWUnit_in_o),
+        .req1_mul_o  (req1_mul_wire),
+        .req2_mul_o  (req2_mul_wire),
+        .req_mulnum_o(req_mulnum_RSRequestGen_out_SWUnit_in_wire),
 
-        .req1_ldst_o  (req1_ldst_o),
-        .req2_ldst_o  (req2_ldst_o),
-        .req_ldstnum_o(req_ldstnum_RSRequestGen_out_SWUnit_in_o)
+        .req1_ldst_o  (req1_ldst_wire),
+        .req2_ldst_o  (req2_ldst_wire),
+        .req_ldstnum_o(req_ldstnum_RSRequestGen_out_SWUnit_in_wire)
     );
 endmodule
 `default_nettype none
