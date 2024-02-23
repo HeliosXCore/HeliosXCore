@@ -3,20 +3,20 @@
 `include "consts/ALU.vh"
 
 module IDUnit (
-    input wire [31:0] inst1_i,
-    input wire        clk_i,
-    input wire        reset_i,
-    input wire        stall_IF,
-    input wire        kill_IF,
-    input wire        stall_ID,
-    input wire        kill_ID,
-    input wire        stall_DP,
-    input wire        kill_DP,
+    input wire [         31:0] inst1_i,
+    input wire                 clk_i,
+    input wire                 reset_i,
+    input wire [`ADDR_LEN-1:0] pc_i,
+    input wire                 stall_IF,
+    input wire                 kill_IF,
+    input wire                 stall_ID,
+    input wire                 kill_ID,
+    input wire                 stall_DP,
+    input wire                 kill_DP,
 
-    output reg [`IMM_TYPE_WIDTH-1:0] imm_type_1_o,
-
-    output reg [`DATA_LEN-1:0] imm_1_o,
-
+    output reg [        `ADDR_LEN-1:0] pc_o,
+    output reg [  `IMM_TYPE_WIDTH-1:0] imm_type_1_o,
+    output reg [        `DATA_LEN-1:0] imm_1_o,
     output reg [         `REG_SEL-1:0] rs1_1_o,
     output reg [         `REG_SEL-1:0] rs2_1_o,
     output reg [         `REG_SEL-1:0] rd_1_o,
@@ -88,6 +88,7 @@ module IDUnit (
 
     always @(posedge clk_i) begin
         if (reset_i | kill_ID) begin
+            pc_o <= `ENTRY_POINT;
             imm_type_1_o <= 0;
             imm_1_o <= 0;
             rs1_1_o <= 0;
@@ -108,6 +109,7 @@ module IDUnit (
             md_req_in_2_signed_1_o <= 0;
             md_req_out_sel_1_o <= 0;
         end else if (~stall_DP) begin
+            pc_o <= pc_i;
             imm_type_1_o <= imm_type_1;
             imm_1_o <= imm_1;
             rs1_1_o <= rs1_1;

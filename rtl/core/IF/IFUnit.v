@@ -33,9 +33,7 @@ module IFUnit (
         end
     end
 
-
     //assign iaddr_o = reset_i ? `ENTRY_POINT : stall_IF ? pc : npc;
-
     always @(posedge clk_i) begin
         if (reset_i) begin
             npc_o <= `ENTRY_POINT;
@@ -60,7 +58,6 @@ module IFUnit (
             // 这个感觉不需要啊
             // pc_if  <= 0;
             inst_o <= 0;
-
         end else if (~stall_IF) begin
             // pc_if  <= pc;
             inst_o <= inst;
@@ -68,6 +65,4 @@ module IFUnit (
     end
 
     assign iaddr_o = npc_o;
-
-
 endmodule

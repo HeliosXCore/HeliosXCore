@@ -29,12 +29,13 @@ class VIFUnitTb : public VerilatorTb<VIFUnit> {
             dut->stall_IF = 0;
             dut->kill_IF = 0;
 
-            dut->idata_i = 0x0000000526300100;
+            /* dut->idata_i = 0x0000000526300100; */
+            dut->idata_i = 0x26300100;
         }
     }
 
     void test1_verify() {
-        if (sim_time == 55) {
+        if (sim_time == 60) {
             // ASSERT(dut->npc_o == 0x000f404c, "npc error");
             ASSERT(dut->inst_o == 0x26300100, "inst error: {:#x}", dut->inst_o);
 
@@ -45,12 +46,12 @@ class VIFUnitTb : public VerilatorTb<VIFUnit> {
     void test2_input() {
         if (sim_time == 60) {
             // dut->pc_i = 0x000f2620;
-            dut->idata_i = 0xffdff06fc2804365;
+            dut->idata_i = 0xc2804365;
         }
     }
 
     void test2_verify() {
-        if (sim_time == 65) {
+        if (sim_time == 70) {
             // ASSERT(dut->npc_o == 0x000f2624, "npc error");
             ASSERT(dut->inst_o == 0xc2804365, "inst error, {:#x}", dut->inst_o);
 
@@ -61,12 +62,12 @@ class VIFUnitTb : public VerilatorTb<VIFUnit> {
     void test3_input() {
         if (sim_time == 70) {
             // dut->pc_i = 0x000f0717;
-            dut->idata_i = 0xffdff06f00202423;
+            dut->idata_i = 0x00202423;
         }
     }
 
     void test3_verify() {
-        if (sim_time == 75) {
+        if (sim_time == 80) {
             // ASSERT(dut->npc_o == 0x000f071b, "npc error");
             ASSERT(dut->inst_o == 0x00202423, "inst error: {:#x}", dut->inst_o);
 
@@ -92,5 +93,5 @@ int main(int argc, char **argv, char **env) {
     Verilated::commandArgs(argc, argv);
     std::shared_ptr<VIFUnitTb> tb = std::make_shared<VIFUnitTb>(5, 50, 1000);
 
-    tb->run("IFUnit.vcd");
+    tb->run("ifunit.vcd");
 }

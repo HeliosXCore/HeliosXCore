@@ -41,27 +41,28 @@ module HeliosX (
     wire [`INSN_LEN-1:0] inst;
 
     //ID阶段传出的信号
-    wire [`IMM_TYPE_WIDTH-1:0] imm_type_1;
+    wire [`ADDR_LEN-1:0]pc_dp;
+    wire [`IMM_TYPE_WIDTH-1:0] imm_type_1_dp;
 
-    wire [`DATA_LEN-1:0] imm_1;
+    wire [`DATA_LEN-1:0] imm_1_dp;
 
-    wire [`REG_SEL-1:0] rs1_1;
-    wire [`REG_SEL-1:0] rs2_1;
-    wire [`REG_SEL-1:0] rd_1;
-    wire [`SRC_A_SEL_WIDTH-1:0] src_a_sel_1;
-    wire [`SRC_B_SEL_WIDTH-1:0] src_b_sel_1;
-    wire wr_reg_1;
-    wire uses_rs1_1;
-    wire uses_rs2_1;
-    wire illegal_instruction_1;
-    wire [`ALU_OP_WIDTH-1:0] alu_op_1;
-    wire [`RS_ENT_SEL-1:0] rs_ent_1;
-    wire [2:0] dmem_size_1;
-    wire [`MEM_TYPE_WIDTH-1:0] dmem_type_1;
-    wire [`MD_OP_WIDTH-1:0] md_req_op_1;
-    wire md_req_in_1_signed_1;
-    wire md_req_in_2_signed_1;
-    wire [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1;
+    wire [`REG_SEL-1:0] rs1_1_dp;
+    wire [`REG_SEL-1:0] rs2_1_dp;
+    wire [`REG_SEL-1:0] rd_1_dp;
+    wire [`SRC_A_SEL_WIDTH-1:0] src_a_sel_1_dp;
+    wire [`SRC_B_SEL_WIDTH-1:0] src_b_sel_1_dp;
+    wire wr_reg_1_dp;
+    wire uses_rs1_1_dp;
+    wire uses_rs2_1_dp;
+    wire illegal_instruction_1_dp;
+    wire [`ALU_OP_WIDTH-1:0] alu_op_1_dp;
+    wire [`RS_ENT_SEL-1:0] rs_ent_1_dp;
+    wire [2:0] dmem_size_1_dp;
+    wire [`MEM_TYPE_WIDTH-1:0] dmem_type_1_dp;
+    wire [`MD_OP_WIDTH-1:0] md_req_op_1_dp;
+    wire md_req_in_1_signed_1_dp;
+    wire md_req_in_2_signed_1_dp;
+    wire [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1_dp;
 
 
     //DP阶段传出的信号
@@ -94,8 +95,28 @@ module HeliosX (
     wire req2_ldst;
     wire [1:0] req_ldstnum_RSRequestGen_out_SWUnit_in;
 
-
-
+    // 下面这些信号是dpunit暂存的idunit阶段传来的信号
+    //ID阶段传出的信号
+    wire [`ADDR_LEN-1:0]pc_sw;
+    wire [`IMM_TYPE_WIDTH-1:0] imm_type_1_sw;
+    wire [`DATA_LEN-1:0] imm_1_sw;
+    wire [`REG_SEL-1:0] rd_1_sw;
+    wire [`SRC_A_SEL_WIDTH-1:0] src_a_sel_1_sw;
+    wire [`SRC_B_SEL_WIDTH-1:0] src_b_sel_1_sw;
+    wire wr_reg_1_sw;
+    wire uses_rs1_1_sw;
+    wire uses_rs2_1_sw;
+    wire illegal_instruction_1_sw;
+    wire [`ALU_OP_WIDTH-1:0] alu_op_1_sw;
+    wire [`RS_ENT_SEL-1:0] rs_ent_1_sw;
+    wire [2:0] dmem_size_1_sw;
+    wire [`MEM_TYPE_WIDTH-1:0] dmem_type_1_sw;
+    wire [`MD_OP_WIDTH-1:0] md_req_op_1_sw;
+    wire md_req_in_1_signed_1_sw;
+    wire md_req_in_2_signed_1_sw;
+    wire [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1_sw;
+    wire [`REG_SEL-1:0] rs1_sw;
+    wire [`REG_SEL-1:0] rs2_sw;
 
     //SW阶段传出的信号
     wire [`DATA_LEN-1:0] exe_alu_op_1;
@@ -177,7 +198,14 @@ module HeliosX (
     );
 
 
-
+    // iaddr_o表示的是从单周期ram中取指令的地址，但是这里的pc表示的是当前阶段处
+    // 理的指令的pc,所以实际上需要延迟两个时钟周期才对
+    reg [`ADDR_LEN-1:0] pc_t;
+    reg [`ADDR_LEN-1:0] pc_id;
+    always @(posedge clk_i) begin
+        pc_t  <= iaddr_o;
+        pc_id <= pc_t;
+    end
 
 
     //ID stage
@@ -186,6 +214,7 @@ module HeliosX (
         .inst1_i(inst),
         .clk_i(clk_i),
         .reset_i(reset_i),
+        .pc_i(pc_id),
         .stall_IF(stall_IF),
         .kill_IF(kill_IF),
         .stall_ID(stall_ID),
@@ -194,26 +223,27 @@ module HeliosX (
         .kill_DP(kill_DP),
 
         //output
-        .imm_type_1_o(imm_type_1),
-        .imm_1_o(imm_1),
+        .pc_o(pc_dp),
+        .imm_type_1_o(imm_type_1_dp),
+        .imm_1_o(imm_1_dp),
 
-        .rs1_1_o(rs1_1),
-        .rs2_1_o(rs2_1),
-        .rd_1_o(rd_1),
-        .src_a_sel_1_o(src_a_sel_1),
-        .src_b_sel_1_o(src_b_sel_1),
-        .wr_reg_1_o(wr_reg_1),
-        .uses_rs1_1_o(uses_rs1_1),
-        .uses_rs2_1_o(uses_rs2_1),
-        .illegal_instruction_1_o(illegal_instruction_1),
-        .alu_op_1_o(alu_op_1),
-        .rs_ent_1_o(rs_ent_1),
-        .dmem_size_1_o(),
-        .dmem_type_1_o(),
-        .md_req_op_1_o(),
-        .md_req_in_1_signed_1_o(),
-        .md_req_in_2_signed_1_o(),
-        .md_req_out_sel_1_o()
+        .rs1_1_o(rs1_1_dp),
+        .rs2_1_o(rs2_1_dp),
+        .rd_1_o(rd_1_dp),
+        .src_a_sel_1_o(src_a_sel_1_dp),
+        .src_b_sel_1_o(src_b_sel_1_dp),
+        .wr_reg_1_o(wr_reg_1_dp),
+        .uses_rs1_1_o(uses_rs1_1_dp),
+        .uses_rs2_1_o(uses_rs2_1_dp),
+        .illegal_instruction_1_o(illegal_instruction_1_dp),
+        .alu_op_1_o(alu_op_1_dp),
+        .rs_ent_1_o(rs_ent_1_dp),
+        .dmem_size_1_o(dmem_size_1_dp),
+        .dmem_type_1_o(dmem_type_1_dp),
+        .md_req_op_1_o(md_req_op_1_dp),
+        .md_req_in_1_signed_1_o(md_req_in_1_signed_1_dp),
+        .md_req_in_2_signed_1_o(md_req_in_2_signed_1_dp),
+        .md_req_out_sel_1_o(md_req_out_sel_1_dp)
     );
 
 
@@ -222,12 +252,16 @@ module HeliosX (
         //input
         .clk_i(clk_i),
         .reset_i(reset_i),
-        .rs1_decoder_out_arf_in_i(rs1_1),
-        .rs2_decoder_out_arf_in_i(rs2_1),
+        .rs1_decoder_out_arf_in_i(rs1_1_dp),
+        .rs2_decoder_out_arf_in_i(rs2_1_dp),
+        .rs1_o(rs1_sw),
+        .rs2_o(rs2_sw),
 
         .stall_dp_i(stall_DP),
+        .pc_i(pc_dp),
 
         //output
+        .pc_o(pc_sw),
         .rrf_allocatable_o(rrf_allocatable),
         .freenum_RrfEntryAllocate_out_rob_in_o(),
         .rrfptr_RrfEntryAllocate_out_rob_in_o(rrfptr_RrfEntryAllocate_out_rob_in),
@@ -240,8 +274,8 @@ module HeliosX (
         .completed_we_rob_out_arf_in_i(arfwe_1),
         .completed_dst_rrftag_rob_out_arfANDrrf_in(commit_ptr_1),
 
-        .dstnum_setbusy_decoder_out_arf_in_i(rd_1),
-        .dst_en_setbusy_decoder_out_arf_in_i(wr_reg_1),
+        .dstnum_setbusy_decoder_out_arf_in_i(rd_1_dp),
+        .dst_en_setbusy_decoder_out_arf_in_i(wr_reg_1_dp),
 
         .forward_rrf_we_alu1_out_rrf_in_i  (alu_rrf_we),
         .forward_rrftag_RsAlu1_out_rrf_in_i(alu_rrf_tag),
@@ -268,8 +302,8 @@ module HeliosX (
         // uses_rs1_1,uses_rs2_1这两个信号应该是连接到ALU的
         //.src1_eq_zero_decoder_out_srcopmanager_in_i(uses_rs1_1),
         //.src2_eq_zero_decoder_out_srcopmanager_in_i(uses_rs2_1),
-        .src1_eq_zero_decoder_out_srcopmanager_in_i((rs1_1 == 0) ? 1 : 0),
-        .src2_eq_zero_decoder_out_srcopmanager_in_i((rs2_1 == 0) ? 1 : 0),
+        .src1_eq_zero_decoder_out_srcopmanager_in_i((rs1_1_dp == 0) ? 1 : 0),
+        .src2_eq_zero_decoder_out_srcopmanager_in_i((rs2_1_dp == 0) ? 1 : 0),
 
         //output
         .src1_srcopmanager_out_srcmanager_in_o(src1_srcopmanager_out_srcmanager_in),
@@ -278,7 +312,7 @@ module HeliosX (
         .rdy2_srcopmanager_out_srcmanager_in_o(rdy2_srcopmanager_out_srcmanager_in),
 
         //RSRequestGen input
-        .inst1_RsType_decoder_out_RSRequestGen_in_i(rs_ent_1),
+        .inst1_RsType_decoder_out_RSRequestGen_in_i(rs_ent_1_dp),
         .inst2_RsType_decoder_out_RSRequestGen_in_i(),
 
         //RSRequestGen output
@@ -296,11 +330,58 @@ module HeliosX (
 
         .req1_ldst_o(req1_ldst),
         .req2_ldst_o(req2_ldst),
-        .req_ldstnum_RSRequestGen_out_SWUnit_in_o(req_ldstnum_RSRequestGen_out_SWUnit_in)
+        .req_ldstnum_RSRequestGen_out_SWUnit_in_o(req_ldstnum_RSRequestGen_out_SWUnit_in),
 
+
+        // 下面这些信号是renameunit暂存的idunit阶段的信号
+        .imm_type_1_i(imm_type_1_dp),
+        .imm_type_1_o(imm_type_1_sw),
+
+        .imm_1_i(imm_1_dp),
+        .imm_1_o(imm_1_sw),
+
+        .rd_1_o(rd_1_sw),
+
+        .src_a_sel_1_i(src_a_sel_1_dp),
+        .src_a_sel_1_o(src_a_sel_1_sw),
+
+        .src_b_sel_1_i(src_b_sel_1_dp),
+        .src_b_sel_1_o(src_a_sel_1_sw),
+
+        .wr_reg_1_o(wr_reg_1_sw),
+
+        .uses_rs1_1_i(uses_rs1_1_dp),
+        .uses_rs1_1_o(uses_rs1_1_sw),
+
+        .uses_rs2_1_i(uses_rs2_1_dp),
+        .uses_rs2_1_o(uses_rs2_1_sw),
+
+        .illegal_instruction_1_i(illegal_instruction_1_dp),
+        .illegal_instruction_1_o(illegal_instruction_1_sw),
+
+        .alu_op_1_i(alu_op_1_dp),
+        .alu_op_1_o(alu_op_1_sw),
+
+        .rs_ent_1_o(rs_ent_1_sw),
+
+        .dmem_size_1_i(dmem_size_1_dp),
+        .dmem_size_1_o(dmem_size_1_sw),
+
+        .dmem_type_1_i(dmem_type_1_dp),
+        .dmem_type_1_o(dmem_type_1_sw),
+
+        .md_req_in_1_signed_1_i(md_req_in_1_signed_1_dp),
+        .md_req_in_1_signed_1_o(md_req_in_1_signed_1_sw),
+
+        .md_req_op_1_i(md_req_op_1_dp),
+        .md_req_op_1_o(md_req_op_1_sw),
+
+        .md_req_in_2_signed_1_i(md_req_in_2_signed_1_dp),
+        .md_req_in_2_signed_1_o(md_req_in_2_signed_1_sw),
+
+        .md_req_out_sel_1_i(md_req_out_sel_1_dp),
+        .md_req_out_sel_1_o(md_req_out_sel_1_sw)
     );
-
-
 
 
     //SW stage
@@ -311,7 +392,7 @@ module HeliosX (
         .dp_next_rrf_cycle_i(nextrrfcyc),
         .dp_req_alu_num_i(req_alunum_RSRequestGen_out_SWUnit_in),
         .dp_req_mem_num_i(),
-        .dp_pc_1_i(),
+        .dp_pc_1_i(pc_sw),
         .dp_pc_2_i(),
         .dp_op_1_1_i(src1_srcopmanager_out_srcmanager_in),
         .dp_op_1_2_i(src2_srcopmanager_out_srcmanager_in),
@@ -321,13 +402,13 @@ module HeliosX (
         .dp_valid_1_2_i(rdy2_srcopmanager_out_srcmanager_in),
         .dp_valid_2_1_i(),
         .dp_valid_2_2_i(),
-        .dp_imm_1_i(imm_1),
+        .dp_imm_1_i(imm_1_sw),
         .dp_imm_2_i(),
         .dp_rrf_tag_1_i(dst_rrftag),
         .dp_rrf_tag_2_i(),
         .dp_dst_1_i(dst_en),
         .dp_dst_2_i(),
-        .dp_alu_op_1_i(alu_op_1),
+        .dp_alu_op_1_i(alu_op_1_sw),
         .dp_alu_op_2_i(),
         .stall_dp_i(stall_DP),
         .kill_dp_i(kill_DP),
@@ -376,14 +457,22 @@ module HeliosX (
         .alu_imm_i(exe_alu_imm),
         .alu_alu_op_i(exe_alu_op),
         .alu_src1_i(exe_alu_op_1),
-        .alu_src_a_select_i(src_a_sel_1),
+
+        // TODO: 这个应该将输入改成从sw输入
+        // .alu_src_a_select_i(src_a_sel_1_exe),
+        .alu_src_a_select_i(src_a_sel_1_dp),
+
         .alu_src2_i(exe_alu_op_2),
-        .alu_src_b_select_i(src_b_sel_1),
+
+        // TODO: 这个应该将输入改成从sw输入
+        // .alu_src_b_select_i(src_b_sel_1_exe),
+        .alu_src_b_select_i(src_b_sel_1_dp),
+
         //ALU_输出
-        .alu_result_o(alu_result),
+        .alu_result_o (alu_result),
         .alu_rrf_tag_o(alu_rrf_tag),
-        .alu_rob_we_o(alu_rob_we),
-        .alu_rrf_we_o(alu_rrf_we),
+        .alu_rob_we_o (alu_rob_we),
+        .alu_rrf_we_o (alu_rrf_we),
 
         // Branch 输入
         .branch_issue_i(),
@@ -434,7 +523,7 @@ module HeliosX (
         .dp1_addr_i(rrfptr_RrfEntryAllocate_out_rob_in),
         .pc_dp1_i(),
         .dstvalid_dp1_i(dst_en),
-        .dst_dp1_i(rd_1),
+        .dst_dp1_i(rd_1_sw),
         .finish_ex_alu1_i(alu_rob_we),
         .finish_ex_alu1_addr_i(alu_rrf_tag),
 

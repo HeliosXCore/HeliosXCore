@@ -1,5 +1,6 @@
 `include "consts/Consts.vh"
-`default_nettype wire
+`include "consts/ALU.vh"
+`default_nettype none
 module ReNameUnit (
     input wire clk_i,
     input wire reset_i,
@@ -77,8 +78,88 @@ module ReNameUnit (
 
     output wire    req1_ldst_o,
     output wire    req2_ldst_o,
-    output wire [1:0]   req_ldstnum_RSRequestGen_out_SWUnit_in_o
+    output wire [1:0]   req_ldstnum_RSRequestGen_out_SWUnit_in_o,
+
+    // idunit模块传来的需要在dpunit停留一个周期的信号
+    input  wire [`IMM_TYPE_WIDTH-1:0] imm_type_1_i,
+    output reg  [`IMM_TYPE_WIDTH-1:0] imm_type_1_o,
+
+    input  wire [`DATA_LEN-1:0] imm_1_i,
+    output reg  [`DATA_LEN-1:0] imm_1_o,
+
+    output wire [`REG_SEL-1:0] rd_1_o,
+
+    input  wire [`SRC_A_SEL_WIDTH-1:0] src_a_sel_1_i,
+    output reg  [`SRC_A_SEL_WIDTH-1:0] src_a_sel_1_o,
+
+    input  wire [`SRC_B_SEL_WIDTH-1:0] src_b_sel_1_i,
+    output reg  [`SRC_B_SEL_WIDTH-1:0] src_b_sel_1_o,
+
+    output reg wr_reg_1_o,
+
+    input  wire uses_rs1_1_i,
+    output reg  uses_rs1_1_o,
+
+    input  wire uses_rs2_1_i,
+    output reg  uses_rs2_1_o,
+
+    input  wire illegal_instruction_1_i,
+    output reg  illegal_instruction_1_o,
+
+    input  wire [`ALU_OP_WIDTH-1:0] alu_op_1_i,
+    output reg  [`ALU_OP_WIDTH-1:0] alu_op_1_o,
+
+    output reg [`RS_ENT_SEL-1:0] rs_ent_1_o,
+
+    input  wire [2:0] dmem_size_1_i,
+    output reg  [2:0] dmem_size_1_o,
+
+    input  wire [`MEM_TYPE_WIDTH-1:0] dmem_type_1_i,
+    output reg  [`MEM_TYPE_WIDTH-1:0] dmem_type_1_o,
+
+    input  wire md_req_in_1_signed_1_i,
+    output reg  md_req_in_1_signed_1_o,
+
+    input  wire [`MD_OP_WIDTH-1:0] md_req_op_1_i,
+    output reg  [`MD_OP_WIDTH-1:0] md_req_op_1_o,
+
+    input  wire md_req_in_2_signed_1_i,
+    output reg  md_req_in_2_signed_1_o,
+
+    input  wire [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1_i,
+    output reg  [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1_o,
+
+    input  wire [`ADDR_LEN-1:0] pc_i,
+    output reg  [`ADDR_LEN-1:0] pc_o,
+
+    output reg [`REG_SEL-1:0] rs1_o,
+    output reg [`REG_SEL-1:0] rs2_o
+
 );
+
+    // 将idunit阶段的信号暂存一个周期
+    always @(posedge clk_i) begin
+        rs1_o <= rs1_decoder_out_arf_in_i;
+        rs2_o <= rs2_decoder_out_arf_in_i;
+        rd_1_o <= dstnum_setbusy_decoder_out_arf_in_i;
+        pc_o <= pc_i;
+        imm_type_1_o <= imm_type_1_i;
+        imm_1_o <= imm_1_i;
+        src_a_sel_1_o <= src_a_sel_1_i;
+        src_b_sel_1_o <= src_b_sel_1_i;
+        wr_reg_1_o <= dst_en_setbusy_decoder_out_arf_in_i;
+        uses_rs1_1_o <= uses_rs1_1_i;
+        uses_rs2_1_o <= uses_rs2_1_i;
+        illegal_instruction_1_o <= illegal_instruction_1_i;
+        alu_op_1_o <= alu_op_1_i;
+        rs_ent_1_o <= inst1_RsType_decoder_out_RSRequestGen_in_i;
+        dmem_size_1_o <= dmem_size_1_i;
+        dmem_type_1_o <= dmem_type_1_i;
+        md_req_in_1_signed_1_o <= md_req_in_1_signed_1_i;
+        md_req_op_1_o <= md_req_op_1_i;
+        md_req_in_2_signed_1_o <= md_req_in_2_signed_1_i;
+        md_req_out_sel_1_o <= md_req_out_sel_1_i;
+    end
 
     reg  rrf_allocatable_reg;
     wire rrf_allocatable_wire;
@@ -317,6 +398,7 @@ module ReNameUnit (
         .req1_ldst_o  (req1_ldst_wire),
         .req2_ldst_o  (req2_ldst_wire),
         .req_ldstnum_o(req_ldstnum_RSRequestGen_out_SWUnit_in_wire)
+
     );
 endmodule
-`default_nettype none
+`default_nettype wire

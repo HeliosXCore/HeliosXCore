@@ -42,7 +42,7 @@ ifeq ($(DEBUG), Y)
 	CFLAGS += -CFLAGS -DDEBUG
 endif
 
-ifeq ($(WAVE), Y)
+ifeq ($(ENABLE_WAVE), Y)
 	CFLAGS += -CFLAGS -DWAVE
 endif
 
