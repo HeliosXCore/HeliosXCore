@@ -101,8 +101,8 @@ module HeliosX (
     wire [`IMM_TYPE_WIDTH-1:0] imm_type_1_sw;
     wire [`DATA_LEN-1:0] imm_1_sw;
     wire [`REG_SEL-1:0] rd_1_sw;
-    wire [`SRC_A_SEL_WIDTH-1:0] src_a_sel_1_sw;
-    wire [`SRC_B_SEL_WIDTH-1:0] src_b_sel_1_sw;
+    wire [`SRC_A_SEL_WIDTH-1:0] sw_src_a;
+    wire [`SRC_B_SEL_WIDTH-1:0] sw_src_b;
     wire wr_reg_1_sw;
     wire uses_rs1_1_sw;
     wire uses_rs2_1_sw;
@@ -128,6 +128,8 @@ module HeliosX (
     wire [`ALU_OP_WIDTH-1:0] exe_alu_op;
     wire [`ALU_ENT_NUM-1:0] exe_alu_ready;
     wire exe_alu_issue;
+    wire [`SRC_A_SEL_WIDTH-1: 0] exe_alu_src_a;
+    wire [`SRC_B_SEL_WIDTH-1: 0] exe_alu_src_b;
 
     wire [`DATA_LEN-1:0] exe_mem_op_1;
     wire [`DATA_LEN-1:0] exe_mem_op_2;
@@ -343,10 +345,10 @@ module HeliosX (
         .rd_1_o(rd_1_sw),
 
         .src_a_sel_1_i(src_a_sel_1_dp),
-        .src_a_sel_1_o(src_a_sel_1_sw),
+        .src_a_sel_1_o(sw_src_a),
 
         .src_b_sel_1_i(src_b_sel_1_dp),
-        .src_b_sel_1_o(src_a_sel_1_sw),
+        .src_b_sel_1_o(sw_src_b),
 
         .wr_reg_1_o(wr_reg_1_sw),
 
@@ -384,6 +386,7 @@ module HeliosX (
     );
 
 
+
     //SW stage
     SwUnit u_SwUint (
         //input
@@ -391,48 +394,57 @@ module HeliosX (
         .reset_i(reset_i),
         .dp_next_rrf_cycle_i(nextrrfcyc),
         .dp_req_alu_num_i(req_alunum_RSRequestGen_out_SWUnit_in),
-        .dp_req_mem_num_i(),
+        .dp_req_mem_num_i(0),
         .dp_pc_1_i(pc_sw),
-        .dp_pc_2_i(),
+        .dp_pc_2_i(0),
         .dp_op_1_1_i(src1_srcopmanager_out_srcmanager_in),
         .dp_op_1_2_i(src2_srcopmanager_out_srcmanager_in),
-        .dp_op_2_1_i(),
-        .dp_op_2_2_i(),
+        .dp_op_2_1_i(0),
+        .dp_op_2_2_i(0),
         .dp_valid_1_1_i(rdy1_srcopmanager_out_srcmanager_in),
         .dp_valid_1_2_i(rdy2_srcopmanager_out_srcmanager_in),
-        .dp_valid_2_1_i(),
-        .dp_valid_2_2_i(),
+        .dp_valid_2_1_i(0),
+        .dp_valid_2_2_i(0),
+        .dp_src_1_a_i(sw_src_a),
+        .dp_src_1_b_i(sw_src_b),    
+        .dp_src_2_a_i(0),
+        .dp_src_2_b_i(0),
         .dp_imm_1_i(imm_1_sw),
-        .dp_imm_2_i(),
+        .dp_imm_2_i(0),
         .dp_rrf_tag_1_i(dst_rrftag),
-        .dp_rrf_tag_2_i(),
+        .dp_rrf_tag_2_i(0),
         .dp_dst_1_i(dst_en),
-        .dp_dst_2_i(),
+        .dp_dst_2_i(0),
         .dp_alu_op_1_i(alu_op_1_sw),
-        .dp_alu_op_2_i(),
+        .dp_alu_op_2_i(0),
         .stall_dp_i(stall_DP),
         .kill_dp_i(kill_DP),
         .exe_result_1_i(alu_result),
         .exe_result_2_i(branch_result),
-        .exe_result_3_i(),
-        .exe_result_4_i(),
-        .exe_result_5_i(),
-        .exe_result_1_dst_i(alu_rrf_tag),
-        .exe_result_2_dst_i(branch_rrf_tag),
-        .exe_result_3_dst_i(),
-        .exe_result_4_dst_i(),
-        .exe_result_5_dst_i(),
+        .exe_result_3_i(0),
+        .exe_result_4_i(0),
+        .exe_result_5_i(0),
+        // .exe_result_1_dst_i(alu_rrf_tag),
+        // .exe_result_2_dst_i(branch_rrf_tag),
+        .exe_result_1_dst_i(0),
+        .exe_result_2_dst_i(0),
+        .exe_result_3_dst_i(0),
+        .exe_result_4_dst_i(0),
+        .exe_result_5_dst_i(0),
 
         //output
         .exe_alu_op_1_o(exe_alu_op_1),
         .exe_alu_op_2_o(exe_alu_op_2),
-        .exe_alu_pc_o(),
+        .exe_alu_pc_o(exe_alu_pc),
         .exe_alu_imm_o(exe_alu_imm),
         .exe_alu_rrf_tag_o(exe_alu_rrf_tag),
         .exe_alu_dst_val_o(exe_alu_dst_val),
         .exe_alu_op_o(exe_alu_op),
         .exe_alu_ready_o(),
         .exe_alu_issue_o(exe_alu_issue),
+        .exe_alu_src_a_o(exe_alu_src_a),
+        .exe_alu_src_b_o(exe_alu_src_b),
+
         .exe_mem_op_1_o(exe_mem_op_1),
         .exe_mem_op_2_o(exe_mem_op_2),
         .exe_mem_pc_o(),
@@ -453,20 +465,17 @@ module HeliosX (
         .alu_issue_i(exe_alu_issue),
         .alu_if_write_rrf_i(exe_alu_dst_val),
         .alu_rrf_tag_i(exe_alu_rrf_tag),
-        .alu_pc_i(),
+        .alu_pc_i(exe_alu_pc),
         .alu_imm_i(exe_alu_imm),
         .alu_alu_op_i(exe_alu_op),
         .alu_src1_i(exe_alu_op_1),
 
-        // TODO: 这个应该将输入改成从sw输入
-        // .alu_src_a_select_i(src_a_sel_1_exe),
-        .alu_src_a_select_i(src_a_sel_1_dp),
+
+        .alu_src_a_select_i(exe_alu_src_a),
 
         .alu_src2_i(exe_alu_op_2),
 
-        // TODO: 这个应该将输入改成从sw输入
-        // .alu_src_b_select_i(src_b_sel_1_exe),
-        .alu_src_b_select_i(src_b_sel_1_dp),
+        .alu_src_b_select_i(exe_alu_src_b),
 
         //ALU_输出
         .alu_result_o (alu_result),

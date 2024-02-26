@@ -419,6 +419,10 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__wr_reg_1_sw);
 
+            fmt::println(
+                "src1_srcopmanager_out_srcmanager_in: {:#x}\n",
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in);
+
             // 为a2分配的rrftag,应该是1
             ASSERT(
                 dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in ==
@@ -481,7 +485,66 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
         }
     }
 
-    void wakeup_test() {}
+    void wakeup_test() {
+        if (sim_time == 135) {
+            ASSERT(dut->rootp->HeliosX__DOT__req1_alu == 1,
+                   "sim_time: {} Error Alu req num: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__req1_alu);
+        } else if (sim_time == 145) {
+            // li s0, 0
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x0,
+                   "sim_time: {} Error Alu pc: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__exe_alu_pc);
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_op_1_o == 0,
+                   "sim_time: {} Error OP 1: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_op_1_o);
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_op_2_o == 0,
+                   "sim_time: {} Error OP 2: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_op_2_o);
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o == 0,
+                   "sim_time: {} Error ALU IMM: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o);
+        } else if (sim_time == 155) {
+            // li a2, 1859
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x4,
+                   "sim_time: {} Error Alu pc: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__exe_alu_pc);
+            ASSERT(
+                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o == 1859,
+                "sim_time: {} Error ALU IMM: {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o);
+        } else if (sim_time == 165) {
+            // pending
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0,
+                   "sim_time: {} Error Alu pc: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__exe_alu_pc);
+        } else if (sim_time == 175) {
+            // li a4, 929
+            // add s0, a2, s0
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0xC,
+                   "sim_time: {} Error Alu pc: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__exe_alu_pc);
+            ASSERT(
+                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o == 929,
+                "sim_time: {} Error ALU IMM: {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o);
+        } else if (sim_time == 185) {
+            // li a5, 22
+            ASSERT(
+                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x10,
+                "sim_time: {} Error Alu pc: {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__exe_alu_pc);
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o == 22,
+                   "sim_time: {} Error ALU IMM: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o);
+        } else if (sim_time == 195) {
+            // add a0, a4, a5
+            // Pending
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0,
+                   "sim_time: {} Error Alu pc: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__exe_alu_pc);
+        }
+    }
 
     void execute_test() {}
 
@@ -505,9 +568,11 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
         if (sim_time >= 90 && sim_time % 10 == 0) {
             mem->fetch(1, dut->iaddr_o, inst_o, inst_value_o);
             dut->idata_i = inst_o.instructions[0];
+#ifdef DEBUG
             fmt::println(
                 "sim_time: {}, inst_o: {:#x}, inst_value_o: {}, iaddr_o: {:#x}",
                 sim_time, inst_o.instructions[0], inst_value_o, dut->iaddr_o);
+#endif
         }
     }
 

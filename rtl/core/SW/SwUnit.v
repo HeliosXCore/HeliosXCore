@@ -20,6 +20,11 @@ module SwUnit (
     input wire [`DATA_LEN-1:0] dp_op_2_1_i,
     input wire [`DATA_LEN-1:0] dp_op_2_2_i,
 
+    input wire [`SRC_A_SEL_WIDTH-1:0] dp_src_1_a_i,
+    input wire [`SRC_B_SEL_WIDTH-1:0] dp_src_1_b_i,
+    input wire [`SRC_A_SEL_WIDTH-1:0] dp_src_2_a_i,
+    input wire [`SRC_B_SEL_WIDTH-1:0] dp_src_2_b_i,
+
     input wire dp_valid_1_1_i,
     input wire dp_valid_1_2_i,
     input wire dp_valid_2_1_i,
@@ -61,6 +66,8 @@ module SwUnit (
     output wire [`ALU_OP_WIDTH-1:0] exe_alu_op_o,
     output wire [ `ALU_ENT_NUM-1:0] exe_alu_ready_o,
     output wire                     exe_alu_issue_o,
+    output wire [`SRC_A_SEL_WIDTH-1:0] exe_alu_src_a_o,
+    output wire [`SRC_B_SEL_WIDTH-1:0] exe_alu_src_b_o,
 
     output wire [    `DATA_LEN-1:0] exe_mem_op_1_o,
     output wire [    `DATA_LEN-1:0] exe_mem_op_2_o,
@@ -183,10 +190,16 @@ module SwUnit (
         .write_valid_1_1_i(dp_valid_1_1_i),
         .write_valid_1_2_i(dp_valid_1_2_i),
 
+        .write_src_1_a_i(dp_src_1_a_i), 
+        .write_src_1_b_i(dp_src_1_b_i),
+
         .write_op_2_1_i(dp_op_2_1_i),
         .write_op_2_2_i(dp_op_2_2_i),
         .write_valid_2_1_i(dp_valid_2_1_i),
         .write_valid_2_2_i(dp_valid_2_2_i),
+
+        .write_src_2_a_i(dp_src_2_a_i), 
+        .write_src_2_b_i(dp_src_2_b_i),
 
         .write_imm_1_i(dp_imm_1_i),
         .write_imm_2_i(dp_imm_2_i),
@@ -220,9 +233,11 @@ module SwUnit (
         .exe_rrf_tag_o(exe_alu_rrf_tag_o),
         .exe_alu_op_o(exe_alu_op_o),
         .exe_dst_val_o(exe_alu_dst_val_o),
+        .exe_src_a_o(exe_alu_src_a_o),
+        .exe_src_b_o(exe_alu_src_b_o),
 
         .busy_vector_o(alu_busy_vector),
-        .history_vector_o(alu_history_vector)
+        .history_vector_o(alu_history_vector)  
     );
 
 
