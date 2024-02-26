@@ -406,7 +406,7 @@ module HeliosX (
         .dp_valid_2_1_i(0),
         .dp_valid_2_2_i(0),
         .dp_src_1_a_i(sw_src_a),
-        .dp_src_1_b_i(sw_src_b),    
+        .dp_src_1_b_i(sw_src_b),
         .dp_src_2_a_i(0),
         .dp_src_2_b_i(0),
         .dp_imm_1_i(imm_1_sw),

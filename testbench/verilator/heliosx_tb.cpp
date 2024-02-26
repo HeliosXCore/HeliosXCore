@@ -190,14 +190,14 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(
                 dut->rootp
                         ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
-                    63,
+                    62,
                 "sim_time: {} Error Imm Type {:#x}", sim_time,
                 dut->rootp
                     ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
 
             ASSERT(
                 dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in ==
-                    1,
+                    2,
                 "sim_time: {} Error Imm {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in);
 
@@ -205,7 +205,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__nextrrfcyc);
 
-            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 0,
+            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 1,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_rrftag);
 
@@ -239,7 +239,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                 "sim_time: {} Error Imm {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in);
 
-            ASSERT(get_arf_rrftag(getRegIdx("s0")) == 0,
+            ASSERT(get_arf_rrftag(getRegIdx("s0")) == 1,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_rrftag(getRegIdx("s0")));
 
@@ -282,14 +282,14 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(
                 dut->rootp
                         ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
-                    62,
+                    61,
                 "sim_time: {} Error Imm Type {:#x}", sim_time,
                 dut->rootp
                     ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
 
             ASSERT(
                 dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in ==
-                    2,
+                    3,
                 "sim_time: {} Error Imm {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in);
 
@@ -297,7 +297,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__nextrrfcyc);
 
-            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 1,
+            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 2,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_rrftag);
 
@@ -337,7 +337,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                 "sim_time: {} Error Imm {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in);
 
-            ASSERT(get_arf_rrftag(getRegIdx("a2")) == 1,
+            ASSERT(get_arf_rrftag(getRegIdx("a2")) == 2,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_rrftag(getRegIdx("a2")));
 
@@ -388,14 +388,14 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(
                 dut->rootp
                         ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
-                    61,
+                    60,
                 "sim_time: {} Error Imm Type {:#x}", sim_time,
                 dut->rootp
                     ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
 
             ASSERT(
                 dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in ==
-                    3,
+                    4,
                 "sim_time: {} Error Imm {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in);
 
@@ -403,7 +403,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__nextrrfcyc);
 
-            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 2,
+            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 3,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rrf_allocatable);
 
@@ -426,7 +426,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             // 为a2分配的rrftag,应该是1
             ASSERT(
                 dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in ==
-                    1,
+                    2,
                 "sim_time: {} Error Imm {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in);
 
@@ -456,7 +456,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             // 为s0分配的rrftag,应当是0
             ASSERT(
                 dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in ==
-                    0,
+                    1,
                 "sim_time: {} Error Imm {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
 
@@ -479,7 +479,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                 dut->rootp
                     ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in);
 
-            ASSERT(get_arf_rrftag(getRegIdx("s0")) == 2,
+            ASSERT(get_arf_rrftag(getRegIdx("s0")) == 3,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_rrftag(getRegIdx("s0")));
         }
