@@ -252,6 +252,10 @@ module ReNameUnit (
         req2_alu_reg <= req2_alu_wire;
         req_alunum_RSRequestGen_out_SWUnit_in_reg <= req_alunum_RSRequestGen_out_SWUnit_in_wire;
 
+        req1_branch_reg <= req1_branch_wire;
+        req2_branch_reg <= req2_branch_wire;
+        req_branchnum_RSRequestGen_out_SWUnit_in_reg <= req_branchnum_RSRequestGen_out_SWUnit_in_wire;
+
         req1_mul_reg <= req1_mul_wire;
         req2_mul_reg <= req2_mul_wire;
         req_mulnum_RSRequestGen_out_SWUnit_in_reg <= req_mulnum_RSRequestGen_out_SWUnit_in_wire;

@@ -11,3 +11,4 @@ tags
 *.tasks
 *.yml
 .clangd
+.breakpoints.txt
