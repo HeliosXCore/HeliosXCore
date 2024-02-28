@@ -10,3 +10,4 @@ tags
 *work*
 *.tasks
 *.yml
+.clangd
