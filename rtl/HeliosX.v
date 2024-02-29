@@ -459,7 +459,7 @@ module HeliosX (
     //EX stage
     ExUnit u_ExUnit (
         // input
-        .clk_i(clk_i),
+        .clk_i  (clk_i),
         .reset_i(reset_i),
 
         // ALU 输入
@@ -474,10 +474,10 @@ module HeliosX (
         .alu_src2_i(exe_alu_op_2),
         .alu_src_b_select_i(exe_alu_src_b),
         // ALU输出
-        .alu_result_o (alu_result),
+        .alu_result_o(alu_result),
         .alu_rrf_tag_o(alu_rrf_tag),
-        .alu_rob_we_o (alu_rob_we),
-        .alu_rrf_we_o (alu_rrf_we),
+        .alu_rob_we_o(alu_rob_we),
+        .alu_rrf_we_o(alu_rrf_we),
 
         // Branch 输入
         .branch_issue_i(),

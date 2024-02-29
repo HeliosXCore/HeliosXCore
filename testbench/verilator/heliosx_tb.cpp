@@ -549,30 +549,37 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
     void execute_test() {
         if (sim_time == 155) {
             // li s0, 0         -> addi s0, x0, 0
-            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 0,"sim_time: {} Error Alu result: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_result);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 1,"sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rrf_tag);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,"sim_time: {} Error Alu rob_we: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rob_we);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,"sim_time: {} Error Alu rrf_we: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rrf_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 0,
+                   "sim_time: {} Error Alu result: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_result);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 1,
+                   "sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,
+                   "sim_time: {} Error Alu rob_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rob_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Alu rrf_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
         } else if (sim_time == 165) {
             // li a2, 1859      -> addi a2, x0, 1859
-            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 1859,"sim_time: {} Error Alu result: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_result);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 2,"sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rrf_tag);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,"sim_time: {} Error Alu rob_we: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rob_we);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,"sim_time: {} Error Alu rrf_we: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rrf_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 1859,
+                   "sim_time: {} Error Alu result: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_result);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 2,
+                   "sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,
+                   "sim_time: {} Error Alu rob_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rob_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Alu rrf_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
         } else if (sim_time == 175) {
-            
-
         } else if (sim_time == 185) {
-
-
         } else if (sim_time == 195) {
-
-
         } else if (sim_time == 205) {
-
-
         } else if (sim_time == 215) {
-
         }
     }
 
@@ -635,6 +642,6 @@ int main(int argc, char **argv, char **env) {
     std::shared_ptr<VHeliosXTb> tb =
         std::make_shared<VHeliosXTb>(5, 50, 1500, mem);
 
-    tb->run("HeliosX.vcd");
+    tb->run("heliosx.vcd");
     fmt::print("HeliosX Dut Correctness passed!\n");
 }
