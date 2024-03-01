@@ -659,7 +659,76 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
         }
     }
 
-    void commit_test() {}
+    void commit_test() {
+
+        if (sim_time == 165) {
+            //li s0,0
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 1,
+            "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__commit_ptr_1);
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("s0"),
+
+            "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__dst_arf_1);
+            
+        }
+
+        else if (sim_time == 175) {
+            //li a2,1859
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 2,
+            "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__commit_ptr_1);
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a2"),
+            "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__dst_arf_1);
+        }
+        else if (sim_time == 185) {
+            //Pending
+        }
+
+        else if (sim_time == 195) {
+            //add s0,a2,s0
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 3,
+            "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__commit_ptr_1);
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("s0"),,
+            "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__dst_arf_1);
+        }
+        else if (sim_time == 205) {
+            //li a4,929
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 4,
+            "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__commit_ptr_1);
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a4"),
+            "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__dst_arf_1);
+        }
+        else if (sim_time == 215) {
+            //li a5,22
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 5,
+            "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__commit_ptr_1);
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a5"),,
+            "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__dst_arf_1);
+        }
+        else if (sim_time == 225) {
+            //Pending
+        }
+
+        else if(sim_time == 235) {
+            //add a0,a4,a5
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 6,
+            "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__commit_ptr_1);
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a0"),,
+            "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
+            dut->rootp->HeliosX__DOT__dst_arf_1);
+        }
+
+
+    }
 
     void initialize_signal() override {
         dut->reset_i = 1;
