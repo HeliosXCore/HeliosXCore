@@ -166,6 +166,7 @@ module HeliosX (
 
 
     //COM阶段传出的信号
+    /* verilator lint_off UNOPTFLAT */
     wire [`ROB_SEL-1:0] commit_ptr_1;
     wire arfwe_1;
     wire [`REG_SEL-1:0] dst_arf_1;
@@ -523,7 +524,7 @@ module HeliosX (
         .clk_i(clk_i),
         .reset_i(reset_i),
         .dp1_i(rrf_allocatable),
-        .dp1_addr_i(rrfptr_RrfEntryAllocate_out_rob_in),
+        .dp1_addr_i(dst_rrftag),
         .pc_dp1_i(),
         .dstvalid_dp1_i(dst_en),
         .dst_dp1_i(rd_1_sw),

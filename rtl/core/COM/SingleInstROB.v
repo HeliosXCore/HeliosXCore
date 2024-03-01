@@ -37,20 +37,20 @@ module SingleInstROB (
     //提交到arf的目的逻辑寄存器地址
     assign dst_arf_1_o = dst[commit_ptr_1_o];
 
+
     //当commit_1 和 dstvalid同时为1时,允许写回寄存器
     assign arfwe_1_o = dstValid[commit_ptr_1_o] & commit_1;
 
     always @(posedge clk_i) begin
         if (reset_i) begin
-            commit_ptr_1_o <= 1;
             valid <= 0;
             finish <= 0;
+            commit_ptr_1_o <= 1; 
         end else begin
             //更新提交指针
-            //等价于commit_ptr_2_o = (commit_ptr_1_o + 1) % `ROB_NUM;
+            //等价于commit_ptr_1_o = (commit_ptr_1_o + commit_1) % `ROB_NUM;
             commit_ptr_1_o <= ((commit_ptr_1_o + {5'b0, commit_1}) & 6'b111111);
-
-
+            // commit_ptr_1_o <= commit_ptr_1_o + {5'b0, commit_1};
             //当执行单元完成时,更新完成标志
             if (finish_ex_alu1_i) begin
                 finish[finish_ex_alu1_addr_i] <= 1'b1;
@@ -64,7 +64,7 @@ module SingleInstROB (
 
     always @(posedge clk_i) begin
         if (dp1_i) begin
-            // 分配ROB entry
+            // // 分配ROB entry
             valid[dp1_addr_i] <= 1'b1;
             //标记该条指令还未执行完成
             finish[dp1_addr_i] <= 1'b0;
@@ -74,6 +74,7 @@ module SingleInstROB (
             dst[dp1_addr_i] <= dst_dp1_i;
             // 标记目的寄存器是否有效
             dstValid[dp1_addr_i] <= dstvalid_dp1_i;
+
         end
 
     end

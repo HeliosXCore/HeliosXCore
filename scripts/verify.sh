@@ -25,8 +25,7 @@ make -j sim STAGE=ID
 make -j sim STAGE=DP
 make -j sim STAGE=SW
 make -j sim STAGE=EX
-# ROB的部分貌似有点问题，暂时先注释掉
-# make -j sim STAGE=ROB
+make -j sim STAGE=ROB
 
 # Stage 3: Run the whole pipeline tests.
 make -j sim STAGE=PIPELINE
