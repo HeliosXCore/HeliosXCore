@@ -595,10 +595,67 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Alu rrf_we: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__alu_rrf_we);
         } else if (sim_time == 175) {
+            // pending
+
         } else if (sim_time == 185) {
+            // add s0, a2, s0
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 0 + 1859,
+                   "sim_time: {} Error Alu result: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_result);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 3,
+                   "sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,
+                   "sim_time: {} Error Alu rob_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rob_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Alu rrf_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
         } else if (sim_time == 195) {
+            // li a4, 929       -> addi a4, x0, 929
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 929,
+                   "sim_time: {} Error Alu result: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_result);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 4,
+                   "sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,
+                   "sim_time: {} Error Alu rob_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rob_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Alu rrf_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
         } else if (sim_time == 205) {
+            // li a5, 22        -> addi a5, x0, 22
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 22,
+                   "sim_time: {} Error Alu result: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_result);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 5,
+                   "sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,
+                   "sim_time: {} Error Alu rob_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rob_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Alu rrf_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
         } else if (sim_time == 215) {
+            // pending
+
+        } else if (sim_time == 225) {
+            // add a0, a4, a5
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 929 + 22,
+                   "sim_time: {} Error Alu result: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_result);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 6,
+                   "sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,
+                   "sim_time: {} Error Alu rob_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rob_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Alu rrf_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);  
         }
     }
 
@@ -648,7 +705,7 @@ int main(int argc, char **argv, char **env) {
         0x00000413,  // li s0, 0         -> addi s0, x0, 0
         0x74300613,  // li a2, 1859      -> addi a2, x0, 1859
         0x00860433,  // add s0, a2, s0
-        0x3a100713,  // li a4, 929       -> addi a2, x0, 1859
+        0x3a100713,  // li a4, 929       -> addi a4, x0, 929
         0x01600793,  // li a5, 22        -> addi a5, x0, 22
         0x00f70533   // add a0, a4, a5
     };
