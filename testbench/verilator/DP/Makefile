@@ -46,9 +46,9 @@ VFormater := verible-verilog-format
 FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
 VSRC 	  := $(shell find ../../../rtl -name "*.v")
 
-DEBUG ?= N
-ifeq ($(DEBUG), Y)
-	CFLAGS += -CFLAGS -DDEBUG
+ENABLE_WAVE ?= N
+ifeq ($(ENABLE_WAVE), Y)
+	CFLAGS += -CFLAGS -DWAVE
 endif
 
 .PHONY: sim wave clean format
