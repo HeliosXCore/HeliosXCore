@@ -5,7 +5,6 @@ module HeliosX (
     input wire clk_i,
     input wire reset_i,
 
-    // output reg [`ADDR_LEN-1:0] pc_o,
     output wire [`ADDR_LEN-1:0] iaddr_o,
 
     input wire [`INSN_LEN-1:0] idata_i,
@@ -34,14 +33,13 @@ module HeliosX (
     assign kill_DP  = 1'b0;
 
 
-    //因为下面声明的信号连接了不同模块的输入和输出，所以声明的信号后面都去除了后缀 _i以及后缀_o.
 
-    //IF阶段传出的信号
-    wire [`ADDR_LEN-1:0] npc;
+    // IF阶段传出的信号
+    wire [`ADDR_LEN-1:0] next_pc;
     wire [`INSN_LEN-1:0] inst;
 
-    //ID阶段传出的信号
-    wire [`ADDR_LEN-1:0]pc_dp;
+    // ID阶段传出的信号
+    wire [`ADDR_LEN-1:0] pc_dp;
     wire [`IMM_TYPE_WIDTH-1:0] imm_type_1_dp;
 
     wire [`DATA_LEN-1:0] imm_1_dp;
@@ -171,14 +169,6 @@ module HeliosX (
     wire [`REG_SEL-1:0] dst_arf_1;
     wire    comnum;
 
-    // always @(posedge clk_i) begin
-    //     if(reset_i)begin
-    //         pc_o <= `ENTRY_POINT;
-    //     end else begin
-    //         pc_o <= npc;
-    //     end
-    // end
-
 
     //IF stage
     IFUnit u_IFUnit (
@@ -194,7 +184,7 @@ module HeliosX (
         .kill_DP(kill_DP),
 
         //output
-        .npc_o  (npc),
+        .npc_o  (next_pc),
         .inst_o (inst),
         .iaddr_o(iaddr_o)
     );
