@@ -63,29 +63,24 @@ int main(int argc, char **argv, char **env) {
             if (dut->clk_i == 1) {
                 posedge_cnt++;
             }
-            if (dut->clk_i == 1) {
-                posedge_cnt++;
-            }
         }
-
         dut->eval();
 
         vluint64_t rrftag_rand_1;
         vluint64_t rrftag_rand_2;
         if (dut->clk_i == 1) {
-            posedge_cnt++;
             vluint64_t tmp1_allocate_rrftag;
             vluint64_t tmp2_allocate_rrftag;
             if (posedge_cnt == 2 && sim_time == 10) {
-#ifndef DEBUG
+#ifndef WAVE
                 assert(dut->dst_en_o == 0);
 
                 assert(dut->rrf_allocatable_o == 1);
-                assert(dut->freenum_RrfEntryAllocate_out_rob_in_o == 64);
-                assert(dut->rrfptr_RrfEntryAllocate_out_rob_in_o == 0);
+                assert(dut->freenum_RrfEntryAllocate_out_rob_in_o == 63);
+                assert(dut->rrfptr_RrfEntryAllocate_out_rob_in_o == 1);
                 assert(dut->nextrrfcyc_o == 0);
                 std::cout << "ReNameUnit Test 1 Pass!" << std::endl;
-#endif  // !DEBUG
+#endif  // !WAVE
 
                 dut->dstnum_setbusy_decoder_out_arf_in_i = 2;
                 dut->dst_en_setbusy_decoder_out_arf_in_i = 1;
@@ -96,15 +91,15 @@ int main(int argc, char **argv, char **env) {
                 tmp1_allocate_rrftag =
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
 
-#ifndef DEBUG
+#ifndef WAVE
                 assert(dut->dst_en_o == 1);
 
                 printf("dut->dst_rrftag_o:%u\n", dut->dst_rrftag_o);
-                assert(dut->dst_rrftag_o == 0);
+                assert(dut->dst_rrftag_o == 1);
 
-                assert(dut->rrfptr_RrfEntryAllocate_out_rob_in_o == 1);
+                assert(dut->rrfptr_RrfEntryAllocate_out_rob_in_o == 2);
                 assert(dut->rrf_allocatable_o == 1);
-                assert(dut->freenum_RrfEntryAllocate_out_rob_in_o == 63);
+                assert(dut->freenum_RrfEntryAllocate_out_rob_in_o == 62);
 
                 assert(dut->req1_alu_o == 1);
                 assert(dut->req_alunum_RSRequestGen_out_SWUnit_in_o == 1);
@@ -122,18 +117,19 @@ int main(int argc, char **argv, char **env) {
                 dut->forward_rrfdata_alu1_out_rrf_in_i = 13;
 
                 dut->dstnum_setbusy_decoder_out_arf_in_i = 4;
-                dut->dst_en_setbusy_decoder_out_arf_in_i = 1;
+                dut->dst_en_setbusy_decoder_out_arf_in_i = 0;
                 dut->allocate_rrf_en_i = 1;
 
             } else if (posedge_cnt == 4 && sim_time == 30) {
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_LDST;
                 dut->rs1_decoder_out_arf_in_i = 2;
+                dut->dst_en_setbusy_decoder_out_arf_in_i = 1;
             } else if (posedge_cnt == 5 && sim_time == 40) {
                 tmp2_allocate_rrftag =
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
                 std::cout << tmp1_allocate_rrftag << std::endl;
 
-#ifndef DEBUG
+#ifndef WAVE
                 assert(dut->dst_en_o == 1);
 
                 printf("dut->dst_rrftag_o:%u\n", dut->dst_rrftag_o);
@@ -158,7 +154,7 @@ int main(int argc, char **argv, char **env) {
                 dut->forward_rrftag_RsAlu1_out_rrf_in_i = tmp2_allocate_rrftag;
                 dut->forward_rrfdata_alu1_out_rrf_in_i = 16;
 
-#ifndef DEBUG
+#ifndef WAVE
                 assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
                 std::cout << "ReNameUnit Test 4 Pass!" << std::endl;
 #endif
@@ -170,7 +166,7 @@ int main(int argc, char **argv, char **env) {
                 vluint64_t tmp2 = dut->src1_srcopmanager_out_srcmanager_in_o;
                 std::cout << tmp1 << std::endl;
                 std::cout << tmp2 << std::endl;
-#ifndef DEBUG
+#ifndef WAVE
                 assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
                 assert(dut->src1_srcopmanager_out_srcmanager_in_o == 13);
 
@@ -193,7 +189,7 @@ int main(int argc, char **argv, char **env) {
 
                 dut->inst1_RsType_decoder_out_RSRequestGen_in_i = RS_ENT_BRANCH;
             } else if (posedge_cnt == 8 && sim_time == 70) {
-#ifndef DEBUG
+#ifndef WAVE
                 assert(dut->src2_srcopmanager_out_srcmanager_in_o == 0);
                 assert(dut->rdy2_srcopmanager_out_srcmanager_in_o == 1);
                 assert(dut->rrf_allocatable_o == 1);

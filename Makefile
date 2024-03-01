@@ -4,6 +4,22 @@ STAGE ?= SW
 
 RTLOBJD	:= build
 
+DEBUG ?= N
+WAVE  ?= N
+
+VIGNOREW 	:= 
+VINCULDES	:= -Irtl/
+VFLAGS 		:= --trace --x-assign unique --x-initial unique $(VIGNOREW) $(VINCULDES)
+PFLAGS		:= -GREQ_LEN=4 -GGRANT_LEN=2
+CFLAGS      := 
+IFLGAS		:= -CFLAGS -I../testbench/verilator -CFLAGS -I../3rd-party/fmt/include
+LDFLAGS		:= -LDFLAGS ../3rd-party/fmt/build/libfmt.a
+MACRO_FLAGS := -CFLAGS -DFMT_HEADER_ONLY
+
+# Format
+VFormater := verible-verilog-format
+FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
+VSRC 	  := $(shell find rtl -name "*.v" -not -name "Alu.v")
 
 ifeq ($(STAGE), IF)
 include testbench/verilator/IF/if.mk
@@ -21,22 +37,6 @@ else ifeq ($(STAGE), PIPELINE)
 include testbench/verilator/heliosx.mk
 endif
 
-DEBUG ?= N
-WAVE  ?= N
-
-VIGNOREW 	:= 
-VINCULDES	:= -Irtl/
-VFLAGS 		:= --trace --x-assign unique --x-initial unique $(VIGNOREW) $(VINCULDES)
-PFLAGS		:= -GREQ_LEN=4 -GGRANT_LEN=2
-CFLAGS      := 
-IFLGAS		:= -CFLAGS -I../testbench/verilator -CFLAGS -I../3rd-party/fmt/include
-LDFLAGS		:= -LDFLAGS ../3rd-party/fmt/build/libfmt.a
-MACRO_FLAGS := -CFLAGS -DFMT_HEADER_ONLY
-
-# Format
-VFormater := verible-verilog-format
-FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
-VSRC 	  := $(shell find rtl -name "*.v" -not -name "Alu.v")
 
 ifeq ($(DEBUG), Y)
 	CFLAGS += -CFLAGS -DDEBUG

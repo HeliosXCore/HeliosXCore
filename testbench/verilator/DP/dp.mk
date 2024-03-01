@@ -7,8 +7,7 @@ MODULES   := $(RTLD)/Arf.v $(RTLD)/Rrf.v \
 TESTBENCH := dpunit_tb
 WAVE 	  := dpunit.vcd
 
-IFLGAS		:= -CFLAGS -I../testbench/verilator
-LDFLAGS		:=
+# CFLAGS += -CFLAGS -ggdb
 
 cc:
 	@$(VERILATOR) $(VFLAGS) -cc $(RTLD)/$(TEST).v -Mdir $(RTLOBJD) $(MODULES)
