@@ -88,7 +88,7 @@ class VerilatorTb {
             if (posedge()) {
                 input();
             }
-            /* eval(); */
+            eval();
 #ifndef WAVE
             verify_dut();
 #endif

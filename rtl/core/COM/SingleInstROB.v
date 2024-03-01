@@ -42,7 +42,7 @@ module SingleInstROB (
 
     always @(posedge clk_i) begin
         if (reset_i) begin
-            commit_ptr_1_o <= 0;
+            commit_ptr_1_o <= 1;
             valid <= 0;
             finish <= 0;
         end else begin
