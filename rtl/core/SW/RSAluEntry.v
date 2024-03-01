@@ -69,8 +69,8 @@ module RSAluEntry (
     reg [`DATA_LEN-1:0] next_op_1;
     reg [`DATA_LEN-1:0] next_op_2;
 
-    wire [`DATA_LEN-1: 0] write_op_1;
-    wire [`DATA_LEN-1: 0] write_op_2;
+    wire [`DATA_LEN-1:0] write_op_1;
+    wire [`DATA_LEN-1:0] write_op_2;
     wire write_valid_1;
     wire write_valid_2;
 
@@ -83,7 +83,7 @@ module RSAluEntry (
                      (exe_result_3_dst_i == write_op_1_i[`RRF_SEL-1:0]) |
                      (exe_result_4_dst_i == write_op_1_i[`RRF_SEL-1:0]) |
                      (exe_result_5_dst_i == write_op_1_i[`RRF_SEL-1:0]) : 0;
-    
+
     assign write_op_update_2 = (we_i & ~write_op_2_valid_i) ? 
                      (exe_result_1_dst_i == write_op_2_i[`RRF_SEL-1:0]) |
                      (exe_result_2_dst_i == write_op_2_i[`RRF_SEL-1:0]) |
