@@ -419,10 +419,6 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__wr_reg_1_sw);
 
-            fmt::println(
-                "src1_srcopmanager_out_srcmanager_in: {:#x}\n",
-                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in);
-
             // 为a2分配的rrftag,应该是1
             ASSERT(
                 dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in ==
@@ -513,66 +509,96 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                 dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o == 1859,
                 "sim_time: {} Error ALU IMM: {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o);
+
         } else if (sim_time == 165) {
-            // pending
-            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0,
-                   "sim_time: {} Error Alu pc: {:#x}", sim_time,
-                   dut->rootp->HeliosX__DOT__exe_alu_pc);
+            // Pending
+#ifdef DEBUG
+            fmt::println("[RS] sim_time: {}, exe_alu_pc_o: {:#x}", sim_time,
+                         dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o);
+#endif
+
         } else if (sim_time == 175) {
             // li a4, 929
             // add s0, a2, s0
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x8,
+                   "sim_time: {} Error Alu pc: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__exe_alu_pc);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_op_1_o == 1859,
+                "sim_time: {} Error exe_op_1_o: {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_op_1_o);
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_op_2_o == 0,
+                   "sim_time: {} Error exe_op_2_o: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_op_2_o);
+
+        } else if (sim_time == 185) {
+            // li a5, 22
             ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0xC,
                    "sim_time: {} Error Alu pc: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__exe_alu_pc);
             ASSERT(
                 dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o == 929,
-                "sim_time: {} Error ALU IMM: {:#x}", sim_time,
+                "sim_time: {} Error exe_alu_imm_o: {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o);
-        } else if (sim_time == 185) {
-            // li a5, 22
-            ASSERT(
-                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x10,
-                "sim_time: {} Error Alu pc: {:#x}", sim_time,
-                dut->rootp->HeliosX__DOT__exe_alu_pc);
-            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o == 22,
-                   "sim_time: {} Error ALU IMM: {:#x}", sim_time,
-                   dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o);
         } else if (sim_time == 195) {
             // add a0, a4, a5
             // Pending
-            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0,
-                   "sim_time: {} Error Alu pc: {:#x}", sim_time,
-                   dut->rootp->HeliosX__DOT__exe_alu_pc);
+            ASSERT(
+                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x10,
+                "sim_time: {} Error exe_alu_pc_o: {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__exe_alu_pc);
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o == 22,
+                   "sim_time: {} Error exe_alu_imm_o: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o);
+        } else if (sim_time == 205) {
+            // Pending
+#ifdef DEBUG
+            fmt::println("[RS] sim_time: {}, exe_alu_pc_o: {:#x}", sim_time,
+                         dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o);
+#endif
+        } else if (sim_time == 215) {
+            ASSERT(
+                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x14,
+                "sim_time: {} Error exe_alu_pc_o: {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__exe_alu_pc);
         }
     }
 
     void execute_test() {
         if (sim_time == 155) {
             // li s0, 0         -> addi s0, x0, 0
-            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 0,"sim_time: {} Error Alu result: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_result);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 1,"sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rrf_tag);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,"sim_time: {} Error Alu rob_we: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rob_we);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,"sim_time: {} Error Alu rrf_we: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rrf_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 0,
+                   "sim_time: {} Error Alu result: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_result);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 1,
+                   "sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,
+                   "sim_time: {} Error Alu rob_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rob_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Alu rrf_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
         } else if (sim_time == 165) {
             // li a2, 1859      -> addi a2, x0, 1859
-            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 1859,"sim_time: {} Error Alu result: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_result);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 2,"sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rrf_tag);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,"sim_time: {} Error Alu rob_we: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rob_we);
-            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,"sim_time: {} Error Alu rrf_we: {:#x}", sim_time,dut->rootp->HeliosX__DOT__alu_rrf_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 1859,
+                   "sim_time: {} Error Alu result: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_result);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 2,
+                   "sim_time: {} Error Alu rrf_tag: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rob_we == 1,
+                   "sim_time: {} Error Alu rob_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rob_we);
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Alu rrf_we: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
         } else if (sim_time == 175) {
-            
-
         } else if (sim_time == 185) {
-
-
         } else if (sim_time == 195) {
-
-
         } else if (sim_time == 205) {
-
-
         } else if (sim_time == 215) {
-
         }
     }
 
