@@ -8,13 +8,18 @@ module HeliosX (
     output wire [`ADDR_LEN-1:0] iaddr_o,
 
     input wire [`INSN_LEN-1:0] idata_i,
+    input wire [`DATA_LEN-1:0] dmem_rdata_i,
 
     output wire dmem_we_o,
     output wire [`DATA_LEN-1:0] dmem_wdata_o,
     output wire [`ADDR_LEN-1:0] dmem_waddr_o,
     output wire [`ADDR_LEN-1:0] dmem_raddr_o,
-    input wire [`DATA_LEN-1:0] dmem_rdata_i
 
+    // debug signals
+    output wire [`ADDR_LEN-1:0] debug_pc_o,
+    output wire [`REG_SEL-1:0] debug_reg_id_o,
+    output wire [`DATA_LEN-1:0] debug_reg_wdata_o,
+    output wire debug_reg_wen_o
 );
 
     //暂停信号、kill信号
@@ -239,7 +244,6 @@ module HeliosX (
         .md_req_out_sel_1_o(md_req_out_sel_1_dp)
     );
 
-
     //DP stage
     ReNameUnit u_ReNameUnit (
         //input
@@ -373,9 +377,15 @@ module HeliosX (
         .md_req_in_2_signed_1_o(md_req_in_2_signed_1_sw),
 
         .md_req_out_sel_1_i(md_req_out_sel_1_dp),
-        .md_req_out_sel_1_o(md_req_out_sel_1_sw)
-    );
+        .md_req_out_sel_1_o(md_req_out_sel_1_sw),
 
+        // debug
+        .completed_pc_i(pc_com),
+        .debug_pc_o(debug_pc_o),
+        .debug_reg_id_o(debug_reg_id_o),
+        .debug_reg_wdata_o(debug_reg_wdata_o),
+        .debug_reg_wen_o(debug_reg_wen_o)
+    );
 
 
     //SW stage

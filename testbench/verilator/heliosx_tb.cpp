@@ -667,6 +667,21 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_data(getRegIdx("s0")));
 
+            // 验证一下debug相关的输出
+            ASSERT(dut->debug_pc_o == 0x0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == getRegIdx("s0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == getRegIdx("s0"));
+
+            ASSERT(dut->debug_reg_wdata_o == 0x0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
+
             // 验证第二条指令执行阶段前递来的内容是否正确写入
             // rrftag=2时值是否正确
             ASSERT(get_rrf_rrfdata(2) == 1859, "sim_time: {} Error Imm {:#x}",
@@ -810,6 +825,21 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(get_arf_data(getRegIdx("a2")) == 1859,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_data(getRegIdx("a2")));
+
+            // 验证一下debug相关的输出
+            ASSERT(dut->debug_pc_o == 0x4, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == getRegIdx("a2"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == getRegIdx("a2"));
+
+            ASSERT(dut->debug_reg_wdata_o == 1859,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
 
             // 180的时候会收到第三条指令的执行完以后前递过来的结果
             // 但是前递结果并没有写回,下周期才能写回
@@ -994,6 +1024,21 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_data(getRegIdx("s0")));
 
+            // 验证一下debug相关的输出
+            ASSERT(dut->debug_pc_o == 0x8, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == getRegIdx("s0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == getRegIdx("s0"));
+
+            ASSERT(dut->debug_reg_wdata_o == 1859,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
+
             // 验证第四条指令执行阶段前递来的内容是否正确写入
             // rrftag=3时值是否正确
             ASSERT(get_rrf_rrfdata(4) == 929, "sim_time: {} Error Imm {:#x}",
@@ -1050,6 +1095,19 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_data(getRegIdx("a4")));
 
+            ASSERT(dut->debug_pc_o == 0xc, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == getRegIdx("a4"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == getRegIdx("a4"));
+
+            ASSERT(dut->debug_reg_wdata_o == 929,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
             // 验证第五条指令执行阶段前递来的内容是否正确写入
             // rrftag=5时值是否正确
             ASSERT(get_rrf_rrfdata(5) == 22, "sim_time: {} Error Imm {:#x}",
@@ -1090,6 +1148,18 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_data(getRegIdx("a5")));
 
+            ASSERT(dut->debug_pc_o == 0x10, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == getRegIdx("a5"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == getRegIdx("a5"));
+
+            ASSERT(dut->debug_reg_wdata_o == 22, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
             // 验证第六条指令的执行前递结果是否正确
             // 但此时执行的前递结果还没有写回
             ASSERT(get_rrf_rrfvalid(6) == 0, "sim_time: {} Error Imm {:#x}",
@@ -1151,6 +1221,20 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(get_arf_data(getRegIdx("a0")) == 951,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_data(getRegIdx("a0")));
+
+            ASSERT(dut->debug_pc_o == 0x14, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == getRegIdx("a0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == getRegIdx("a0"));
+
+            ASSERT(dut->debug_reg_wdata_o == 951,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
         }
     }
 
