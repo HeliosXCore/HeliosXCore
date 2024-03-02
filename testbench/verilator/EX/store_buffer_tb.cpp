@@ -64,19 +64,19 @@ class VStoreBufferTb : public VerilatorTb<VStoreBuffer> {
     }
 
     void store_test_verify() {
-        if (sim_time == 65) {
+        if (sim_time == 70) {
             // check 1
             ASSERT(dut->mem_we_o == 1, "StoreBuffer store_test error");
             ASSERT(dut->write_address_o == 0x88000000,
                    "StoreBuffer store_test error");
             ASSERT(dut->write_data_o == 4, "StoreBuffer store_test error");
-        } else if (sim_time == 75) {
+        } else if (sim_time == 80) {
             // check 2
             ASSERT(dut->mem_we_o == 1, "StoreBuffer store_test error");
             ASSERT(dut->write_address_o == 0x88000004,
                    "StoreBuffer store_test error");
             ASSERT(dut->write_data_o == 8, "StoreBuffer store_test error");
-        } else if (sim_time == 85) {
+        } else if (sim_time == 90) {
             // check 3
             ASSERT(dut->mem_we_o == 0, "StoreBuffer store_test error");
             ASSERT(dut->write_address_o == 0x88000004,
@@ -99,10 +99,10 @@ class VStoreBufferTb : public VerilatorTb<VStoreBuffer> {
     }
 
     void load_test_verify() {
-        if (sim_time == 95) {
+        if (sim_time == 100) {
             // check 1
             ASSERT(dut->hit == 0, "StoreBuffer load_test error");
-        } else if (sim_time == 105) {
+        } else if (sim_time == 110) {
             // check 2
             ASSERT(dut->hit == 1, "StoreBuffer load_test error");
             ASSERT(dut->read_data_o == 12, "StoreBuffer load_test error");

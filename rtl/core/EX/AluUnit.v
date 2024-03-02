@@ -18,24 +18,13 @@ module AluUnit (
     (* IO_BUFFER_TYPE = "none" *) output wire rrf_we_o
 );
 
-    // 当前部件是否有指令在运行
-    // 假设第 n 拍发射（issue=1），第 n+1 拍 busy = 1
-    reg busy;
-
     // 传入的两个源操作数命名为 1、2，经过选择后实际 ALU 计算的操作数命名为 a、b
     wire [`DATA_LEN-1:0] src_a;
     wire [`DATA_LEN-1:0] src_b;
 
-    assign rob_we_o = busy;  // 向 ROB 发送完成信号
-    assign rrf_we_o = busy & if_write_rrf_i;  // 向 RRF 发送写信号
+    assign rob_we_o = issue_i;  // 向 ROB 发送完成信号
+    assign rrf_we_o = issue_i & if_write_rrf_i;  // 向 RRF 发送写信号
 
-    always @(posedge clk_i) begin
-        if (reset_i) begin
-            busy <= 0;
-        end else begin
-            busy <= issue_i;
-        end
-    end
 
     SrcASelect src_a_select (
         .src_a_sel(src_a_select_i),
@@ -51,7 +40,7 @@ module AluUnit (
         .alu_src_b(src_b)
     );
 
-    ALU alu (
+    Alu alu (
         .op (alu_op_i),
         .in1(src_a),
         .in2(src_b),

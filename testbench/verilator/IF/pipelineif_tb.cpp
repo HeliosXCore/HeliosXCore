@@ -33,9 +33,9 @@ class VPipelineIFTb : public VerilatorTb<VPipelineIF> {
     void test1_verify() {
         if (sim_time == 55) {
             ASSERT(dut->npc_o == 0x000f404c, "npc error");
-            ASSERT(dut->inst1_o == 0x26300100, "inst1 error");
+            ASSERT(dut->inst_o == 0x26300100, "inst1 error");
             ASSERT(dut->npc_o == 0x000f404c, "npc error");
-            ASSERT(dut->inst1_o == 0x26300100, "inst1 error");
+            ASSERT(dut->inst_o == 0x26300100, "inst1 error");
             fmt::println("PipelineIF test1 passed!");
         }
     }
@@ -50,9 +50,9 @@ class VPipelineIFTb : public VerilatorTb<VPipelineIF> {
     void test2_verify() {
         if (sim_time == 65) {
             ASSERT(dut->npc_o == 0x000f2624, "npc error");
-            ASSERT(dut->inst1_o == 0xc2804365, "inst1 error");
+            ASSERT(dut->inst_o == 0xc2804365, "inst1 error");
             ASSERT(dut->npc_o == 0x000f2624, "npc error");
-            ASSERT(dut->inst1_o == 0xc2804365, "inst1 error");
+            ASSERT(dut->inst_o == 0xc2804365, "inst1 error");
             fmt::println("PipelineIF test2 passed!");
         }
     }
@@ -67,7 +67,7 @@ class VPipelineIFTb : public VerilatorTb<VPipelineIF> {
     void test3_verify() {
         if (sim_time == 75) {
             ASSERT(dut->npc_o == 0x000f071b, "npc error");
-            ASSERT(dut->inst1_o == 0xffdff06f, "inst1 error");
+            ASSERT(dut->inst_o == 0x00202423, "inst1 error");
             fmt::println("PipelineIF test3 passed!");
         }
     }

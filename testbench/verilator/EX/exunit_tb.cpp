@@ -87,7 +87,7 @@ class VExUnitTb : public VerilatorTb<VExUnit> {
     }
 
     void test1_verify() {
-        if (sim_time == 55) {
+        if (sim_time == 60) {
             ASSERT(dut->alu_result_o == 1 + 2, "ALU error");
             ASSERT(dut->branch_jump_result_o == 0x88000000 + 0x8000,
                    "Branch error");
@@ -121,7 +121,7 @@ class VExUnitTb : public VerilatorTb<VExUnit> {
     }
 
     void test2_verify() {
-        if (sim_time == 65) {
+        if (sim_time == 70) {
             ASSERT(dut->alu_result_o == 0x80000000 + 4, "ALU error");
             ASSERT(dut->branch_jump_result_o == 0x80000000 + 0x8000,
                    "Branch error");

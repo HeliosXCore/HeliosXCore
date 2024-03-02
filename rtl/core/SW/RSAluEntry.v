@@ -11,6 +11,9 @@ module RSAluEntry (
     // Dispatch 指令的两个操作数
     input wire [`DATA_LEN-1:0] write_op_1_i,
     input wire [`DATA_LEN-1:0] write_op_2_i,
+    // 是否选择操作数
+    input wire [`SRC_A_SEL_WIDTH-1:0] write_src_a_i,
+    input wire [`SRC_B_SEL_WIDTH-1:0] write_src_b_i,
     // Dispatch 指令的两个操作数是否有效，无效则为 RRFTag
     input wire write_op_1_valid_i,
     input wire write_op_2_valid_i,
@@ -50,7 +53,10 @@ module RSAluEntry (
     output reg [`DATA_LEN-1:0] exe_imm_o,
     output reg [`RRF_SEL-1:0] exe_rrf_tag_o,
     output reg exe_dst_val_o,
-    output reg [`ALU_OP_WIDTH-1:0] exe_alu_op_o
+    output reg [`ALU_OP_WIDTH-1:0] exe_alu_op_o,
+
+    output reg [`SRC_A_SEL_WIDTH-1:0] exe_src_a_o,
+    output reg [`SRC_B_SEL_WIDTH-1:0] exe_src_b_o
 );
 
     reg valid_1;
@@ -62,6 +68,45 @@ module RSAluEntry (
     reg next_valid_2;
     reg [`DATA_LEN-1:0] next_op_1;
     reg [`DATA_LEN-1:0] next_op_2;
+
+    wire [`DATA_LEN-1:0] write_op_1;
+    wire [`DATA_LEN-1:0] write_op_2;
+    wire write_valid_1;
+    wire write_valid_2;
+
+    wire write_op_update_1;
+    wire write_op_update_2;
+
+    assign write_op_update_1 = (we_i & ~write_op_1_valid_i) ? 
+                     (exe_result_1_dst_i == write_op_1_i[`RRF_SEL-1:0]) |
+                     (exe_result_2_dst_i == write_op_1_i[`RRF_SEL-1:0]) |
+                     (exe_result_3_dst_i == write_op_1_i[`RRF_SEL-1:0]) |
+                     (exe_result_4_dst_i == write_op_1_i[`RRF_SEL-1:0]) |
+                     (exe_result_5_dst_i == write_op_1_i[`RRF_SEL-1:0]) : 0;
+
+    assign write_op_update_2 = (we_i & ~write_op_2_valid_i) ? 
+                     (exe_result_1_dst_i == write_op_2_i[`RRF_SEL-1:0]) |
+                     (exe_result_2_dst_i == write_op_2_i[`RRF_SEL-1:0]) |
+                     (exe_result_3_dst_i == write_op_2_i[`RRF_SEL-1:0]) |
+                     (exe_result_4_dst_i == write_op_2_i[`RRF_SEL-1:0]) |
+                     (exe_result_5_dst_i == write_op_2_i[`RRF_SEL-1:0]) : 0;
+
+    assign write_op_1 = (~write_op_update_1) ? write_op_1_i:
+        (exe_result_1_dst_i == write_op_1_i[`RRF_SEL-1:0]) ? exe_result_1_i :
+        (exe_result_2_dst_i == write_op_1_i[`RRF_SEL-1:0]) ? exe_result_2_i :
+        (exe_result_3_dst_i == write_op_1_i[`RRF_SEL-1:0]) ? exe_result_3_i :
+        (exe_result_4_dst_i == write_op_1_i[`RRF_SEL-1:0]) ? exe_result_4_i :
+        (exe_result_5_dst_i == write_op_1_i[`RRF_SEL-1:0]) ? exe_result_5_i : write_op_1_i;
+
+    assign write_op_2 = (~write_op_update_2) ? write_op_2_i:
+        (exe_result_1_dst_i == write_op_2_i[`RRF_SEL-1:0]) ? exe_result_1_i :
+        (exe_result_2_dst_i == write_op_2_i[`RRF_SEL-1:0]) ? exe_result_2_i :
+        (exe_result_3_dst_i == write_op_2_i[`RRF_SEL-1:0]) ? exe_result_3_i :
+        (exe_result_4_dst_i == write_op_2_i[`RRF_SEL-1:0]) ? exe_result_4_i :
+        (exe_result_5_dst_i == write_op_2_i[`RRF_SEL-1:0]) ? exe_result_5_i : write_op_2_i;
+
+    assign write_valid_1 = write_op_1_valid_i | write_op_update_1;
+    assign write_valid_2 = write_op_2_valid_i | write_op_update_2;
 
     // 两个操作数已经准备好且保留站 entry 有数据
     assign ready_o = busy_i & valid_1 & valid_2;
@@ -80,17 +125,26 @@ module RSAluEntry (
             exe_rrf_tag_o <= 0;
             exe_dst_val_o <= 0;
             exe_alu_op_o <= 0;
+
+            exe_src_a_o <= 0;
+            exe_src_b_o <= 0;
         end else if (we_i) begin
             exe_pc_o <= write_pc_i;
             exe_imm_o <= write_imm_i;
             exe_rrf_tag_o <= write_rrf_tag_i;
             exe_dst_val_o <= write_dst_val_i;
             exe_alu_op_o <= write_alu_op_i;
+            exe_src_a_o <= write_src_a_i;
+            exe_src_b_o <= write_src_b_i;
 
-            op_1 <= write_op_1_i;
-            op_2 <= write_op_2_i;
-            valid_1 <= write_op_1_valid_i;
-            valid_2 <= write_op_2_valid_i;
+            // op_1 <= write_op_1_i;
+            // op_2 <= write_op_2_i;
+            // valid_1 <= write_op_1_valid_i;
+            // valid_2 <= write_op_2_valid_i;
+            op_1 <= write_op_1;
+            op_2 <= write_op_2;
+            valid_1 <= write_valid_1;
+            valid_2 <= write_valid_2;
         end else begin
             op_1 <= next_op_1;
             op_2 <= next_op_2;

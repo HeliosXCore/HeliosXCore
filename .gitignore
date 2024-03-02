@@ -5,3 +5,10 @@ tags
 .DS_Store
 *.json
 *.tags
+**/.cache/
+*gtkw*
+*work*
+*.tasks
+*.yml
+.clangd
+.breakpoints.txt

@@ -1,7 +1,7 @@
 `include "consts/ALU.vh"
 `include "consts/Consts.vh"
 
-module ALU (
+module Alu (
     (* IO_BUFFER_TYPE = "none" *) input wire [`ALU_OP_WIDTH-1:0] op,
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] in1,
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] in2,

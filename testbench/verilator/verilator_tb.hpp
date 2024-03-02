@@ -1,6 +1,7 @@
 #pragma once
 #include <verilated.h>
 #include <verilated_vcd_c.h>
+#include <cstdint>
 #include <memory>
 #include <fmt/core.h>
 
@@ -27,6 +28,23 @@ class VerilatorTb {
     }
 
     ~VerilatorTb() {}
+
+    const char *regs[32] = {"$0", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2",
+                            "s0", "s1", "a0",  "a1",  "a2", "a3", "a4", "a5",
+                            "a6", "a7", "s2",  "s3",  "s4", "s5", "s6", "s7",
+                            "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"};
+
+    const char *reg_idx2str(const uint32_t idx) { return regs[idx]; }
+
+    uint32_t get_regidx(const char *regname) {
+        for (int i = 0; i < 32; i++) {
+            if (strcmp(regname, regs[i]) == 0) {
+                return i;
+            }
+        }
+        fmt::println("regname is not correct!\n");
+        return -1;
+    }
 
     // 初始化 DUT 信号
     virtual void initialize_signal(){};
@@ -66,6 +84,7 @@ class VerilatorTb {
             if ((sim_time % clock) == 0) {
                 tick();
             }
+            eval();
             if (posedge()) {
                 input();
             }

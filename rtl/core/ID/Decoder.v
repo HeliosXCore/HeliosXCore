@@ -4,20 +4,20 @@
 
 `default_nettype none
 module Decoder (
-    input  wire [               31:0] inst_i,      //指令
-    output reg  [`IMM_TYPE_WIDTH-1:0] imm_type_o,  //当前指令的立即数类型
-    output wire [       `REG_SEL-1:0] rs1_o,       //当前指令中的第一个源操作数寄存器地址
-    output wire [       `REG_SEL-1:0] rs2_o,       //当前指令中的第二个源操作数寄存器地址
-    output wire [       `REG_SEL-1:0] rd_o,        //当前指令的目标寄存器地址
+    input wire [31:0] inst_i,  //指令
+    output reg [`IMM_TYPE_WIDTH-1:0] imm_type_o,  //当前指令的立即数类型
+    output wire [`REG_SEL-1:0] rs1_o,  //当前指令中的第一个源操作数寄存器地址
+    output wire [`REG_SEL-1:0] rs2_o,  //当前指令中的第二个源操作数寄存器地址
+    output wire [`REG_SEL-1:0] rd_o,  //当前指令的目标寄存器地址
 
-    output wire [`SRC_A_SEL_WIDTH-1:0] src_a_sel_o,            //用于选择ALU操作数
-    output wire [`SRC_B_SEL_WIDTH-1:0] src_b_sel_o,            //用于选择ALU操作数
-    output wire                        wr_reg_o,               //是否将数据写入目标寄存器
-    output wire                        uses_rs1_o,             //rs1的有效信号
-    output wire                        uses_rs2_o,             //rs2的有效信号
-    output wire                        illegal_instruction_o,  //表示该指令未在该处理器中定义
-    output wire [   `ALU_OP_WIDTH-1:0] alu_op_o,               //ALU操作类型
-    output wire [     `RS_ENT_SEL-1:0] rs_ent_o,               //保留站ID
+    output wire [`SRC_A_SEL_WIDTH-1:0] src_a_sel_o,  //用于选择ALU操作数
+    output wire [`SRC_B_SEL_WIDTH-1:0] src_b_sel_o,  //用于选择ALU操作数
+    output wire wr_reg_o,  //是否将数据写入目标寄存器
+    output wire uses_rs1_o,  //rs1的有效信号
+    output wire uses_rs2_o,  //rs2的有效信号
+    output wire illegal_instruction_o,  //表示该指令未在该处理器中定义
+    output wire [`ALU_OP_WIDTH-1:0] alu_op_o,  //ALU操作类型
+    output wire [`RS_ENT_SEL-1:0] rs_ent_o,  //保留站ID
 
     output wire [                2:0] dmem_size_o,  //决定Load/Store指令数据的大小
     output wire [`MEM_TYPE_WIDTH-1:0] dmem_type_o,  //决定Load/Store指令数据的大小
@@ -54,7 +54,7 @@ module Decoder (
                         (opcode == `RV32_AUIPC) ? `IMM_U :
                         (opcode == `RV32_OP) ? `IMM_I :
                         (opcode == `RV32_OP_IMM) ? `IMM_I :
-                        `IMM_I;
+                        0;
 
     assign src_a_sel_o = (opcode == `RV32_LOAD) ? `SRC_A_RS1 :
                          (opcode == `RV32_STORE) ? `SRC_A_RS1 :
@@ -64,7 +64,7 @@ module Decoder (
                          (opcode == `RV32_AUIPC) ? `SRC_A_PC :
                          (opcode == `RV32_OP) ? `SRC_A_RS1 :
                          (opcode == `RV32_OP_IMM) ? `SRC_A_RS1 :
-                         `SRC_A_RS1;
+                         0;
 
     assign src_b_sel_o = (opcode == `RV32_LOAD) ? `SRC_B_IMM :
                          (opcode == `RV32_STORE) ? `SRC_B_IMM :
@@ -74,7 +74,7 @@ module Decoder (
                          (opcode == `RV32_AUIPC) ? `SRC_B_IMM :
                          (opcode == `RV32_OP) ? `SRC_B_RS2 :
                          (opcode == `RV32_OP_IMM) ? `SRC_B_IMM :
-                         `SRC_B_IMM;
+                         0;
 
     assign wr_reg_o = (opcode == `RV32_LOAD) ? 1'b1 :
                       (opcode == `RV32_STORE) ? 1'b0 :
@@ -94,7 +94,7 @@ module Decoder (
                         (opcode == `RV32_AUIPC) ? 1'b0 :
                         (opcode == `RV32_OP) ? 1'b1 :
                         (opcode == `RV32_OP_IMM) ? 1'b1 :
-                        1'b1;
+                        0;
 
     assign uses_rs2_o = (opcode == `RV32_LOAD) ? 1'b0 :
                         (opcode == `RV32_STORE) ? 1'b1 :
@@ -104,7 +104,7 @@ module Decoder (
                         (opcode == `RV32_AUIPC) ? 1'b0 :
                         (opcode == `RV32_OP) ? 1'b1 :
                         (opcode == `RV32_OP_IMM) ? 1'b0 :
-                        1'b0;
+                        0;
 
     assign illegal_instruction_o = (opcode == `RV32_LOAD) ? 1'b0 :
                                    (opcode == `RV32_STORE) ? 1'b0 :
@@ -114,7 +114,7 @@ module Decoder (
                                    (opcode == `RV32_AUIPC) ? 1'b0 :
                                    (opcode == `RV32_OP) ? 1'b0 :
                                    (opcode == `RV32_OP_IMM) ? 1'b0 :
-                                   1'b1;
+                                   1'b0;
 
     assign alu_op_o = (opcode == `RV32_LOAD) ? `ALU_OP_ADD :
                       (opcode == `RV32_STORE) ? `ALU_OP_ADD :
@@ -124,7 +124,7 @@ module Decoder (
                       (opcode == `RV32_AUIPC) ? `ALU_OP_ADD :
                       (opcode == `RV32_OP) ? alu_op_arith :
                       (opcode == `RV32_OP_IMM) ? alu_op_arith :
-                      `ALU_OP_ADD;
+                      0;
 
     assign rs_ent_o = (opcode == `RV32_LOAD) ? `RS_ENT_LDST :
                       (opcode == `RV32_STORE) ? `RS_ENT_LDST :
@@ -134,7 +134,7 @@ module Decoder (
                       (opcode == `RV32_AUIPC) ? `RS_ENT_ALU :
                       (opcode == `RV32_OP) ? `RS_ENT_ALU :
                       (opcode == `RV32_OP_IMM) ? `RS_ENT_ALU :
-                      `RS_ENT_ALU;
+                      0;
 
     assign add_or_sub = ((opcode == `RV32_OP) && (funct7[5])) ? `ALU_OP_SUB : `ALU_OP_ADD;
     assign srl_or_sra = (funct7[5]) ? `ALU_OP_SRA : `ALU_OP_SRL;

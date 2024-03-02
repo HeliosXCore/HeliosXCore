@@ -1,3 +1,5 @@
+`define OPCODE_LEN 7
+
 // Width-related constants
 `define INST_WIDTH     32
 `define REG_ADDR_WIDTH  5

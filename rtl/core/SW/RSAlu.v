@@ -26,6 +26,9 @@ module RSAlu (
     // 两个操作数是否有效
     input wire write_valid_1_1_i,
     input wire write_valid_1_2_i,
+    // 是否选择操作数
+    input wire [`SRC_A_SEL_WIDTH-1:0] write_src_1_a_i,
+    input wire [`SRC_B_SEL_WIDTH-1:0] write_src_1_b_i,
     // 写入第一条指令的立即数值
     input wire [`DATA_LEN-1:0] write_imm_1_i,
     // 写入第一条指令目标寄存器的 RRFTag
@@ -43,6 +46,9 @@ module RSAlu (
     // 两个操作数是否有效
     input wire write_valid_2_1_i,
     input wire write_valid_2_2_i,
+    // 是否选择操作数
+    input wire [`SRC_A_SEL_WIDTH-1:0] write_src_2_a_i,
+    input wire [`SRC_B_SEL_WIDTH-1:0] write_src_2_b_i,
     // 写入第二条指令的立即数值
     input wire [`DATA_LEN-1:0] write_imm_2_i,
     // 写入第二条指令目标寄存器的 RRFTag
@@ -77,31 +83,36 @@ module RSAlu (
     output wire [`DATA_LEN-1:0] exe_imm_o,
     output wire [`RRF_SEL-1:0] exe_rrf_tag_o,
     output wire exe_dst_val_o,
-    output wire [`ALU_OP_WIDTH-1:0] exe_alu_op_o
+    output wire [`ALU_OP_WIDTH-1:0] exe_alu_op_o,
+    // 是否选择操作数
+    output wire [`SRC_A_SEL_WIDTH-1:0] exe_src_a_o,
+    output wire [`SRC_B_SEL_WIDTH-1:0] exe_src_b_o
 );
 
     // 一个保留站中存储8个Entry
-    wire [    `DATA_LEN-1:0] exe_op_1          [0:`ALU_ENT_NUM-1];
-    wire [    `DATA_LEN-1:0] exe_op_2          [0:`ALU_ENT_NUM-1];
-    wire                     ready             [0:`ALU_ENT_NUM-1];
-    wire [    `ADDR_LEN-1:0] exe_pc            [0:`ALU_ENT_NUM-1];
-    wire [    `DATA_LEN-1:0] exe_imm           [0:`ALU_ENT_NUM-1];
-    wire [     `RRF_SEL-1:0] exe_rrf_tag       [0:`ALU_ENT_NUM-1];
-    wire                     exe_dst_val       [0:`ALU_ENT_NUM-1];
-    wire [`ALU_OP_WIDTH-1:0] exe_alu_op        [0:`ALU_ENT_NUM-1];
+    wire [       `DATA_LEN-1:0] exe_op_1          [0:`ALU_ENT_NUM-1];
+    wire [       `DATA_LEN-1:0] exe_op_2          [0:`ALU_ENT_NUM-1];
+    wire                        ready             [0:`ALU_ENT_NUM-1];
+    wire [       `ADDR_LEN-1:0] exe_pc            [0:`ALU_ENT_NUM-1];
+    wire [       `DATA_LEN-1:0] exe_imm           [0:`ALU_ENT_NUM-1];
+    wire [        `RRF_SEL-1:0] exe_rrf_tag       [0:`ALU_ENT_NUM-1];
+    wire                        exe_dst_val       [0:`ALU_ENT_NUM-1];
+    wire [   `ALU_OP_WIDTH-1:0] exe_alu_op        [0:`ALU_ENT_NUM-1];
+    wire [`SRC_A_SEL_WIDTH-1:0] exe_src_a         [0:`ALU_ENT_NUM-1];
+    wire [`SRC_B_SEL_WIDTH-1:0] exe_src_b         [0:`ALU_ENT_NUM-1];
 
 
     // 用于做保留站指令的排序
-    reg  [ `ALU_ENT_NUM-1:0] sort_bit;
+    reg  [    `ALU_ENT_NUM-1:0] sort_bit;
 
-    wire                     select_rs_entry_0;
-    wire                     select_rs_entry_1;
-    wire                     select_rs_entry_2;
-    wire                     select_rs_entry_3;
-    wire                     select_rs_entry_4;
-    wire                     select_rs_entry_5;
-    wire                     select_rs_entry_6;
-    wire                     select_rs_entry_7;
+    wire                        select_rs_entry_0;
+    wire                        select_rs_entry_1;
+    wire                        select_rs_entry_2;
+    wire                        select_rs_entry_3;
+    wire                        select_rs_entry_4;
+    wire                        select_rs_entry_5;
+    wire                        select_rs_entry_6;
+    wire                        select_rs_entry_7;
 
     assign select_rs_entry_0 = (we_1_i && (write_addr_1_i == 0)) || (we_2_i && (write_addr_2_i == 0));
     assign select_rs_entry_1 = (we_1_i && (write_addr_1_i == 1)) || (we_2_i && (write_addr_2_i == 1));
@@ -160,6 +171,9 @@ module RSAlu (
         .write_rrf_tag_i(select_write_signal_0_1 ? write_tag_1_i : select_write_signal_0_2 ? write_tag_2_i : '0),
         .write_dst_val_i(select_write_signal_0_1 ? write_dst_1_i : select_write_signal_0_2 ? write_dst_2_i : 0),
         .write_alu_op_i(select_write_signal_0_1 ? write_alu_op_1_i : select_write_signal_0_2 ? write_alu_op_2_i : '0),
+        .write_src_a_i(select_write_signal_0_1 ? write_src_1_a_i : select_write_signal_0_2 ? write_src_2_a_i : '0),
+        .write_src_b_i(select_write_signal_0_1 ? write_src_1_b_i : select_write_signal_0_2 ? write_src_2_b_i : '0),
+
 
         .we_i(select_rs_entry_0),
 
@@ -181,7 +195,9 @@ module RSAlu (
         .exe_imm_o(exe_imm[0]),
         .exe_rrf_tag_o(exe_rrf_tag[0]),
         .exe_dst_val_o(exe_dst_val[0]),
-        .exe_alu_op_o(exe_alu_op[0])
+        .exe_alu_op_o(exe_alu_op[0]),
+        .exe_src_a_o(exe_src_a[0]),
+        .exe_src_b_o(exe_src_b[0])
 
     );
 
@@ -198,6 +214,8 @@ module RSAlu (
         .write_rrf_tag_i(select_write_signal_1_1 ? write_tag_1_i : select_write_signal_1_2 ? write_tag_2_i : '0),
         .write_dst_val_i(select_write_signal_1_1 ? write_dst_1_i : select_write_signal_1_2 ? write_dst_2_i : 0),
         .write_alu_op_i(select_write_signal_1_1 ? write_alu_op_1_i : select_write_signal_1_2 ? write_alu_op_2_i : '0),
+        .write_src_a_i(select_write_signal_1_1 ? write_src_1_a_i : select_write_signal_1_2 ? write_src_2_a_i : '0),
+        .write_src_b_i(select_write_signal_1_1 ? write_src_1_b_i : select_write_signal_1_2 ? write_src_2_b_i : '0),
 
         .we_i(select_rs_entry_1),
 
@@ -219,7 +237,9 @@ module RSAlu (
         .exe_imm_o(exe_imm[1]),
         .exe_rrf_tag_o(exe_rrf_tag[1]),
         .exe_dst_val_o(exe_dst_val[1]),
-        .exe_alu_op_o(exe_alu_op[1])
+        .exe_alu_op_o(exe_alu_op[1]),
+        .exe_src_a_o(exe_src_a[1]),
+        .exe_src_b_o(exe_src_b[1])
     );
 
     RSAluEntry entry_2 (
@@ -235,6 +255,8 @@ module RSAlu (
         .write_rrf_tag_i(select_write_signal_2_1 ? write_tag_1_i : select_write_signal_2_2 ? write_tag_2_i : '0),
         .write_dst_val_i(select_write_signal_2_1 ? write_dst_1_i : select_write_signal_2_2 ? write_dst_2_i : 0),
         .write_alu_op_i(select_write_signal_2_1 ? write_alu_op_1_i : select_write_signal_2_2 ? write_alu_op_2_i : '0),
+        .write_src_a_i(select_write_signal_2_1 ? write_src_1_a_i : select_write_signal_2_2 ? write_src_2_a_i : '0),
+        .write_src_b_i(select_write_signal_2_1 ? write_src_1_b_i : select_write_signal_2_2 ? write_src_2_b_i : '0),
 
         .we_i(select_rs_entry_2),
 
@@ -256,7 +278,9 @@ module RSAlu (
         .exe_imm_o(exe_imm[2]),
         .exe_rrf_tag_o(exe_rrf_tag[2]),
         .exe_dst_val_o(exe_dst_val[2]),
-        .exe_alu_op_o(exe_alu_op[2])
+        .exe_alu_op_o(exe_alu_op[2]),
+        .exe_src_a_o(exe_src_a[2]),
+        .exe_src_b_o(exe_src_b[2])
     );
 
     RSAluEntry entry_3 (
@@ -272,6 +296,8 @@ module RSAlu (
         .write_rrf_tag_i(select_write_signal_3_1 ? write_tag_1_i : select_write_signal_3_2 ? write_tag_2_i : '0),
         .write_dst_val_i(select_write_signal_3_1 ? write_dst_1_i : select_write_signal_3_2 ? write_dst_2_i : 0),
         .write_alu_op_i(select_write_signal_3_1 ? write_alu_op_1_i : select_write_signal_3_2 ? write_alu_op_2_i : '0),
+        .write_src_a_i(select_write_signal_3_1 ? write_src_1_a_i : select_write_signal_3_2 ? write_src_2_a_i : '0),
+        .write_src_b_i(select_write_signal_3_1 ? write_src_1_b_i : select_write_signal_3_2 ? write_src_2_b_i : '0),
 
         .we_i(select_rs_entry_3),
 
@@ -293,7 +319,9 @@ module RSAlu (
         .exe_imm_o(exe_imm[3]),
         .exe_rrf_tag_o(exe_rrf_tag[3]),
         .exe_dst_val_o(exe_dst_val[3]),
-        .exe_alu_op_o(exe_alu_op[3])
+        .exe_alu_op_o(exe_alu_op[3]),
+        .exe_src_a_o(exe_src_a[3]),
+        .exe_src_b_o(exe_src_b[3])
     );
 
     RSAluEntry entry_4 (
@@ -309,6 +337,8 @@ module RSAlu (
         .write_rrf_tag_i(select_write_signal_4_1 ? write_tag_1_i : select_write_signal_4_2 ? write_tag_2_i : '0),
         .write_dst_val_i(select_write_signal_4_1 ? write_dst_1_i : select_write_signal_4_2 ? write_dst_2_i : 0),
         .write_alu_op_i(select_write_signal_4_1 ? write_alu_op_1_i : select_write_signal_4_2 ? write_alu_op_2_i : '0),
+        .write_src_a_i(select_write_signal_4_1 ? write_src_1_a_i : select_write_signal_4_2 ? write_src_2_a_i : '0),
+        .write_src_b_i(select_write_signal_4_1 ? write_src_1_b_i : select_write_signal_4_2 ? write_src_2_b_i : '0),
 
         .we_i(select_rs_entry_4),
 
@@ -330,7 +360,9 @@ module RSAlu (
         .exe_imm_o(exe_imm[4]),
         .exe_rrf_tag_o(exe_rrf_tag[4]),
         .exe_dst_val_o(exe_dst_val[4]),
-        .exe_alu_op_o(exe_alu_op[4])
+        .exe_alu_op_o(exe_alu_op[4]),
+        .exe_src_a_o(exe_src_a[4]),
+        .exe_src_b_o(exe_src_b[4])
     );
 
     RSAluEntry entry_5 (
@@ -346,6 +378,8 @@ module RSAlu (
         .write_rrf_tag_i(select_write_signal_5_1 ? write_tag_1_i : select_write_signal_5_2 ? write_tag_2_i : '0),
         .write_dst_val_i(select_write_signal_5_1 ? write_dst_1_i : select_write_signal_5_2 ? write_dst_2_i : 0),
         .write_alu_op_i(select_write_signal_5_1 ? write_alu_op_1_i : select_write_signal_5_2 ? write_alu_op_2_i : '0),
+        .write_src_a_i(select_write_signal_5_1 ? write_src_1_a_i : select_write_signal_5_2 ? write_src_2_a_i : '0),
+        .write_src_b_i(select_write_signal_5_1 ? write_src_1_b_i : select_write_signal_5_2 ? write_src_2_b_i : '0),
 
         .we_i(select_rs_entry_5),
 
@@ -367,7 +401,9 @@ module RSAlu (
         .exe_imm_o(exe_imm[5]),
         .exe_rrf_tag_o(exe_rrf_tag[5]),
         .exe_dst_val_o(exe_dst_val[5]),
-        .exe_alu_op_o(exe_alu_op[5])
+        .exe_alu_op_o(exe_alu_op[5]),
+        .exe_src_a_o(exe_src_a[5]),
+        .exe_src_b_o(exe_src_b[5])
     );
 
     RSAluEntry entry_6 (
@@ -383,6 +419,8 @@ module RSAlu (
         .write_rrf_tag_i(select_write_signal_6_1 ? write_tag_1_i : select_write_signal_6_2 ? write_tag_2_i : '0),
         .write_dst_val_i(select_write_signal_6_1 ? write_dst_1_i : select_write_signal_6_2 ? write_dst_2_i : 0),
         .write_alu_op_i(select_write_signal_6_1 ? write_alu_op_1_i : select_write_signal_6_2 ? write_alu_op_2_i : '0),
+        .write_src_a_i(select_write_signal_6_1 ? write_src_1_a_i : select_write_signal_6_2 ? write_src_2_a_i : '0),
+        .write_src_b_i(select_write_signal_6_1 ? write_src_1_b_i : select_write_signal_6_2 ? write_src_2_b_i : '0),
 
         .we_i(select_rs_entry_6),
 
@@ -404,7 +442,9 @@ module RSAlu (
         .exe_imm_o(exe_imm[6]),
         .exe_rrf_tag_o(exe_rrf_tag[6]),
         .exe_dst_val_o(exe_dst_val[6]),
-        .exe_alu_op_o(exe_alu_op[6])
+        .exe_alu_op_o(exe_alu_op[6]),
+        .exe_src_a_o(exe_src_a[6]),
+        .exe_src_b_o(exe_src_b[6])
     );
 
     RSAluEntry entry_7 (
@@ -420,6 +460,8 @@ module RSAlu (
         .write_rrf_tag_i(select_write_signal_7_1 ? write_tag_1_i : select_write_signal_7_2 ? write_tag_2_i : '0),
         .write_dst_val_i(select_write_signal_7_1 ? write_dst_1_i : select_write_signal_7_2 ? write_dst_2_i : 0),
         .write_alu_op_i(select_write_signal_7_1 ? write_alu_op_1_i : select_write_signal_7_2 ? write_alu_op_2_i : '0),
+        .write_src_a_i(select_write_signal_7_1 ? write_src_1_a_i : select_write_signal_7_2 ? write_src_2_a_i : '0),
+        .write_src_b_i(select_write_signal_7_1 ? write_src_1_b_i : select_write_signal_7_2 ? write_src_2_b_i : '0),
 
         .we_i(select_rs_entry_7),
 
@@ -441,7 +483,9 @@ module RSAlu (
         .exe_imm_o(exe_imm[7]),
         .exe_rrf_tag_o(exe_rrf_tag[7]),
         .exe_dst_val_o(exe_dst_val[7]),
-        .exe_alu_op_o(exe_alu_op[7])
+        .exe_alu_op_o(exe_alu_op[7]),
+        .exe_src_a_o(exe_src_a[7]),
+        .exe_src_b_o(exe_src_b[7])
     );
 
     // 组合逻辑
@@ -550,6 +594,22 @@ module RSAlu (
                         (issue_addr_i == 5)? exe_alu_op[5]:
                         (issue_addr_i == 6)? exe_alu_op[6]:
                         (issue_addr_i == 7)? exe_alu_op[7]: '0;
+    assign exe_src_a_o = (issue_addr_i == 0)? exe_src_a[0]:
+                        (issue_addr_i == 1)? exe_src_a[1]:
+                        (issue_addr_i == 2)? exe_src_a[2]:
+                        (issue_addr_i == 3)? exe_src_a[3]:
+                        (issue_addr_i == 4)? exe_src_a[4]:
+                        (issue_addr_i == 5)? exe_src_a[5]:
+                        (issue_addr_i == 6)? exe_src_a[6]:
+                        (issue_addr_i == 7)? exe_src_a[7]: '0;
+    assign exe_src_b_o = (issue_addr_i == 0)? exe_src_b[0]:
+                        (issue_addr_i == 1)? exe_src_b[1]:
+                        (issue_addr_i == 2)? exe_src_b[2]:
+                        (issue_addr_i == 3)? exe_src_b[3]:
+                        (issue_addr_i == 4)? exe_src_b[4]:
+                        (issue_addr_i == 5)? exe_src_b[5]:
+                        (issue_addr_i == 6)? exe_src_b[6]:
+                        (issue_addr_i == 7)? exe_src_b[7]: '0;
 
 
 
