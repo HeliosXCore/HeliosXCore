@@ -3,6 +3,7 @@ VERILATOR := verilator
 STAGE ?= SW
 
 RTLOBJD	:= build
+BUILD_DIR := build
 
 DEBUG ?= N
 WAVE  ?= N
@@ -58,6 +59,11 @@ sim:
 	@make -C $(RTLOBJD) -f V$(TEST).mk V$(TEST)
 	@./$(RTLOBJD)/V$(TEST) +verilator+rand+reset+2
 
+difftest:
+	@make -C HeliosXSimulator static
+	@cp HeliosXSimulator/build/libHeliosXSimulator.a $(BUILD_DIR)/libHeliosXSimulator.a
+	@make sim STAGE=DIFFTEST
+
 wave: sim
 	@gtkwave $(WAVE)
 
@@ -69,6 +75,7 @@ format:
 clean:
 	@rm -rf build
 	@rm *.vcd
+	@make -C HeliosXSimulator clean
 
 lint:
 	@verilator --lint-only -Irtl rtl/core/IF/*.v rtl/core/ID/*.v rtl/core/DP/*.v \

@@ -8,3 +8,4 @@ TESTBENCH := difftest
 WAVE 	  := difftest.vcd
 
 IFLAGS 	  += -CFLAGS -I../HeliosXSimulator/include
+LDFLAGS   += -LDFLAGS ../build/libHeliosXSimulator.a

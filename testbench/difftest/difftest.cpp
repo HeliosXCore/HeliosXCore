@@ -1,9 +1,107 @@
 #include "VHeliosX.h"
 #include "memory.hpp"
 #include "soc.hpp"
+#include <fmt/core.h>
 #include <memory.h>
 
 using namespace heliosxsimulator;
+
+template <>
+void SocSimulator<VHeliosX>::tick() {
+    cpu_clk = !cpu_clk;
+    cpu_top->clk_i ^= 1;
+}
+
+template <>
+void SocSimulator<VHeliosX>::initialize_dut() {
+    cpu_top->clk_i = 0;
+    cpu_top->reset_i = 0;
+    cpu_top->idata_i = 0;
+    cpu_top->dmem_rdata_i = 0;
+}
+
+template <>
+void SocSimulator<VHeliosX>::connect_wire() {
+    cpu_top->clk_i = cpu_clk;
+    cpu_top->reset_i = cpu_reset;
+    cpu_top->idata_i = cpu_inst_i;
+    cpu_top->dmem_rdata_i = read_dmem_data_i;
+
+    // pc_o = cpu_top->pc_o;
+    dmem_we_o = cpu_top->dmem_we_o;
+    write_dmem_data_o = cpu_top->dmem_wdata_o;
+    dmem_addr_o = cpu_top->dmem_waddr_o;
+}
+
+template <>
+bool SocSimulator<VHeliosX>::trace_on() {
+    return false;
+}
+
+template <>
+void SocSimulator<VHeliosX>::detect_commit_timeout() {
+    // if (debug_wen) {
+    //     last_commit = sim_time;
+    // } else if (sim_time - last_commit > COMMIT_TIMEOUT) {
+    //     std::cout << "Commit timeout at time " << sim_time << std::endl;
+    //     running = false;
+    // }
+}
+
+template <>
+void SocSimulator<VHeliosX>::trace() {
+    uint32_t ref_pc;
+    uint32_t ref_wen;
+    uint32_t ref_wreg_num;
+    uint32_t ref_wreg_data;
+
+    if (trace_on() && debug_wen && debug_wreg_num) {
+        //     while (trace_file >> std::hex >> ref_pc >> ref_wen >>
+        //            ref_wreg_num >> ref_wreg_data) {
+        //     }
+        //     if (ref_pc != pc_o || ref_wen != debug_wen ||
+        //         ref_wreg_num != debug_wreg_data ||
+        //         ref_wreg_data != debug_wreg_data) {
+        //         std::cout << "Trace failed at time " << sim_time <<
+        //         std::endl; fmt::println(
+        //             "Expected: pc: {:x}, wen: {:x}, wreg_num: {:x}, "
+        //             "wreg_data: {:x}",
+        //             ref_pc, ref_wen, ref_wreg_num, ref_wreg_data);
+        //         fmt::println(
+        //             "Actual: pc: {:x}, wen: {:x}, wreg_num: {:x}, "
+        //             "wreg_data: {:x}",
+        //             pc_o, debug_wen, debug_wreg_num, debug_wreg_data);
+        //         running = false;
+        //     }
+    }
+}
+
+template <>
+void SocSimulator<VHeliosX>::setup() {
+    initialize_dut();
+    connect_wire();
+    trace();
+}
+
+template <>
+void SocSimulator<VHeliosX>::run(std::string trace_file) {
+    // sim_time = 0;
+    // end_time = 1000000;
+    // start_time = 0;
+    // running = true;
+
+    // while (sim_time < end_time && running) {
+    //     setup();
+    //     if ((sim_time % clock) == 0) {
+    //         tick();
+    //     }
+    //     eval();
+    //     if (posedge()) {
+    //         input();
+    //     }
+    //     eval();
+    // }
+}
 
 int main() {
     std::shared_ptr<VHeliosX> cpu_top = std::make_shared<VHeliosX>();
@@ -26,7 +124,8 @@ int main() {
 
     std::shared_ptr<SocSimulator<VHeliosX>> soc_sim =
         std::make_shared<SocSimulator<VHeliosX>>(
-            cpu_top, emulator, std::move(imem), std::move(dmem), 5, 100, 1500);
+            cpu_top, emulator, std::move(imem), std::move(dmem), 5);
 
     // soc_sim->run("difftest.vcd");
+    fmt::println("Success to setup!");
 }
