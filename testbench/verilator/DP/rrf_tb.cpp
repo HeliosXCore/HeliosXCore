@@ -20,12 +20,14 @@ vluint64_t sim_time = 0;
 vluint64_t posedge_cnt = 0;
 
 uint32_t get_rrf_valid(std::shared_ptr<VRrf> dut, vluint64_t rrftag) {
-    uint64_t rrfvalid = dut->rootp->Rrf__DOT__rrf_valid;
-    uint64_t mask = 0x1l << rrftag;
+    vluint64_t rrfvalid = dut->rootp->Rrf__DOT__rrf_valid;
+    // TODO: 这个代码目前有bug,rrftag>31时会出问题
+    vluint64_t mask = 0x1ul << rrftag;
     uint32_t valid = (rrfvalid & mask) >> rrftag;
 #ifdef DEBUG
     printf("=========\n");
-    printf("mask:\t%x\nrrftag:\t%ld\nrrfvalid:\t%d\n", mask, rrftag, valid);
+    printf("dut::rrfvalid:\t%x\nmask:\t%x\nrrftag:\t%ld\nrrfvalid:\t%d\n",
+           rrfvalid, mask, rrftag, valid);
 #endif  // !DEBUG
     return valid;
 }
@@ -79,8 +81,8 @@ int main(int argc, char **argv, char **env) {
     vluint64_t rrftag_rand_2;
     rrftag_rand_1 = rand() % 63 + 1;
     rrftag_rand_2 = rand() % 63 + 1;
-    /* rrftag_rand_1 = 33; */
-    /* rrftag_rand_2 = 34; */
+    /* rrftag_rand_1 = 63; */
+    /* rrftag_rand_2 = 31; */
     while (sim_time < MAX_SIM_TIME) {
         dut_reset(dut, sim_time);
         if ((sim_time % 5) == 0) {
