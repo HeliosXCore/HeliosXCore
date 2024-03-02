@@ -515,7 +515,7 @@ module HeliosX (
         .reset_i(reset_i),
         .dp1_i(rrf_allocatable),
         .dp1_addr_i(dst_rrftag),
-        .pc_dp1_i(),
+        .pc_dp1_i(pc_sw),
         .dstvalid_dp1_i(dst_en),
         .dst_dp1_i(rd_1_sw),
         .finish_ex_alu1_i(alu_rob_we),
