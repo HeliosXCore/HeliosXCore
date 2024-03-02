@@ -164,10 +164,10 @@ module HeliosX (
 
 
     //COM阶段传出的信号
-    /* verilator lint_off UNOPTFLAT */
     wire [`ROB_SEL-1:0] commit_ptr_1;
     wire arfwe_1;
     wire [`REG_SEL-1:0] dst_arf_1;
+    wire [`ADDR_LEN-1:0] pc_com;
     wire    comnum;
 
 
@@ -525,6 +525,7 @@ module HeliosX (
         .commit_ptr_1_o(commit_ptr_1),
         .arfwe_1_o(arfwe_1),
         .dst_arf_1_o(dst_arf_1),
+        .pc_com_o(pc_com),
         .comnum_o(comnum)
     );
 
