@@ -33,7 +33,9 @@ else ifeq ($(MODULE), RSREQUESTGEN)
 	WAVE := rs_request_gen.vcd
 endif
 
-CFLAGS      := 
+CFLAGS      :=
+# CFLAGS += -CFLAGS -ggdb
+
 VIGNOREW 	:= 
 VINCULDES	:= -I../../../rtl/ -I../../../rtl/core/DP/
 VFLAGS 		:= --trace --x-assign unique --x-initial unique $(VIGNOREW) $(VINCULDES)
@@ -47,9 +49,14 @@ FormatFlags := --inplace --column_limit=200 --indentation_spaces=4
 VSRC 	  := $(shell find ../../../rtl -name "*.v")
 
 ENABLE_WAVE ?= N
+DEBUG ?= N
 ifeq ($(ENABLE_WAVE), Y)
 	CFLAGS += -CFLAGS -DWAVE
 endif
+ifeq ($(DEBUG), Y)
+	CFLAGS += -CFLAGS -DDEBUG
+endif
+
 
 .PHONY: sim wave clean format
 

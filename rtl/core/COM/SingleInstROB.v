@@ -45,7 +45,7 @@ module SingleInstROB (
         if (reset_i) begin
             valid <= 0;
             finish <= 0;
-            commit_ptr_1_o <= 1; 
+            commit_ptr_1_o <= 1;
         end else begin
             //更新提交指针
             //等价于commit_ptr_1_o = (commit_ptr_1_o + commit_1) % `ROB_NUM;

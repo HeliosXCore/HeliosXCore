@@ -1,6 +1,8 @@
 #include <cstdint>
+#include <cstdio>
 #include <cstdlib>
 #include <memory>
+#include <sys/types.h>
 #include <verilated.h>
 #include <verilated_vcd_c.h>
 
@@ -17,10 +19,15 @@
 vluint64_t sim_time = 0;
 vluint64_t posedge_cnt = 0;
 
-uint32_t get_rrf_valid(std::shared_ptr<VRrf> dut, vluint64_t rrftag_rand_1) {
-    vluint64_t rrfvalid = dut->rootp->Rrf__DOT__rrf_valid;
-    vluint64_t mask = 0x1 << rrftag_rand_1;
-    return (rrfvalid & mask) >> rrftag_rand_1;
+uint32_t get_rrf_valid(std::shared_ptr<VRrf> dut, vluint64_t rrftag) {
+    uint64_t rrfvalid = dut->rootp->Rrf__DOT__rrf_valid;
+    uint64_t mask = 0x1l << rrftag;
+    uint32_t valid = (rrfvalid & mask) >> rrftag;
+#ifdef DEBUG
+    printf("=========\n");
+    printf("mask:\t%x\nrrftag:\t%ld\nrrfvalid:\t%d\n", mask, rrftag, valid);
+#endif  // !DEBUG
+    return valid;
 }
 
 void dut_reset(std::shared_ptr<VRrf> dut, vluint64_t &sim_time) {
@@ -68,6 +75,12 @@ int main(int argc, char **argv, char **env) {
 
     dut->clk_i = 0;
 
+    vluint64_t rrftag_rand_1;
+    vluint64_t rrftag_rand_2;
+    rrftag_rand_1 = rand() % 63 + 1;
+    rrftag_rand_2 = rand() % 63 + 1;
+    /* rrftag_rand_1 = 33; */
+    /* rrftag_rand_2 = 34; */
     while (sim_time < MAX_SIM_TIME) {
         dut_reset(dut, sim_time);
         if ((sim_time % 5) == 0) {
@@ -79,8 +92,6 @@ int main(int argc, char **argv, char **env) {
 
         dut->eval();
 
-        vluint64_t rrftag_rand_1;
-        vluint64_t rrftag_rand_2;
         if (dut->clk_i == 1) {
             if (sim_time == 20) {
 #ifndef WAVE
@@ -89,13 +100,14 @@ int main(int argc, char **argv, char **env) {
                 std::cout << "Rrf Test 1 Pass!" << std::endl;
 #endif  // !WAVE
 
-                rrftag_rand_1 = rand() % 63 + 1;
+#ifdef DEBUG
+                printf("rrftag_rand_1:\t%ld\n", rrftag_rand_1);
+#endif  // DEBUG
                 dut->allocate_rrf_en_i = 1;
                 dut->allocate_rrftag_i = rrftag_rand_1;
             } else if (sim_time == 30) {
                 dut->rs1_rrftag_i = rrftag_rand_1;
 
-                rrftag_rand_2 = rand() % 63 + 1;
                 dut->allocate_rrf_en_i = 1;
                 dut->allocate_rrftag_i = rrftag_rand_2;
             } else if (sim_time == 40) {

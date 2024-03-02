@@ -694,20 +694,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 4,
                    "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__commit_ptr_1);
-            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("s0"), ,
-                   "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
-                   dut->rootp->HeliosX__DOT__dst_arf_1);
-        } else if (sim_time == 205) {
-            // li a4,929
-            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 4,
-                   "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
-                   dut->rootp->HeliosX__DOT__commit_ptr_1);
             ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a4"),
-                   "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
-                   dut->rootp->HeliosX__DOT__dst_arf_1);
-        } else if (sim_time == 215) {
-            // li a5,22
-            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 5,
                    "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_arf_1);
         } else if (sim_time == 215) {
@@ -725,9 +712,6 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 6,
                    "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__commit_ptr_1);
-            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a0"), ,
-                   "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
-                   dut->rootp->HeliosX__DOT__dst_arf_1);
             ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a0"), ,
                    "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_arf_1);
