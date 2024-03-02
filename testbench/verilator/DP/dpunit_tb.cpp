@@ -22,17 +22,17 @@
 vluint64_t sim_time = 0;
 vluint64_t posedge_cnt = 0;
 
-uint32_t getRrfValid(std::shared_ptr<VReNameUnit> dut, vluint64_t rrftag) {
+uint32_t get_rrf_rrfvalid(std::shared_ptr<VReNameUnit> dut, vluint64_t rrftag) {
     vluint64_t rrfvalid = dut->rootp->ReNameUnit__DOT__rrf__DOT__rrf_valid;
     vluint64_t mask = 0x1l << rrftag;
     return (rrfvalid & mask) >> rrftag;
 }
 
-uint32_t getRrfData(std::shared_ptr<VReNameUnit> dut, vluint64_t rrftag) {
+uint32_t get_rrf_rrfdata(std::shared_ptr<VReNameUnit> dut, vluint64_t rrftag) {
     return dut->rootp->ReNameUnit__DOT__rrf__DOT__rrf_data[rrftag];
 }
 
-uint8_t getRrfTag(std::shared_ptr<VReNameUnit> dut, uint32_t regidx) {
+uint8_t get_arf_rrftag(std::shared_ptr<VReNameUnit> dut, uint32_t regidx) {
     uint32_t arf_rrftag0, arf_rrftag1, arf_rrftag2, arf_rrftag3, arf_rrftag4,
         arf_rrftag5;
     arf_rrftag0 =
@@ -148,7 +148,7 @@ int main(int argc, char **argv, char **env) {
                     dut->rrfptr_RrfEntryAllocate_out_rob_in_o - 1;
 
 #ifndef WAVE
-                assert(getRrfTag(dut, 2) == 1);
+                assert(get_arf_rrftag(dut, 2) == 1);
                 assert(dut->dst_en_o == 1);
 
                 printf("dut->dst_rrftag_o:%u\n", dut->dst_rrftag_o);
@@ -183,8 +183,8 @@ int main(int argc, char **argv, char **env) {
 #ifndef WAVE
                 assert(dut->src1_srcopmanager_out_srcmanager_in_o == 13);
                 assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
-                assert(getRrfValid(dut, tmp1_allocate_rrftag) == 1);
-                assert(getRrfData(dut, tmp1_allocate_rrftag) == 13);
+                assert(get_rrf_rrfvalid(dut, tmp1_allocate_rrftag) == 1);
+                assert(get_rrf_rrfdata(dut, tmp1_allocate_rrftag) == 13);
                 // 这里有个缺陷，在dst_en=0的情况下，dst_rrftag_o实际上还是会先变成+1的情况，但是应该是不影响整体逻辑的。目前还没想到比较好的办法解决
                 assert(dut->dst_rrftag_o == 2);
                 assert(dut->rrfptr_RrfEntryAllocate_out_rob_in_o == 2);
@@ -200,7 +200,7 @@ int main(int argc, char **argv, char **env) {
                 std::cout << tmp1_allocate_rrftag << std::endl;
 
 #ifndef WAVE
-                assert(getRrfTag(dut, 4) == 2);
+                assert(get_arf_rrftag(dut, 4) == 2);
                 assert(dut->dst_en_o == 1);
 
                 printf("dut->dst_rrftag_o:%u\n", dut->dst_rrftag_o);
@@ -239,7 +239,7 @@ int main(int argc, char **argv, char **env) {
                 vluint64_t tmp1 = dut->rdy1_srcopmanager_out_srcmanager_in_o;
                 vluint64_t tmp2 = dut->src1_srcopmanager_out_srcmanager_in_o;
 #ifndef WAVE
-                assert(getRrfTag(dut, dut->rs2_decoder_out_arf_in_i) == 4);
+                assert(get_arf_rrftag(dut, dut->rs2_decoder_out_arf_in_i) == 4);
                 assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
                 assert(dut->src1_srcopmanager_out_srcmanager_in_o == 13);
                 // dst_num这时仍然有值，所以会被继续分配一个新的rrftag：3

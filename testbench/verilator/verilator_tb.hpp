@@ -36,7 +36,7 @@ class VerilatorTb {
 
     const char *reg_idx2str(const uint32_t idx) { return regs[idx]; }
 
-    uint32_t getRegIdx(const char *regname) {
+    uint32_t get_regidx(const char *regname) {
         for (int i = 0; i < 32; i++) {
             if (strcmp(regname, regs[i]) == 0) {
                 return i;
