@@ -8,13 +8,18 @@ module HeliosX (
     output wire [`ADDR_LEN-1:0] iaddr_o,
 
     input wire [`INSN_LEN-1:0] idata_i,
+    input wire [`DATA_LEN-1:0] dmem_rdata_i,
 
     output wire dmem_we_o,
     output wire [`DATA_LEN-1:0] dmem_wdata_o,
     output wire [`ADDR_LEN-1:0] dmem_waddr_o,
     output wire [`ADDR_LEN-1:0] dmem_raddr_o,
-    input wire [`DATA_LEN-1:0] dmem_rdata_i
 
+    // debug signals
+    output wire [`ADDR_LEN-1:0] debug_pc_o,
+    output wire [`REG_SEL-1:0] debug_reg_id_o,
+    output wire [`DATA_LEN-1:0] debug_reg_wdata_o,
+    output wire debug_reg_wen_o
 );
 
     //暂停信号、kill信号
