@@ -52,43 +52,67 @@ int main(int argc, char **argv, char **env) {
         vluint64_t rrftag_rand_2;
         if (dut->clk_i == 1) {
             if (posedge_cnt == 2 && sim_time == 10) {
+#ifndef WAVE
                 assert(dut->rrf_allocatable_o == 1);
                 assert(dut->freenum_o == 63);
                 assert(dut->rrfptr_o == 1);
+                assert(dut->dst_rename_rrftag_o == 1);
                 assert(dut->nextrrfcyc_o == 0);
                 std::cout << "Rrf_alloc Test 1 Pass!" << std::endl;
+#endif  // !WAVE
             } else if (posedge_cnt == 4 && sim_time == 30) {
+#ifndef WAVE
+
+                assert(dut->rrfptr_o == 1);
+                assert(dut->dst_rename_rrftag_o == 1);
                 assert(dut->freenum_o == 63);
                 std::cout << "Rrf_alloc Test 2 Pass!" << std::endl;
+#endif  // !WAVE
 
                 dut->stall_dp_i = 1;
                 dut->req_en_i = 1;
             } else if (posedge_cnt >= 5 && posedge_cnt < 8 && sim_time == 40) {
+#ifndef WAVE
+
+                assert(dut->rrfptr_o == 1);
+                assert(dut->dst_rename_rrftag_o == 1);
                 assert(dut->freenum_o == 63);
                 std::cout << "Rrf_alloc Test 3 Pass!" << std::endl;
+#endif  // !WAVE
             } else if (posedge_cnt == 8 && sim_time == 70) {
                 dut->stall_dp_i = 0;
             } else if (posedge_cnt == 9 && sim_time == 80) {
+#ifndef WAVE
+                assert(dut->rrfptr_o == 2);
                 assert(dut->freenum_o == 62);
                 std::cout << "Rrf_alloc Test 4 Pass!" << std::endl;
+#endif  // !WAVE
             } else if (posedge_cnt == 10 && sim_time == 90) {
+#ifndef WAVE
+                assert(dut->rrfptr_o == 3);
                 assert(dut->freenum_o == 61);
                 std::cout << "Rrf_alloc Test 5 Pass!" << std::endl;
+#endif  // !WAVE
 
                 dut->stall_dp_i = 1;
                 dut->com_inst_num_i = 1;
             } else if (posedge_cnt == 11 && sim_time == 100) {
+#ifndef WAVE
+                assert(dut->rrfptr_o == 3);
                 assert(dut->freenum_o == 62);
                 std::cout << "Rrf_alloc Test 6 Pass!" << std::endl;
+#endif  // !WAVE
 
                 dut->stall_dp_i = 0;
                 dut->com_inst_num_i = 0;
             } else if (posedge_cnt == 12 && sim_time == 110) {
+#ifndef WAVE
+                assert(dut->rrfptr_o == 4);
                 assert(dut->freenum_o == 61);
                 std::cout << "Rrf_alloc Test 7 Pass!" << std::endl;
+#endif  // !WAVE
             }
         }
-
         m_trace->dump(sim_time);
         sim_time++;
     }
