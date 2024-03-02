@@ -38,7 +38,7 @@ VIGNOREW 	:=
 VINCULDES	:= -I../../../rtl/ -I../../../rtl/core/DP/
 VFLAGS 		:= --trace --x-assign unique --x-initial unique $(VIGNOREW) $(VINCULDES)
 PFLAGS		:= -GREQ_LEN=4 -GGRANT_LEN=2
-IFLGAS		:=  -I../testbench/verilator 
+IFLAGS		:=  -I../testbench/verilator 
 MACRO_FLAGS :=  -DFMT_HEADER_ONLY
 
 # Format
@@ -60,7 +60,7 @@ sim:
 	@mkdir -p $(RTLOBJD)
 	@$(VERILATOR) $(CFLAGS) $(VFLAGS) -cc $(RTLD)/$(TEST).v $(LDFLAGS) \
 		--public \
-		--exe $(TESTBENCHD)/$(TESTBENCH).cpp $(IFLGAS) $(MACRO_FLAGS) -Mdir $(RTLOBJD)
+		--exe $(TESTBENCHD)/$(TESTBENCH).cpp $(IFLAGS) $(MACRO_FLAGS) -Mdir $(RTLOBJD)
 	@make -C $(RTLOBJD) -f V$(TEST).mk V$(TEST)
 	@./$(RTLOBJD)/V$(TEST) +verilator+rand+reset+2
 
