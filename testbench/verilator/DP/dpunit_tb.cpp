@@ -24,7 +24,7 @@ vluint64_t posedge_cnt = 0;
 
 uint32_t getRrfValid(std::shared_ptr<VReNameUnit> dut, vluint64_t rrftag) {
     vluint64_t rrfvalid = dut->rootp->ReNameUnit__DOT__rrf__DOT__rrf_valid;
-    vluint64_t mask = 0x1 << rrftag;
+    vluint64_t mask = 0x1l << rrftag;
     return (rrfvalid & mask) >> rrftag;
 }
 
