@@ -35,6 +35,18 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                rrftag1_mask | rrftag0_mask;
     }
 
+    uint64_t get_rrf_rrfdata(uint64_t rrftag) {
+        return dut->rootp
+            ->HeliosX__DOT__u_ReNameUnit__DOT__rrf__DOT__rrf_data[rrftag];
+    }
+
+    uint64_t get_rrf_rrfvalid(uint64_t rrftag) {
+        vluint64_t rrfvalid =
+            dut->rootp->HeliosX__DOT__u_ReNameUnit__DOT__rrf__DOT__rrf_valid;
+        vluint64_t mask = 0x1l << rrftag;
+        return (rrfvalid & mask) >> rrftag;
+    }
+
     uint64_t get_arf_rrftag(uint32_t regidx) {
         uint64_t rrftag = gen_arf_rrftag(
             dut->rootp
@@ -113,7 +125,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__uses_rs1_1_dp);
 
-            ASSERT(dut->rootp->HeliosX__DOT__rs1_1_dp == getRegIdx("$0"),
+            ASSERT(dut->rootp->HeliosX__DOT__rs1_1_dp == get_regidx("$0"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__uses_rs1_1_dp);
 
@@ -136,7 +148,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__uses_rs1_1_dp);
 
-            ASSERT(dut->rootp->HeliosX__DOT__rs1_1_dp == getRegIdx("$0"),
+            ASSERT(dut->rootp->HeliosX__DOT__rs1_1_dp == get_regidx("$0"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs1_1_dp);
 
@@ -155,7 +167,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error alu_op_1 {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__uses_rs1_1_dp);
 
-            ASSERT(dut->rootp->HeliosX__DOT__rs1_1_dp == getRegIdx("a2"),
+            ASSERT(dut->rootp->HeliosX__DOT__rs1_1_dp == get_regidx("a2"),
                    "sim_time: {} Error alu_op_1 {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs1_1_dp);
 
@@ -163,7 +175,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error alu_op_1 {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__uses_rs2_1_dp);
 
-            ASSERT(dut->rootp->HeliosX__DOT__rs2_1_dp == getRegIdx("s0"),
+            ASSERT(dut->rootp->HeliosX__DOT__rs2_1_dp == get_regidx("s0"),
                    "sim_time: {} Error alu_op_1 {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs2_1_dp);
         }
@@ -174,7 +186,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             // sim_time 110: 00000413
             //// li s0, 0
             /// addi s0,zero,0
-            ASSERT(dut->rootp->HeliosX__DOT__rs1_sw == getRegIdx("$0"),
+            ASSERT(dut->rootp->HeliosX__DOT__rs1_sw == get_regidx("$0"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs1_sw);
 
@@ -213,7 +225,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_en);
 
-            ASSERT(dut->rootp->HeliosX__DOT__rd_1_sw == getRegIdx("s0"),
+            ASSERT(dut->rootp->HeliosX__DOT__rd_1_sw == get_regidx("s0"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rd_1_sw);
 
@@ -239,13 +251,13 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                 "sim_time: {} Error Imm {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in);
 
-            ASSERT(get_arf_rrftag(getRegIdx("s0")) == 1,
+            ASSERT(get_arf_rrftag(get_regidx("s0")) == 1,
                    "sim_time: {} Error Imm {:#x}", sim_time,
-                   get_arf_rrftag(getRegIdx("s0")));
+                   get_arf_rrftag(get_regidx("s0")));
 
-            ASSERT(get_arf_busy(getRegIdx("s0")) == 1,
+            ASSERT(get_arf_busy(get_regidx("s0")) == 1,
                    "sim_time: {} Error Imm {:#x}", sim_time,
-                   get_arf_busy(getRegIdx("s0")));
+                   get_arf_busy(get_regidx("s0")));
 
             ASSERT(dut->rootp->HeliosX__DOT__req1_alu == 1,
                    "sim_time: {} Error Imm {:#x}", sim_time,
@@ -266,7 +278,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
         } else if (sim_time == 145) {
             // sim_time 120: 74300613
             // li a2, 1859
-            ASSERT(dut->rootp->HeliosX__DOT__rs1_sw == getRegIdx("$0"),
+            ASSERT(dut->rootp->HeliosX__DOT__rs1_sw == get_regidx("$0"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs1_sw);
 
@@ -305,7 +317,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_en);
 
-            ASSERT(dut->rootp->HeliosX__DOT__rd_1_sw == getRegIdx("a2"),
+            ASSERT(dut->rootp->HeliosX__DOT__rd_1_sw == get_regidx("a2"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rd_1_sw);
 
@@ -337,13 +349,13 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                 "sim_time: {} Error Imm {:#x}", sim_time,
                 dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in);
 
-            ASSERT(get_arf_rrftag(getRegIdx("a2")) == 2,
+            ASSERT(get_arf_rrftag(get_regidx("a2")) == 2,
                    "sim_time: {} Error Imm {:#x}", sim_time,
-                   get_arf_rrftag(getRegIdx("a2")));
+                   get_arf_rrftag(get_regidx("a2")));
 
-            ASSERT(get_arf_busy(getRegIdx("a2")) == 1,
+            ASSERT(get_arf_busy(get_regidx("a2")) == 1,
                    "sim_time: {} Error Imm {:#x}", sim_time,
-                   get_arf_busy(getRegIdx("a2")));
+                   get_arf_busy(get_regidx("a2")));
 
             ASSERT(dut->rootp->HeliosX__DOT__req1_alu == 1,
                    "sim_time: {} Error Imm {:#x}", sim_time,
@@ -362,13 +374,33 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    dut->rootp->HeliosX__DOT__imm_1_sw);
 
         } else if (sim_time == 155) {
+            // 第一条指令在150的时候执行完毕，这时DP模块应该可以收到执行部件前递来的结果
+            // 前递结果将在160的时候写入rrf.data中。
+            // 由于rrf中设计了旁路，所以在160的时候，就可以获取到第一条指令前递过来的结果了。
+            // 验证执行部件的前递结果
+            // 这时候前递结果还没写入
+            ASSERT(get_rrf_rrfvalid(1) == 0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(1));
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
             // sim_time 130: 00860433
             // add s0, a2, s0
-            ASSERT(dut->rootp->HeliosX__DOT__rs1_sw == getRegIdx("a2"),
+            ASSERT(dut->rootp->HeliosX__DOT__rs1_sw == get_regidx("a2"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs1_sw);
 
-            ASSERT(dut->rootp->HeliosX__DOT__rs2_sw == getRegIdx("s0"),
+            ASSERT(dut->rootp->HeliosX__DOT__rs2_sw == get_regidx("s0"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs2_sw);
 
@@ -380,10 +412,10 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rrf_allocatable);
 
-            // TODO:目前ROB的时序有问题，导致在150的时候指令提交了，s0对应的arf_busy会被抹去变为0,正常情况下，150的时候第一条指令不应该提交的。所以下面这个断言暂时注释掉。需要等ROB的时序修改过来以后才行
-            /* ASSERT(get_arf_busy(getRegIdx("s0")) == 1, */
-            /*        "sim_time: {} Error Imm {:#x}", sim_time, */
-            /*        get_arf_busy(getRegIdx("s0"))); */
+            // 150的时候第一条指令不应该提交
+            ASSERT(get_arf_busy(get_regidx("s0")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("s0")));
 
             ASSERT(
                 dut->rootp
@@ -411,7 +443,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rrf_allocatable);
 
-            ASSERT(dut->rootp->HeliosX__DOT__rd_1_sw == getRegIdx("s0"),
+            ASSERT(dut->rootp->HeliosX__DOT__rd_1_sw == get_regidx("s0"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rd_1_sw);
 
@@ -443,7 +475,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             // ASSERT(
             //     dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in
             //     ==
-            //         get_arf_data(getRegIdx("s0")),
+            //         get_arf_data(get_regidx("s0")),
             //     "sim_time: {} Error Imm {:#x}", sim_time,
             //     dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
 
@@ -475,9 +507,734 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                 dut->rootp
                     ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in);
 
-            ASSERT(get_arf_rrftag(getRegIdx("s0")) == 3,
+            ASSERT(get_arf_rrftag(get_regidx("s0")) == 3,
                    "sim_time: {} Error Imm {:#x}", sim_time,
-                   get_arf_rrftag(getRegIdx("s0")));
+                   get_arf_rrftag(get_regidx("s0")));
+        } else if (sim_time == 165) {
+            // TODO:验证第一条指令执行阶段前递来的内容是否正确写入
+            // rrftag=1时值是否正确
+            ASSERT(get_rrf_rrfdata(1) == 0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfdata(1));
+
+            ASSERT(get_rrf_rrfvalid(1) == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(1));
+
+            // 160的时候第一条指令已经提交完毕了，dp可以收到提交的内容了
+            // 这时候提交的指令并没有写回到dp中
+            ASSERT(get_arf_busy(get_regidx("s0")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("s0")));
+
+            ASSERT(dut->rootp->HeliosX__DOT__comnum == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__comnum);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("s0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__dst_arf_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__arfwe_1 == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__arfwe_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__commit_ptr_1);
+
+            // 第一条指令在150的时候执行完毕，这时DP模块应该可以收到执行部件前递来的结果
+            // 前递结果将在160的时候写入rrf.data中。
+            // 由于rrf中设计了旁路，所以在160的时候，就可以获取到第一条指令前递过来的结果了。
+            // 验证执行部件的前递结果
+            // 160的时候会收到第二条指令的执行完以后前递过来的结果
+            ASSERT(get_rrf_rrfvalid(2) == 0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(1));
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 2,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 1859,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rs1_sw == get_regidx("$0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rs1_sw);
+
+            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0xc,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__pc_sw);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rrf_allocatable == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
+                    59,
+                "sim_time: {} Error Imm Type {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in ==
+                    5,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in);
+
+            ASSERT(dut->rootp->HeliosX__DOT__nextrrfcyc == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__nextrrfcyc);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 4,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_en == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rd_1_sw == get_regidx("a4"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rd_1_sw);
+
+            ASSERT(dut->rootp->HeliosX__DOT__wr_reg_1_sw == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__wr_reg_1_sw);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in);
+
+            /* ASSERT( */
+            /*     dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in
+             * == */
+            /*         1, */
+            /*     "sim_time: {} Error Imm {:#x}", sim_time, */
+            /*     dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
+             */
+            /**/
+            /* // 此时还没有写回，所以rdy应该是0 */
+            /* ASSERT( */
+            /*     dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in
+             * == */
+            /*         0, */
+            /*     "sim_time: {} Error Imm {:#x}", sim_time, */
+            /*     dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in);
+             */
+
+            ASSERT(dut->rootp->HeliosX__DOT__req1_alu == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__req1_alu);
+
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in);
+
+            ASSERT(get_arf_rrftag(get_regidx("a4")) == 4,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_rrftag(get_regidx("a4")));
+
+            ASSERT(get_arf_busy(get_regidx("s0")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("s0")));
+
+        } else if (sim_time == 175) {
+            // 验证第一条指令的ROB结果是否成功写回
+            // 这时候不应该清空arf.busy,因为s0后面又被重命名了
+            ASSERT(get_arf_busy(get_regidx("s0")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("s0")));
+
+            ASSERT(get_arf_data(get_regidx("s0")) == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_data(get_regidx("s0")));
+
+            // 验证一下debug相关的输出
+            ASSERT(dut->debug_pc_o == 0x0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == get_regidx("s0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == get_regidx("s0"));
+
+            ASSERT(dut->debug_reg_wdata_o == 0x0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
+
+            // 验证第二条指令执行阶段前递来的内容是否正确写入
+            // rrftag=2时值是否正确
+            ASSERT(get_rrf_rrfdata(2) == 1859, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfdata(2));
+
+            ASSERT(get_rrf_rrfvalid(2) == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(2));
+
+            // 170的时候第二条指令已经提交完毕了，dp可以收到提交的内容了
+            // 这时候提交的指令并没有写回到dp中
+            ASSERT(get_arf_busy(get_regidx("a2")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("a2")));
+
+            ASSERT(dut->rootp->HeliosX__DOT__comnum == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__comnum);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("a2"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__dst_arf_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__arfwe_1 == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__arfwe_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 2,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__commit_ptr_1);
+
+            // 170的时候会收不到第三条指令的执行完以后前递过来的结果
+            ASSERT(get_rrf_rrfvalid(3) == 0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(1));
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rs1_sw == get_regidx("$0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rs1_sw);
+
+            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x10,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__pc_sw);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rrf_allocatable == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
+                    59,
+                "sim_time: {} Error Imm Type {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in ==
+                    6,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in);
+
+            ASSERT(dut->rootp->HeliosX__DOT__nextrrfcyc == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__nextrrfcyc);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 5,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_en == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rd_1_sw == get_regidx("a5"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rd_1_sw);
+
+            ASSERT(dut->rootp->HeliosX__DOT__wr_reg_1_sw == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__wr_reg_1_sw);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in);
+
+            /* ASSERT( */
+            /*     dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in
+             * == */
+            /*         1, */
+            /*     "sim_time: {} Error Imm {:#x}", sim_time, */
+            /*     dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
+             */
+            /**/
+            /* // 此时还没有写回，所以rdy应该是0 */
+            /* ASSERT( */
+            /*     dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in
+             * == */
+            /*         0, */
+            /*     "sim_time: {} Error Imm {:#x}", sim_time, */
+            /*     dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in);
+             */
+
+            ASSERT(dut->rootp->HeliosX__DOT__req1_alu == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__req1_alu);
+
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in);
+
+            ASSERT(get_arf_rrftag(get_regidx("a5")) == 5,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_rrftag(get_regidx("a5")));
+
+            // 第一条指令提交以后，不应该清空s0的arf.busy,因为s0后面又被重命名了
+            ASSERT(get_arf_busy(get_regidx("s0")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("s0")));
+
+        } else if (sim_time == 185) {
+            // 验证第二条指令的ROB结果是否成功写回
+            ASSERT(get_arf_busy(get_regidx("a2")) == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("a2")));
+
+            ASSERT(get_arf_data(get_regidx("a2")) == 1859,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_data(get_regidx("a2")));
+
+            // 验证一下debug相关的输出
+            ASSERT(dut->debug_pc_o == 0x4, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == get_regidx("a2"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == get_regidx("a2"));
+
+            ASSERT(dut->debug_reg_wdata_o == 1859,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
+
+            // 180的时候会收到第三条指令的执行完以后前递过来的结果
+            // 但是前递结果并没有写回,下周期才能写回
+            ASSERT(get_rrf_rrfvalid(3) == 0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(4));
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 3,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 1859,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rs1_sw == get_regidx("a4"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rs1_sw);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rs2_sw == get_regidx("a5"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rs2_sw);
+
+            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x14,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__pc_sw);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rrf_allocatable == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
+                    59,
+                "sim_time: {} Error Imm Type {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in ==
+                    7,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rrfptr_RrfEntryAllocate_out_rob_in);
+
+            ASSERT(dut->rootp->HeliosX__DOT__nextrrfcyc == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__nextrrfcyc);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_rrftag == 6,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_en == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rd_1_sw == get_regidx("a0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rd_1_sw);
+
+            ASSERT(dut->rootp->HeliosX__DOT__wr_reg_1_sw == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__wr_reg_1_sw);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in ==
+                    4,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src1_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rdy1_srcopmanager_out_srcmanager_in);
+
+            ASSERT(
+                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in ==
+                    5,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__src2_srcopmanager_out_srcmanager_in);
+
+            // 此时还没有写回，所以rdy应该是0
+            ASSERT(
+                dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in ==
+                    0,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp->HeliosX__DOT__rdy2_srcopmanager_out_srcmanager_in);
+
+            ASSERT(dut->rootp->HeliosX__DOT__req1_alu == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__req1_alu);
+
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in ==
+                    1,
+                "sim_time: {} Error Imm {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__req_alunum_RSRequestGen_out_SWUnit_in);
+
+            ASSERT(get_arf_rrftag(get_regidx("a0")) == 6,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_rrftag(get_regidx("a0")));
+        } else if (sim_time == 195) {
+            // 验证第三条指令执行阶段前递来的内容是否正确写入
+            // rrftag=3时值是否正确
+            ASSERT(get_rrf_rrfdata(3) == 1859, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfdata(3));
+
+            ASSERT(get_rrf_rrfvalid(3) == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(3));
+
+            // 190的时候第三条指令已经提交完毕了，dp可以收到提交的内容了
+            // 这时候提交的指令并没有写回到dp中
+            ASSERT(get_arf_busy(get_regidx("s0")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("s0")));
+
+            ASSERT(dut->rootp->HeliosX__DOT__comnum == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__comnum);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("s0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__dst_arf_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__arfwe_1 == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__arfwe_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 3,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__commit_ptr_1);
+
+            // 能收到第四条指令的执行结果，但是不会写入
+            ASSERT(get_rrf_rrfvalid(4) == 0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(4));
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 4,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 929,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+            ASSERT(dut->rootp->HeliosX__DOT__rrf_allocatable == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__rrf_allocatable);
+
+            ASSERT(
+                dut->rootp
+                        ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o ==
+                    59,
+                "sim_time: {} Error Imm Type {:#x}", sim_time,
+                dut->rootp
+                    ->HeliosX__DOT__u_ReNameUnit__DOT__freenum_RrfEntryAllocate_out_rob_in_o);
+
+            ASSERT(get_arf_busy(get_regidx("s0")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("s0")));
+
+            ASSERT(get_rrf_rrfvalid(4) == 0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(4));
+
+        } else if (sim_time == 205) {
+            // 验证第三条指令的提交结果是否成功写入
+            ASSERT(get_arf_busy(get_regidx("s0")) == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("s0")));
+
+            ASSERT(get_arf_data(get_regidx("s0")) == 1859,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_data(get_regidx("s0")));
+
+            // 验证一下debug相关的输出
+            ASSERT(dut->debug_pc_o == 0x8, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == get_regidx("s0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == get_regidx("s0"));
+
+            ASSERT(dut->debug_reg_wdata_o == 1859,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
+
+            // 验证第四条指令执行阶段前递来的内容是否正确写入
+            // rrftag=3时值是否正确
+            ASSERT(get_rrf_rrfdata(4) == 929, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfdata(4));
+
+            ASSERT(get_rrf_rrfvalid(4) == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(4));
+
+            // 200的时候第三条指令已经提交完毕了，dp可以收到提交的内容了
+            // 这时候提交的指令并没有写回到dp中
+            ASSERT(get_arf_busy(get_regidx("a4")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("a4")));
+
+            ASSERT(dut->rootp->HeliosX__DOT__comnum == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__comnum);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("a4"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__dst_arf_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__arfwe_1 == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__arfwe_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 4,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__commit_ptr_1);
+
+            // 能收到第五条指令的执行结果，但是不会写入
+            ASSERT(get_rrf_rrfvalid(5) == 0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(5));
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 5,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 22,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+        } else if (sim_time == 215) {
+            // 验证第四条指令的提交结果是否成功写入
+            ASSERT(get_arf_busy(get_regidx("a4")) == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("a4")));
+
+            ASSERT(get_arf_data(get_regidx("a4")) == 929,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_data(get_regidx("a4")));
+
+            ASSERT(dut->debug_pc_o == 0xc, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == get_regidx("a4"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == get_regidx("a4"));
+
+            ASSERT(dut->debug_reg_wdata_o == 929,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
+            // 验证第五条指令执行阶段前递来的内容是否正确写入
+            // rrftag=5时值是否正确
+            ASSERT(get_rrf_rrfdata(5) == 22, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfdata(5));
+
+            ASSERT(get_rrf_rrfvalid(5) == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(5));
+
+            // 210的时候第五条指令已经提交完毕了，dp可以收到提交的内容了
+            // 这时候提交的指令并没有写回到dp中
+            ASSERT(get_arf_busy(get_regidx("a5")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("a5")));
+
+            ASSERT(dut->rootp->HeliosX__DOT__comnum == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__comnum);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("a5"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__dst_arf_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__arfwe_1 == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__arfwe_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 5,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__commit_ptr_1);
+
+        } else if (sim_time == 225) {
+            // 验证第五条指令的提交结果是否成功写入
+            ASSERT(get_arf_busy(get_regidx("a5")) == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("a5")));
+
+            ASSERT(get_arf_data(get_regidx("a5")) == 22,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_data(get_regidx("a5")));
+
+            ASSERT(dut->debug_pc_o == 0x10, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == get_regidx("a5"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == get_regidx("a5"));
+
+            ASSERT(dut->debug_reg_wdata_o == 22, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
+            // 验证第六条指令的执行前递结果是否正确
+            // 但此时执行的前递结果还没有写回
+            ASSERT(get_rrf_rrfvalid(6) == 0, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(6));
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_we == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_we);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_rrf_tag == 6,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+            ASSERT(dut->rootp->HeliosX__DOT__alu_result == 951,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__alu_rrf_tag);
+
+        } else if (sim_time == 235) {
+            // 验证第六条指令执行阶段前递来的内容是否正确写入
+            // rrftag=6时值是否正确
+            ASSERT(get_rrf_rrfdata(6) == 951, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfdata(6));
+
+            ASSERT(get_rrf_rrfvalid(6) == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, get_rrf_rrfvalid(6));
+
+            // 第六条指令已经提交完毕了，dp可以收到提交的内容了
+            // 这时候提交的指令并没有写回到dp中
+            ASSERT(get_arf_busy(get_regidx("a0")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("a0")));
+
+            ASSERT(dut->rootp->HeliosX__DOT__comnum == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__comnum);
+
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("a0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__dst_arf_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__arfwe_1 == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__arfwe_1);
+
+            ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 6,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__commit_ptr_1);
+
+            ASSERT(get_arf_busy(get_regidx("a0")) == 1,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("a0")));
+
+        } else if (sim_time == 245) {
+            // 验证第六条指令提交结果是否写入成功
+            ASSERT(get_arf_busy(get_regidx("a0")) == 0,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_busy(get_regidx("a0")));
+
+            ASSERT(get_arf_data(get_regidx("a0")) == 951,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   get_arf_data(get_regidx("a0")));
+
+            ASSERT(dut->debug_pc_o == 0x14, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_pc_o);
+
+            ASSERT(dut->debug_reg_id_o == get_regidx("a0"),
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_id_o == get_regidx("a0"));
+
+            ASSERT(dut->debug_reg_wdata_o == 951,
+                   "sim_time: {} Error Imm {:#x}", sim_time,
+                   dut->debug_reg_wdata_o);
+
+            ASSERT(dut->debug_reg_wen_o == 1, "sim_time: {} Error Imm {:#x}",
+                   sim_time, dut->debug_reg_wen_o);
         }
     }
 
@@ -667,7 +1424,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 1,
                    "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__commit_ptr_1);
-            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("s0"),
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("s0"),
                    "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_arf_1);
 
@@ -676,7 +1433,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 2,
                    "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__commit_ptr_1);
-            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a2"),
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("a2"),
                    "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_arf_1);
         } else if (sim_time == 185) {
@@ -686,7 +1443,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 3,
                    "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__commit_ptr_1);
-            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("s0"), ,
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("s0"), ,
                    "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_arf_1);
         } else if (sim_time == 205) {
@@ -694,7 +1451,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 4,
                    "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__commit_ptr_1);
-            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a4"),
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("a4"),
                    "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_arf_1);
         } else if (sim_time == 215) {
@@ -702,7 +1459,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 5,
                    "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__commit_ptr_1);
-            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a5"), ,
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("a5"), ,
                    "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_arf_1);
         } else if (sim_time == 225) {
@@ -712,7 +1469,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
             ASSERT(dut->rootp->HeliosX__DOT__commit_ptr_1 == 6,
                    "sim_time: {} Error commit_ptr_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__commit_ptr_1);
-            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == getRegIdx("a0"), ,
+            ASSERT(dut->rootp->HeliosX__DOT__dst_arf_1 == get_regidx("a0"), ,
                    "sim_time: {} Error dst_arf_1_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__dst_arf_1);
         }
@@ -776,5 +1533,7 @@ int main(int argc, char **argv, char **env) {
         std::make_shared<VHeliosXTb>(5, 50, 1500, mem);
 
     tb->run("heliosx.vcd");
+    fmt::println("==========================");
     fmt::print("HeliosX Dut Correctness passed!\n");
+    fmt::println("==========================");
 }

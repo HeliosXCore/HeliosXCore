@@ -21,6 +21,27 @@ void SocSimulator<VHeliosX>::initialize_dut() {
 }
 
 template <>
+void SocSimulator<VHeliosX>::input() {
+    Instruction inst_o;
+    uint32_t inst_value_o;
+
+    if (sim_time >= 90) {
+        cpu_reset = 0;
+    }
+
+    // 应该reset_i=0的时候才能开始取指令，不然时序不对
+    if (sim_time >= 90 && sim_time % 10 == 0) {
+        imem->fetch(1, cpu_top->iaddr_o, inst_o, inst_value_o);
+        cpu_inst_i = inst_o.instructions[0];
+#ifdef DEBUG
+        fmt::println(
+            "sim_time: {}, inst_o: {:#x}, inst_value_o: {}, iaddr_o: {:#x}",
+            sim_time, inst_o.instructions[0], inst_value_o, dut->iaddr_o);
+#endif
+    }
+}
+
+template <>
 void SocSimulator<VHeliosX>::connect_wire() {
     cpu_top->clk_i = cpu_clk;
     cpu_top->reset_i = cpu_reset;
@@ -31,6 +52,11 @@ void SocSimulator<VHeliosX>::connect_wire() {
     dmem_we_o = cpu_top->dmem_we_o;
     write_dmem_data_o = cpu_top->dmem_wdata_o;
     dmem_addr_o = cpu_top->dmem_waddr_o;
+
+    debug_pc_o = cpu_top->debug_pc_o;
+    debug_wen = cpu_top->debug_reg_wen_o;
+    debug_wreg_data = cpu_top->debug_reg_wdata_o;
+    debug_wreg_num = cpu_top->debug_reg_id_o;
 }
 
 template <>
@@ -85,22 +111,36 @@ void SocSimulator<VHeliosX>::setup() {
 
 template <>
 void SocSimulator<VHeliosX>::run(std::string trace_file) {
-    // sim_time = 0;
-    // end_time = 1000000;
-    // start_time = 0;
-    // running = true;
+    Verilated::traceEverOn(true);
+    auto m_trace = std::make_unique<VerilatedVcdC>();
+    cpu_top->trace(m_trace.get(), 99);
+    m_trace->open(trace_file.c_str());
 
-    // while (sim_time < end_time && running) {
-    //     setup();
-    //     if ((sim_time % clock) == 0) {
-    //         tick();
-    //     }
-    //     eval();
-    //     if (posedge()) {
-    //         input();
-    //     }
-    //     eval();
-    // }
+    sim_time = 0;
+    running = true;
+
+    while (!Verilated::gotFinish() && sim_time > 0 && running) {
+        fmt::println("sim_time: {}", sim_time);
+        reset_dut();
+        if ((sim_time % clock) == 0) {
+            tick();
+        }
+        cpu_top->eval();
+
+        if ((sim_time % clock) == 0) {
+            // 信号连线
+            connect_wire();
+            // 检查是否很长时间没有进行提交并结束仿真
+            detect_commit_timeout();
+            // Trace 判断 Dut 运行是否正确
+            trace();
+        }
+
+        m_trace->dump(sim_time);
+        sim_time++;
+    }
+
+    m_trace->close();
 }
 
 int main() {
@@ -124,8 +164,7 @@ int main() {
 
     std::shared_ptr<SocSimulator<VHeliosX>> soc_sim =
         std::make_shared<SocSimulator<VHeliosX>>(
-            cpu_top, emulator, std::move(imem), std::move(dmem), 5);
+            cpu_top, emulator, std::move(imem), std::move(dmem), 5, 100);
 
-    // soc_sim->run("difftest.vcd");
-    fmt::println("Success to setup!");
+    soc_sim->run("difftest.vcd");
 }

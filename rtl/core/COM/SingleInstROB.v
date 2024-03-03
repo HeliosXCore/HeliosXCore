@@ -13,6 +13,7 @@ module SingleInstROB (
     output reg [`ROB_SEL-1:0] commit_ptr_1_o,
     output wire arfwe_1_o,
     output wire [`REG_SEL-1:0] dst_arf_1_o,
+    output wire [`ADDR_LEN-1:0] pc_com_o,
     output wire comnum_o
 
 );
@@ -45,7 +46,7 @@ module SingleInstROB (
         if (reset_i) begin
             valid <= 0;
             finish <= 0;
-            commit_ptr_1_o <= 1; 
+            commit_ptr_1_o <= 1;
         end else begin
             //更新提交指针
             //等价于commit_ptr_1_o = (commit_ptr_1_o + commit_1) % `ROB_NUM;
@@ -54,6 +55,7 @@ module SingleInstROB (
             //当执行单元完成时,更新完成标志
             if (finish_ex_alu1_i) begin
                 finish[finish_ex_alu1_addr_i] <= 1'b1;
+                pc_com_o <= inst_pc[finish_ex_alu1_addr_i];
             end
             // 当ROB entry的指令提交时,将valid置0
             if (commit_1) begin

@@ -20,6 +20,8 @@ module RrfEntryAllocate (
 
     output wire                rrf_allocatable_o,
     output reg  [  `RRF_SEL:0] freenum_o,
+    // TODO:这个信号的输出有点问题：这个信号应该是比rrfptr_o 小1的，但是目前的输出，
+    // 他俩是相等的
     output wire [`RRF_SEL-1:0] dst_rename_rrftag_o,
     output reg  [`RRF_SEL-1:0] rrfptr_o,
     output reg                 nextrrfcyc_o
@@ -35,7 +37,6 @@ module RrfEntryAllocate (
 
     assign rrf_allocatable_o   = (freenum_o + {5'b0, com_inst_num_i}) < {5'b0, reqnum} ? 1'b0 : 1'b1;
 
-    // TODO:在DP阶段stall以后，这里难道还是可以正常赋值吗？
     assign dst_rename_rrftag_o = rrfptr_o;
 
     always @(posedge clk_i) begin

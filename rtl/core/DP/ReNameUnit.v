@@ -133,12 +133,34 @@ module ReNameUnit (
     output reg  [`ADDR_LEN-1:0] pc_o,
 
     output reg [`REG_SEL-1:0] rs1_o,
-    output reg [`REG_SEL-1:0] rs2_o
+    output reg [`REG_SEL-1:0] rs2_o,
 
+    //debug
+    input wire [`ADDR_LEN-1:0] completed_pc_i,
+    output wire [`ADDR_LEN-1:0] debug_pc_o,
+    output wire [`REG_SEL-1:0] debug_reg_id_o,
+    output wire [`DATA_LEN-1:0] debug_reg_wdata_o,
+    output wire debug_reg_wen_o
 );
+
+    reg [`ADDR_LEN-1:0] completed_pc_reg;
+    reg [`REG_SEL-1:0] debug_reg_id_reg;
+    reg [`DATA_LEN-1:0] debug_reg_wdata_reg;
+    reg debug_reg_wen_reg;
+
+    assign debug_pc_o = completed_pc_reg;
+    assign debug_reg_id_o = debug_reg_id_reg;
+    assign debug_reg_wdata_o = debug_reg_wdata_reg;
+    assign debug_reg_wen_o = debug_reg_wen_reg;
 
     // 将idunit阶段的信号暂存一个周期
     always @(posedge clk_i) begin
+
+        completed_pc_reg <= completed_pc_i;
+        debug_reg_id_reg <= completed_dstnum_rob_out_arf_in_i;
+        debug_reg_wdata_reg <= from_rrfdata_rrf_out_arf_in;
+        debug_reg_wen_reg <= completed_we_rob_out_arf_in_i;
+
         rs1_o <= rs1_decoder_out_arf_in_i;
         rs2_o <= rs2_decoder_out_arf_in_i;
         rd_1_o <= dstnum_setbusy_decoder_out_arf_in_i;
