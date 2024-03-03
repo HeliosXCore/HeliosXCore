@@ -26,9 +26,6 @@ int main() {
 
     emulator->initialize();
     emulator->copy_from_dut(0x80000000, (void *)img, sizeof(img));
-    // emulator->exec(1, &result);
-    // fmt::println("pc: {:#x}, wen: {}, wreg_num: {}, wreg_data: {:#x}",
-    //              result.pc, result.wen, result.reg_id, result.reg_val);
 
     std::unique_ptr<Memory> imem =
         std::make_unique<Memory>(0x80000000, 0x10000);
