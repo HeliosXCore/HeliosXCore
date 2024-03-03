@@ -9,3 +9,4 @@ WAVE 	  := difftest.vcd
 
 IFLAGS 	  += -CFLAGS -I../HeliosXSimulator/include
 LDFLAGS   += -LDFLAGS ../build/libHeliosXSimulator.a
+LDFLAGS   += -LDFLAGS ../build/libHeliosXEmulator.a

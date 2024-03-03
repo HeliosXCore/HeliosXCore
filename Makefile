@@ -61,7 +61,9 @@ sim:
 
 difftest:
 	@make -C HeliosXSimulator static
+	@make -C HeliosXEmulator static
 	@cp HeliosXSimulator/build/libHeliosXSimulator.a $(BUILD_DIR)/libHeliosXSimulator.a
+	@cp HeliosXEmulator/build/libHeliosXEmulator.a $(BUILD_DIR)/libHeliosXEmulator.a
 	@make sim STAGE=DIFFTEST
 
 wave: sim

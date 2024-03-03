@@ -15,7 +15,8 @@
 `define INSN_LEN 32
 `define ADDR_LEN 32
 `define ISSUE_NUM 2
-`define ENTRY_POINT `ADDR_LEN'h0
+// `define ENTRY_POINT `ADDR_LEN'h0
+`define ENTRY_POINT 32'h80000000
 
 // Decoder
 `define RS_ENT_SEL 3
