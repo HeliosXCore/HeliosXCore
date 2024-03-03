@@ -168,7 +168,7 @@ module HeliosX (
     wire [`RRF_SEL-1:0] mem_access_rrf_tag;
 
 
-    //COM阶段传出的信号
+    // COM阶段传出的信号
     wire [`ROB_SEL-1:0] commit_ptr_1;
     wire arfwe_1;
     wire [`REG_SEL-1:0] dst_arf_1;

@@ -190,7 +190,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs1_sw);
 
-            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x0,
+            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x80000000,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__pc_sw);
 
@@ -282,7 +282,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs1_sw);
 
-            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x4,
+            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x80000004,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__pc_sw);
 
@@ -404,7 +404,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs2_sw);
 
-            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x8,
+            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x80000008,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__pc_sw);
 
@@ -565,7 +565,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs1_sw);
 
-            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0xc,
+            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x8000000C,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__pc_sw);
 
@@ -668,8 +668,8 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    get_arf_data(get_regidx("s0")));
 
             // 验证一下debug相关的输出
-            ASSERT(dut->debug_pc_o == 0x0, "sim_time: {} Error Imm {:#x}",
-                   sim_time, dut->debug_pc_o);
+            ASSERT(dut->debug_pc_o == 0x80000000,
+                   "sim_time: {} Error Imm {:#x}", sim_time, dut->debug_pc_o);
 
             ASSERT(dut->debug_reg_id_o == get_regidx("s0"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
@@ -724,7 +724,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs1_sw);
 
-            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x10,
+            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x80000010,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__pc_sw);
 
@@ -827,8 +827,8 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    get_arf_data(get_regidx("a2")));
 
             // 验证一下debug相关的输出
-            ASSERT(dut->debug_pc_o == 0x4, "sim_time: {} Error Imm {:#x}",
-                   sim_time, dut->debug_pc_o);
+            ASSERT(dut->debug_pc_o == 0x80000004,
+                   "sim_time: {} Error Imm {:#x}", sim_time, dut->debug_pc_o);
 
             ASSERT(dut->debug_reg_id_o == get_regidx("a2"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
@@ -866,7 +866,7 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__rs2_sw);
 
-            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x14,
+            ASSERT(dut->rootp->HeliosX__DOT__pc_sw == 0x80000014,
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__pc_sw);
 
@@ -1025,8 +1025,8 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    get_arf_data(get_regidx("s0")));
 
             // 验证一下debug相关的输出
-            ASSERT(dut->debug_pc_o == 0x8, "sim_time: {} Error Imm {:#x}",
-                   sim_time, dut->debug_pc_o);
+            ASSERT(dut->debug_pc_o == 0x80000008,
+                   "sim_time: {} Error Imm {:#x}", sim_time, dut->debug_pc_o);
 
             ASSERT(dut->debug_reg_id_o == get_regidx("s0"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
@@ -1095,8 +1095,8 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_data(get_regidx("a4")));
 
-            ASSERT(dut->debug_pc_o == 0xc, "sim_time: {} Error Imm {:#x}",
-                   sim_time, dut->debug_pc_o);
+            ASSERT(dut->debug_pc_o == 0x8000000C,
+                   "sim_time: {} Error Imm {:#x}", sim_time, dut->debug_pc_o);
 
             ASSERT(dut->debug_reg_id_o == get_regidx("a4"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
@@ -1148,8 +1148,8 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_data(get_regidx("a5")));
 
-            ASSERT(dut->debug_pc_o == 0x10, "sim_time: {} Error Imm {:#x}",
-                   sim_time, dut->debug_pc_o);
+            ASSERT(dut->debug_pc_o == 0x80000010,
+                   "sim_time: {} Error Imm {:#x}", sim_time, dut->debug_pc_o);
 
             ASSERT(dut->debug_reg_id_o == get_regidx("a5"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
@@ -1222,8 +1222,8 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    "sim_time: {} Error Imm {:#x}", sim_time,
                    get_arf_data(get_regidx("a0")));
 
-            ASSERT(dut->debug_pc_o == 0x14, "sim_time: {} Error Imm {:#x}",
-                   sim_time, dut->debug_pc_o);
+            ASSERT(dut->debug_pc_o == 0x80000014,
+                   "sim_time: {} Error Imm {:#x}", sim_time, dut->debug_pc_o);
 
             ASSERT(dut->debug_reg_id_o == get_regidx("a0"),
                    "sim_time: {} Error Imm {:#x}", sim_time,
@@ -1245,7 +1245,8 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    dut->rootp->HeliosX__DOT__req1_alu);
         } else if (sim_time == 145) {
             // li s0, 0
-            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x0,
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o ==
+                       0x80000000,
                    "sim_time: {} Error Alu pc: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__exe_alu_pc);
             ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_op_1_o == 0,
@@ -1259,7 +1260,8 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                    dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o);
         } else if (sim_time == 155) {
             // li a2, 1859
-            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x4,
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o ==
+                       0x80000004,
                    "sim_time: {} Error Alu pc: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__exe_alu_pc);
             ASSERT(
@@ -1277,7 +1279,8 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
         } else if (sim_time == 175) {
             // li a4, 929
             // add s0, a2, s0
-            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x8,
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o ==
+                       0x80000008,
                    "sim_time: {} Error Alu pc: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__exe_alu_pc);
 
@@ -1291,7 +1294,8 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
 
         } else if (sim_time == 185) {
             // li a5, 22
-            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0xC,
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o ==
+                       0x8000000C,
                    "sim_time: {} Error Alu pc: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__exe_alu_pc);
             ASSERT(
@@ -1301,10 +1305,10 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
         } else if (sim_time == 195) {
             // add a0, a4, a5
             // Pending
-            ASSERT(
-                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x10,
-                "sim_time: {} Error exe_alu_pc_o: {:#x}", sim_time,
-                dut->rootp->HeliosX__DOT__exe_alu_pc);
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o ==
+                       0x80000010,
+                   "sim_time: {} Error exe_alu_pc_o: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__exe_alu_pc);
             ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o == 22,
                    "sim_time: {} Error exe_alu_imm_o: {:#x}", sim_time,
                    dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_imm_o);
@@ -1315,10 +1319,10 @@ class VHeliosXTb : public VerilatorTb<VHeliosX> {
                          dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o);
 #endif
         } else if (sim_time == 215) {
-            ASSERT(
-                dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o == 0x14,
-                "sim_time: {} Error exe_alu_pc_o: {:#x}", sim_time,
-                dut->rootp->HeliosX__DOT__exe_alu_pc);
+            ASSERT(dut->rootp->HeliosX__DOT__u_SwUint__DOT__exe_alu_pc_o ==
+                       0x80000014,
+                   "sim_time: {} Error exe_alu_pc_o: {:#x}", sim_time,
+                   dut->rootp->HeliosX__DOT__exe_alu_pc);
         }
     }
 
@@ -1524,8 +1528,8 @@ int main(int argc, char **argv, char **env) {
         0x00f70533   // add a0, a4, a5
     };
 
-    std::shared_ptr<Memory> mem = std::make_shared<Memory>(0, 0x10000);
-    mem->load(0, (const char *)img, sizeof(img));
+    std::shared_ptr<Memory> mem = std::make_shared<Memory>(0x80000000, 0x10000);
+    mem->load(0x80000000, (const char *)img, sizeof(img));
     srand(time(NULL));
     Verilated::commandArgs(argc, argv);
 
