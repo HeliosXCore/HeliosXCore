@@ -226,13 +226,6 @@ int main(int argc, char **argv, char **env) {
                 dut->forward_rrfdata_alu1_out_rrf_in_i = 16;
                 dut->rs1_decoder_out_arf_in_i = 4;
 
-<<<<<<< HEAD
-#ifndef WAVE
-                assert(dut->rdy1_srcopmanager_out_srcmanager_in_o == 1);
-                std::cout << "ReNameUnit Test 4 Pass!" << std::endl;
-#endif
-                =======
->>>>>>> origin/main
             } else if (posedge_cnt == 6 && sim_time == 50) {
 #ifndef WAVE
                 assert(dut->src1_srcopmanager_out_srcmanager_in_o == 16);
