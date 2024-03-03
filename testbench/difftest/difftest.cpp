@@ -8,16 +8,14 @@
 using namespace heliosxsimulator;
 
 int main() {
-    // const uint32_t img[] = {
-    //     0x00000413,  // li s0, 0         -> addi s0, x0, 0
-    //     0x74300613,  // li a2, 1859      -> addi a2, x0, 1859
-    //     0x00860433,  // add s0, a2, s0
-    //     0x3a100713,  // li a4, 929       -> addi a4, x0, 929
-    //     0x01600793,  // li a5, 22        -> addi a5, x0, 22
-    //     0x00f70533   // add a0, a4, a5
-    // };
-
-    const uint32_t img[] = {0x00000297};
+    const uint32_t img[] = {
+        0x00000413,  // li s0, 0         -> addi s0, x0, 0
+        0x74300613,  // li a2, 1859      -> addi a2, x0, 1859
+        0x00860433,  // add s0, a2, s0
+        0x3a100713,  // li a4, 929       -> addi a4, x0, 929
+        0x01600793,  // li a5, 22        -> addi a5, x0, 22
+        0x00f70533   // add a0, a4, a5
+    };
 
     std::shared_ptr<VHeliosX> cpu_top = std::make_shared<VHeliosX>();
 
