@@ -2,10 +2,14 @@
 HeliosXCore is a Superscalar Out-of-order RISC-V Processor Core.
 
 ## Directory Organization
-- **docs** - Project documents.
-- **ip** - IP Core.
-- **rtl** - CPU RTL source code.
-- **testbench** - Test and Bench code.
+- **3rd-party**: The third-party library code.
+- **HeliosXEmulator**: Emulator submodule used for differential testing to verify correctness.
+- **HeliosXSimulator**: Simulator submodule used for differential testing to verify correctness.
+- **docs**: Project documents.
+- **rtl**: CPU Core RTL source code.
+- **scripts**: Scripts used for testing.
+- **soc**: SoC RTL source code.
+- **testbench**: Test and Bench code.
 
 
 ## Contribution
@@ -16,3 +20,4 @@ git checkout -b <branch_name>
 ```
 2. Create a Pull Request and receive code review from reviewers.
 3. PR title shoule be concise since it is going to be the commit message in the main branch after merging and squashing.
+
