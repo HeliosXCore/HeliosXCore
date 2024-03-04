@@ -36,7 +36,7 @@ else ifeq ($(STAGE), ROB)
 include testbench/verilator/ROB/rob.mk
 else ifeq ($(STAGE), PIPELINE)
 include testbench/verilator/heliosx.mk
-else ifrq($(STAGE), DIFFTEST)
+else ifeq ($(STAGE), DIFFTEST)
 include testbench/difftest/difftest.mk
 endif
 
