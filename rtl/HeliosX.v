@@ -19,7 +19,8 @@ module HeliosX (
     output wire [`ADDR_LEN-1:0] debug_pc_o,
     output wire [`REG_SEL-1:0] debug_reg_id_o,
     output wire [`DATA_LEN-1:0] debug_reg_wdata_o,
-    output wire debug_reg_wen_o
+    output wire debug_reg_wen_o,
+    output wire debug_commit_en_o
 );
 
     //暂停信号、kill信号
@@ -384,7 +385,8 @@ module HeliosX (
         .debug_pc_o(debug_pc_o),
         .debug_reg_id_o(debug_reg_id_o),
         .debug_reg_wdata_o(debug_reg_wdata_o),
-        .debug_reg_wen_o(debug_reg_wen_o)
+        .debug_reg_wen_o(debug_reg_wen_o),
+        .debug_commit_en_o(debug_commit_en_o)
     );
 
 

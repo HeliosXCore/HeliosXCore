@@ -51,7 +51,7 @@ endif
 
 .PHONY: sim wave clean format
 
-sim: 
+sim:
 	@mkdir -p $(RTLOBJD)
 	@$(VERILATOR) $(CFLAGS) $(VFLAGS) -cc $(RTLD)/$(TEST).v $(LDFLAGS) $(MODULES) \
 		--public \
