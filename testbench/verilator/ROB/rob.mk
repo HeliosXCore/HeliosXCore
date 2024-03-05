@@ -1,6 +1,6 @@
 RTLD	:= rtl/core/COM
 TESTBENCHD	:= testbench/verilator/ROB
-TEST 	  := SingleInstROB
+TEST 	  := ROB
 MODULES   :=
-TESTBENCH := SingleInstROB_tb
-WAVE 	  := SingleInstROB.vcd
+TESTBENCH := ROB_tb
+WAVE 	  := ROB.vcd

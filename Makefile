@@ -70,5 +70,5 @@ clean:
 
 lint:
 	@verilator --lint-only -Irtl rtl/core/IF/*.v rtl/core/ID/*.v rtl/core/DP/*.v \
-	rtl/core/SW/*.v rtl/core/EX/*.v rtl/core/COM/SingleInstROB.v rtl/HeliosX.v
+	rtl/core/SW/*.v rtl/core/EX/*.v rtl/core/COM/ROB.v rtl/HeliosX.v
 

@@ -164,11 +164,22 @@ module HeliosX (
 
 
     //COM阶段传出的信号
-    wire [`ROB_SEL-1:0] commit_ptr_1;
-    wire arfwe_1;
-    wire [`REG_SEL-1:0] dst_arf_1;
-    wire [`ADDR_LEN-1:0] pc_com;
-    wire    comnum;
+    
+    reg [`ROB_SEL-1:0] commit_ptr_1_o;
+    wire [`ROB_SEL-1:0] commit_ptr_2_o;
+    wire[1:0]    comnum_o;
+    wire   store_commit_o;
+    wire   arfwe_1_o;
+    wire   arfwe_2_o;
+    wire [`REG_SEL-1:0] dst_arf_1_o;
+    wire [`REG_SEL-1:0] dst_arf_2_o;
+
+    wire [`ADDR_LEN-1:0] pc_combranch_o;
+    wire [`GSH_BHR_LEN-1:0] bhr_combranch_o;
+    wire [`ADDR_LEN-1:0] jmpaddr_combranch_o;
+    wire brcond_combranch_o;
+    wire combranch;
+    wire [`ADDR_LEN-1:0] pc_com
 
 
     //IF stage
@@ -493,12 +504,12 @@ module HeliosX (
         .mem_access_imm_i(exe_mem_imm),
         .mem_access_if_write_rrf_i(exe_mem_dst_val),
         .mem_access_issue_i(exe_mem_issue),
-        .mem_access_complete_i(),
+        .mem_access_complete_i(store_commit),
         .mem_access_load_data_from_data_memory_i(dmem_rdata_i),
         .mem_access_rrf_tag_i(exe_mem_rrf_tag),
         // MemAccess 输出
         .mem_access_rrf_we_o(mem_access_rrf_we),
-        .mem_access_rob_we_o(),
+        .mem_access_rob_we_o(mem_access_rob_we),
         .mem_access_load_address_o(dmem_raddr_o),
         .mem_access_store_buffer_mem_we_o(dmem_we_o),
         .mem_access_store_buffer_write_address_o(dmem_waddr_o),
@@ -528,6 +539,55 @@ module HeliosX (
         .pc_com_o(pc_com),
         .comnum_o(comnum)
     );
+
+
+    //COM stage
+    ROB u_ROB (
+        //input
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .dp1_i(rrf_allocatable),                  
+        .dp1_addr_i(dst_rrftag),             
+        .pc_dp1_i(pc_sw),
+        .storebit_dp1_i(inst[6:0] == `RV32_STORE ? 1'b1 : 1'b0),
+        .dstvalid_dp1_i(dst_en),
+        .dst_dp1_i(rd_1_sw),
+        .bhr_dp1_i(),
+        .isbranch_dp1_i(),
+        .dp2_i(),
+        .dp2_addr_i(),
+        .pc_dp2_i,
+        .storebit_dp2_i(),
+        .dstvalid_dp2_i(),
+        .dst_dp2_i(),
+        .bhr_dp2_i(),
+        .isbranch_dp2_i(),
+        .finish_ex_alu1_i(alu_rob_we),       
+        .finish_ex_alu1_addr_i(alu_rrf_tag),  
+        .finish_ex_alu2_i(),
+        .finish_ex_alu2_addr_i(),
+        .finish_ex_mul_i(),
+        .finish_ex_mul_addr_i(),
+        .finish_ex_ldst_i(mem_access_rob_we),
+        .finish_ex_ldst_addr_i(exe_mem_rrf_tag),
+        .finish_ex_branch_i(),
+        .finish_ex_branch_addr_i(),
+        .finish_ex_branch_brcond_i(),
+        .finish_ex_branch_jmpaddr_i(),
+        //output
+        .commit_ptr_1_o(commit_ptr_1),
+        .commit_ptr_2_o(),
+        .comnum_o(comnum),
+        .store_commit_o(store_commit),
+        .arfwe_1_o(arfwe_1),
+        .arfwe_2_o(),
+        .pc_combranch_o(),
+        .bhr_combranch_o(),
+        .jmpaddr_combranch_o(),
+        .brcond_combranch_o(),
+        .combranch_o(),
+        .pc_com_o(pc_com)
+    )
 
 
 
