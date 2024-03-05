@@ -4,28 +4,31 @@
 #include "ffi.hpp"
 #include <fmt/core.h>
 #include <memory.h>
+#include <cassert>
 #include <cstdint>
+#include <cstdio>
 
 using namespace heliosxsimulator;
 
-#define FILE_PATH \
-    "/home/mrgeek/document/dump/isa/txt_file/inst/rv32ui-p-add.txt"
-#define ARRAY_SIZE \
-    328  // Adjust this based on the actual number of lines in the file
-int read_file_to_array(const char *file_path, uint32_t *arr, size_t arr_size) {
-    FILE *file = fopen(file_path, "r");
-    if (file == NULL) {
-        perror("Failed to open file");
+#define FILE_PATH "testcase/rv32ui-p-add.txt"
+#define ARRAY_SIZE 328
+
+int read_file_to_array(const char *file_path, uint32_t *arr, int arr_size) {
+    FILE *file;
+    int count = 0;
+
+    file = fopen(file_path, "r");
+    if (!file) {
+        perror("Error opening file");
         return -1;
     }
-    for (size_t i = 0; i < arr_size; i++) {
-        if (fscanf(file, "%x", &arr[i]) != 1) {
-            fclose(file);
-            return -1;  // Error reading the file
-        }
+
+    while (count < arr_size && fscanf(file, "%x", &arr[count]) == 1) {
+        count++;
     }
+
     fclose(file);
-    return 0;  // Success
+    return count;
 }
 
 int main() {
@@ -39,7 +42,7 @@ int main() {
     };
 
     uint32_t img1[ARRAY_SIZE];
-    read_file_to_array(FILE_PATH, img1, ARRAY_SIZE);
+    assert(read_file_to_array(FILE_PATH, img1, ARRAY_SIZE) != -1);
 
     std::shared_ptr<VHeliosX> cpu_top = std::make_shared<VHeliosX>();
 
