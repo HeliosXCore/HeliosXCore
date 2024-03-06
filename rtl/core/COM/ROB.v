@@ -67,17 +67,19 @@ module ROB (
     reg [`GSH_BHR_LEN-1:0] bhr[0:`ROB_NUM-1];
 
 
-    //等价于 commit_ptr_2_o = (commit_ptr_1_o + 1) % `ROB_NUM;
-    assign commit_ptr_2_o = (commit_ptr_1_o + {5'b0, 1'b1}) & 6'b1;
+  
 
     // wire commit_1 = finish[commit_ptr_1_o] & ~prmiss_i;
     // wire commit_2 = finish[commit_ptr_2_o] & ~prmiss_i;
-
-
     wire commit_1 = finish[commit_ptr_1_o];
     // TODO:双指令使用下面第二行
     wire commit_2 = 0;
     // wire commit_2 = finish[commit_ptr_2_o];
+      //等价于 commit_ptr_2_o = (commit_ptr_1_o + 1) % `ROB_NUM;
+    assign commit_ptr_2_o = (commit_ptr_1_o + {5'b0, 1'b1}) & 6'b1;
+
+ 
+    assign pc_com_o = inst_pc[commit_ptr_1_o];
 
     assign comnum_o = commit_1 + commit_2;
 
@@ -106,7 +108,6 @@ module ROB (
     assign jmpaddr_combranch_o = (commit_1 & isbranch[commit_ptr_1_o]) ? jmpaddr[commit_ptr_1_o] : jmpaddr[commit_ptr_2_o];
 
 
-
     always @(posedge clk_i) begin
         if (reset_i) begin
             commit_ptr_1_o <= 1;
@@ -118,17 +119,13 @@ module ROB (
             //每次提交一次或两次指令,commit_ptr_1_o向后移动
             commit_ptr_1_o <= (commit_ptr_1_o + {5'b0, commit_1} + {5'b0, commit_2}) & 6'b111111;
             if (finish_ex_alu1_i) begin
-                finish[finish_ex_alu1_addr_i] <= 1'b1;
-                pc_com_o <= inst_pc[finish_ex_alu1_addr_i];
-                
+                finish[finish_ex_alu1_addr_i] <= 1'b1;               
             end
             if (finish_ex_alu2_i) begin
                 finish[finish_ex_alu2_addr_i] <= 1'b1;
-                pc_com_o <= inst_pc[finish_ex_alu2_addr_i];
             end
             if (finish_ex_branch_i) begin
                 finish[finish_ex_branch_addr_i]  <= 1'b1;
-                pc_com_o <= inst_pc[finish_ex_branch_addr_i];
                 //标记该条指令是否是条件分支指令
                 brcond[finish_ex_branch_addr_i]  <= finish_ex_branch_brcond_i;
                 //记录分支指令的跳转地址
@@ -137,11 +134,9 @@ module ROB (
             end
             if (finish_ex_mul_i) begin
                 finish[finish_ex_mul_addr_i] <= 1'b1;
-                pc_com_o <= inst_pc[finish_ex_mul_addr_i];
             end
             if (finish_ex_ldst_i) begin
                 finish[finish_ex_ldst_addr_i] <= 1'b1;
-                pc_com_o <= inst_pc[finish_ex_ldst_addr_i];
             end
         end
     end
