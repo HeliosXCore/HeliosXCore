@@ -56,3 +56,45 @@ module InorderAllocIssueUnit #(
         end
     end
 ```
+
+当分配单元分配完保留站之后，分配单元将分配的保留站项索引送给保留站，保留站根据索引将操作数信号送入到对应的保留站项中。接下来将以 ALU 保留站为例描述保留站选择和唤醒的详细流程。
+
+保留站项接收到操作数后会将其送入到一个名为 **SourceManager** 的结构，源操作数管理部件由 SW 内部维护，用于管理和唤醒源操作数，SourceManager 的实现如下所示：
+
+```verilog
+    assign src_o = src_ready_i ? src_i :
+        exe_dst_1_i == src_i[`RRF_SEL-1: 0]? exe_result_1_i :
+        exe_dst_2_i == src_i[`RRF_SEL-1: 0]? exe_result_2_i :
+        exe_dst_3_i == src_i[`RRF_SEL-1: 0]? exe_result_3_i :
+        exe_dst_4_i == src_i[`RRF_SEL-1: 0]? exe_result_4_i :
+        exe_dst_5_i == src_i[`RRF_SEL-1: 0]? exe_result_5_i : src_i;
+
+    assign resolved_o = src_ready_i |
+        (exe_dst_1_i == src_i[`RRF_SEL-1: 0]) |
+        (exe_dst_2_i == src_i[`RRF_SEL-1: 0]) |
+        (exe_dst_3_i == src_i[`RRF_SEL-1: 0]) |
+        (exe_dst_4_i == src_i[`RRF_SEL-1: 0]) |
+        (exe_dst_5_i == src_i[`RRF_SEL-1: 0]);
+```
+
+SourceManager 将进行判断是否操作数已经准备好，如果准备好则将 `resolved_o` 置 1，否则将持续等待执行前递的结果。
+
+在 ALU 保留站项中为了处理执行前递和操作数送入保留站同一个周期的问题，我们设计了操作数选择器可以在同一周期唤醒操作数：
+
+```verilog
+    assign write_op_update_1 = (we_i & ~write_op_1_valid_i) ? 
+                     (exe_result_1_dst_i == write_op_1_i[`RRF_SEL-1:0]) |
+                     (exe_result_2_dst_i == write_op_1_i[`RRF_SEL-1:0]) |
+                     (exe_result_3_dst_i == write_op_1_i[`RRF_SEL-1:0]) |
+                     (exe_result_4_dst_i == write_op_1_i[`RRF_SEL-1:0]) |
+                     (exe_result_5_dst_i == write_op_1_i[`RRF_SEL-1:0]) : 0;
+
+    assign write_op_1 = (~write_op_update_1) ? write_op_1_i:
+        (exe_result_1_dst_i == write_op_1_i[`RRF_SEL-1:0]) ? exe_result_1_i :
+        (exe_result_2_dst_i == write_op_1_i[`RRF_SEL-1:0]) ? exe_result_2_i :
+        (exe_result_3_dst_i == write_op_1_i[`RRF_SEL-1:0]) ? exe_result_3_i :
+        (exe_result_4_dst_i == write_op_1_i[`RRF_SEL-1:0]) ? exe_result_4_i :
+        (exe_result_5_dst_i == write_op_1_i[`RRF_SEL-1:0]) ? exe_result_5_i : write_op_1_i;
+```
+
+最终当一条指令的两个操作数都被准备好了之后它将被发射到执行单元，随后将保留站项中的内容清除并更新 busy 向量以表示该保留站项可用。
