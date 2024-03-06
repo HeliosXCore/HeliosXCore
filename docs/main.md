@@ -5,8 +5,12 @@
 ## 整体架构
 
 ## 流水线架构
-
-- [](HeliosXCore/sw.md)
+- [Fetch]()
+- [Decode]()
+- [Dispatch/Rename]()
+- [Select and WakeUp](HeliosXCore/sw.md)
+- [Execute]()
+- [Commit]()
 
 ## 差分测试框架
 
