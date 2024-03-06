@@ -8,7 +8,8 @@ module ReNameUnit (
     input wire [`REG_SEL-1:0] rs1_decoder_out_arf_in_i,
     input wire [`REG_SEL-1:0] rs2_decoder_out_arf_in_i,
 
-    input wire stall_dp_i,
+    input  wire stall_dp_i,
+    output wire stall_if_o,
 
     output wire rrf_allocatable_o,
     output wire [`RRF_SEL:0] freenum_RrfEntryAllocate_out_rob_in_o,
@@ -192,6 +193,7 @@ module ReNameUnit (
 
     reg  rrf_allocatable_reg;
     wire rrf_allocatable_wire;
+    assign stall_if_o = ~rrf_allocatable_wire;
     assign rrf_allocatable_o = rrf_allocatable_reg;
 
     reg  [`RRF_SEL-1:0] dst_rrftag_reg;
@@ -373,6 +375,7 @@ module ReNameUnit (
         .allocate_rrf_en_i(allocate_rrf_en_i),
         .allocate_rrftag_i(allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in),
 
+        .completed_en_i(completed_we_rob_out_arf_in_i),
         .completed_dst_rrftag_i(completed_dst_rrftag_rob_out_arfANDrrf_in),
         .data_to_arfdata_o(from_rrfdata_rrf_out_arf_in)
     );

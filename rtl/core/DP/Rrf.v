@@ -46,11 +46,12 @@ module Rrf (
 
     // 指令在COM阶段之后，需要将rrf.data copy到arf.data，所以COM部件就需要把他提
     // 交的指令对应目的寄存器的rrftag传给rrf
-    input  wire [ `RRF_SEL-1:0] completed_dst_rrftag_i,
+    input wire [`RRF_SEL-1:0] completed_dst_rrftag_i,
+    input wire completed_en_i,
     output wire [`DATA_LEN-1:0] data_to_arfdata_o
 );
 
-    reg [`RRF_NUM-1:0] rrf_valid;
+    reg [`RRF_NUM:0] rrf_valid;
     reg [`DATA_LEN-1:0] rrf_data[`RRF_NUM-1:0];
 
 
@@ -110,15 +111,17 @@ module Rrf (
     always @(posedge clk_i) begin
         if (reset_i) begin
             rrf_valid <= 0;
-        end else begin
-            if (forward_rrf_we_alu1_i) begin
-                rrf_data[forward_rrftag_alu1_i]  <= forward_rrfdata_alu1_i;
-                rrf_valid[forward_rrftag_alu1_i] <= 1'b1;
-            end
-            if (forward_rrf_we_alu2_i) begin
-                rrf_data[forward_rrftag_alu2_i]  <= forward_rrfdata_alu2_i;
-                rrf_valid[forward_rrftag_alu2_i] <= 1'b1;
-            end
+        end
+        if (completed_en_i) begin
+            rrf_valid[completed_dst_rrftag_i] <= 1'b0;
+        end
+        if (forward_rrf_we_alu1_i) begin
+            rrf_data[forward_rrftag_alu1_i]  <= forward_rrfdata_alu1_i;
+            rrf_valid[forward_rrftag_alu1_i] <= 1'b1;
+        end
+        if (forward_rrf_we_alu2_i) begin
+            rrf_data[forward_rrftag_alu2_i]  <= forward_rrfdata_alu2_i;
+            rrf_valid[forward_rrftag_alu2_i] <= 1'b1;
         end
 
     end

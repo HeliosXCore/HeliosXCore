@@ -38,6 +38,12 @@ module SingleInstROB (
     //提交到arf的目的逻辑寄存器地址
     assign dst_arf_1_o = dst[commit_ptr_1_o];
 
+    assign pc_com_o = inst_pc[commit_ptr_1_o];
+
+    wire [`ROB_SEL-1:0] tmp;
+    wire [`ROB_SEL-1:0] tmp1;
+    assign tmp = ((commit_ptr_1_o + {5'b0, commit_1}) & 6'b111111);
+    assign tmp1 = (tmp == 0) ? 1 : tmp;
 
     //当commit_1 和 dstvalid同时为1时,允许写回寄存器
     assign arfwe_1_o = dstValid[commit_ptr_1_o] & commit_1;
@@ -50,12 +56,11 @@ module SingleInstROB (
         end else begin
             //更新提交指针
             //等价于commit_ptr_1_o = (commit_ptr_1_o + commit_1) % `ROB_NUM;
-            commit_ptr_1_o <= ((commit_ptr_1_o + {5'b0, commit_1}) & 6'b111111);
+            commit_ptr_1_o <= tmp1;
             // commit_ptr_1_o <= commit_ptr_1_o + {5'b0, commit_1};
             //当执行单元完成时,更新完成标志
             if (finish_ex_alu1_i) begin
                 finish[finish_ex_alu1_addr_i] <= 1'b1;
-                pc_com_o <= inst_pc[finish_ex_alu1_addr_i];
             end
             // 当ROB entry的指令提交时,将valid置0
             if (commit_1) begin

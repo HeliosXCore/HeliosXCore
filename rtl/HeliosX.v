@@ -30,6 +30,11 @@ module HeliosX (
     wire kill_ID;
     wire stall_DP;
     wire kill_DP;
+    // TODO:这个只是权宜之计，这样写实际上并不合适
+    // assign stall_IF = stall_IF_1 | stall_IF_2;
+    assign stall_IF = stall_IF_1;
+    assign stall_ID = stall_IF;
+    assign stall_DP = stall_IF;
 
     assign stall_IF = 1'b0;
     assign stall_ID = 1'b0;
@@ -245,6 +250,8 @@ module HeliosX (
         .md_req_out_sel_1_o(md_req_out_sel_1_dp)
     );
 
+    wire stall_IF_1;
+
     //DP stage
     ReNameUnit u_ReNameUnit (
         //input
@@ -259,6 +266,7 @@ module HeliosX (
         .pc_i(pc_dp),
 
         //output
+        .stall_if_o(stall_IF_1),
         .pc_o(pc_sw),
         .rrf_allocatable_o(rrf_allocatable),
         .freenum_RrfEntryAllocate_out_rob_in_o(),
@@ -389,6 +397,7 @@ module HeliosX (
         .debug_commit_en_o(debug_commit_en_o)
     );
 
+    // wire stall_IF_2;
 
     //SW stage
     SwUnit u_SwUint (
@@ -434,6 +443,7 @@ module HeliosX (
         .exe_result_5_dst_i(0),
 
         //output
+        //.stall_if_o(stall_IF_2),
         .exe_alu_op_1_o(exe_alu_op_1),
         .exe_alu_op_2_o(exe_alu_op_2),
         .exe_alu_pc_o(exe_alu_pc),

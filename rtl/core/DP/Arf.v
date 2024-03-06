@@ -118,7 +118,11 @@ module RenameTable (
             arf_busy <= 0;
         end else if (completed_we_i) begin
             if(completed_dst_rrftag_i == {arf_rrftag5[completed_dst_num_i],arf_rrftag4[completed_dst_num_i],arf_rrftag3[completed_dst_num_i],arf_rrftag2[completed_dst_num_i],arf_rrftag1[completed_dst_num_i],arf_rrftag0[completed_dst_num_i]}) begin
-                arf_busy[completed_dst_num_i] <= 1'b0;
+                if (dst_en_setbusy_i && (completed_dst_num_i == dst_num_setbusy_i)) begin
+                    arf_busy[completed_dst_num_i] <= 1'b1;
+                end else begin
+                    arf_busy[completed_dst_num_i] <= 1'b0;
+                end
             end
         end
     end
