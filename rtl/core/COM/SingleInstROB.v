@@ -19,8 +19,9 @@ module SingleInstROB (
 );
 
     //表示该 ROB entry 当前是否有效,即是否已被分配给某条指令。当新指令被分派时,会将对应 entry 的 valid 位置1,表示现在有效。
+    //valid=1:表示该rob entry已经分配出去了
     reg [`ROB_NUM-1:0] valid;
-    //表示该 ROB entry 对应的指令是否已执行完成。当某条指令执行结束时,会将 finish 对应的位置1,表示该指令已完成执行。               
+    //表示该 ROB entry 对应的指令是否已执行完成。当某条指令执行结束时,会将 finish 对应的位置1,表示该指令已完成执行
     reg [`ROB_NUM-1:0] finish;
     //表明该 ROB entry 对应的dst是否有效。
     reg [`ROB_NUM-1:0] dstValid;

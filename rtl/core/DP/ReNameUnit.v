@@ -402,6 +402,13 @@ module ReNameUnit (
         .ready_o(rdy2_srcopmanager_out_srcmanager_in_wire)
     );
 
+    wire nextrrfcyc_wire;
+    reg  nextrrfcyc_reg;
+    assign nextrrfcyc_o = nextrrfcyc_reg;
+    always @(posedge clk_i) begin
+        nextrrfcyc_reg <= nextrrfcyc_wire;
+    end
+
     RrfEntryAllocate rrf_alloc (
         .clk_i(clk_i),
         .reset_i(reset_i),
@@ -412,7 +419,8 @@ module ReNameUnit (
         .freenum_o(freenum_RrfEntryAllocate_out_rob_in_o),
         .dst_rename_rrftag_o(allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in),
         .rrfptr_o(rrfptr_RrfEntryAllocate_out_rob_in_o),
-        .nextrrfcyc_o(nextrrfcyc_o)
+        //.nextrrfcyc_o(nextrrfcyc_o)
+        .nextrrfcyc_o(nextrrfcyc_wire)
     );
 
     RSRequestGen rs_request_gen (
