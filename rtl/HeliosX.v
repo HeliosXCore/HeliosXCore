@@ -520,28 +520,6 @@ module HeliosX (
     );
 
     //COM stage
-    SingleInstROB u_SingleInstROB (
-        //input
-        .clk_i(clk_i),
-        .reset_i(reset_i),
-        .dp1_i(rrf_allocatable),
-        .dp1_addr_i(dst_rrftag),
-        .pc_dp1_i(pc_sw),
-        .dstvalid_dp1_i(dst_en),
-        .dst_dp1_i(rd_1_sw),
-        .finish_ex_alu1_i(alu_rob_we),
-        .finish_ex_alu1_addr_i(alu_rrf_tag),
-
-        //output
-        .commit_ptr_1_o(commit_ptr_1),
-        .arfwe_1_o(arfwe_1),
-        .dst_arf_1_o(dst_arf_1),
-        .pc_com_o(pc_com),
-        .comnum_o(comnum)
-    );
-
-
-    //COM stage
     ROB u_ROB (
         //input
         .clk_i(clk_i),
