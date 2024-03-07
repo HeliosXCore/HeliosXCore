@@ -5,6 +5,8 @@ HeliosXCore 是一个单发射乱序执行超标量 RISC-V 处理器，HeliosXCo
 
 ![](HeliosXCore/figures/HeliosXCore.png)
 
+![](HeliosXCore/figures/HeliosXCorePipeline.png)
+
 ## 整体架构
 
 ## 流水线架构

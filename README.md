@@ -1,5 +1,6 @@
 # HeliosXCore
 ![](docs/HeliosXCore/figures/HeliosXCore.png)
+![](docs/HeliosXCore/figures/HeliosXCorePipeline.png)
 
 **HeliosXCore** is a Superscalar Out-of-order RISC-V Processor Core.
 
