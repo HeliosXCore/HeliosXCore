@@ -3,6 +3,8 @@
 ## 介绍
 HeliosXCore 是一个单发射乱序执行超标量 RISC-V 处理器，HeliosXCore 切分了六集流水线，分别为取指、译码、重命名/派发、选择唤醒、执行、提交写回。
 
+![](HeliosXCore/figures/HeliosXCore.png)
+
 ## 整体架构
 
 ## 流水线架构
