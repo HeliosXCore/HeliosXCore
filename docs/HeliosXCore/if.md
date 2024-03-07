@@ -25,20 +25,20 @@ module Selector
       
       case(sel_i)
 		2'b00 : begin
-   			inst1_o = idata[31:0];
-   			inst2_o = idata[63:32];
+   			inst1_o = idata_i[31:0];
+   			inst2_o = idata_i[63:32];
 		end
 		2'b01 : begin
-   			inst1_o = idata[63:32];
-   			inst2_o = idata[95:64];
+   			inst1_o = idata_i[63:32];
+   			inst2_o = idata_i[95:64];
 		end
 		2'b10 : begin
-   			inst1_o = idata[95:64];
-   			inst2_o = idata[127:96];
+   			inst1_o = idata_i[95:64];
+   			inst2_o = idata_i[127:96];
 		end
 		2'b11 : begin
-   			inst1_o = idata[127:96];
-   			inst2_o = idata[31:0];
+   			inst1_o = idata_i[127:96];
+   			inst2_o = idata_i[31:0];
 		end
   	  endcase
    end
