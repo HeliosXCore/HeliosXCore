@@ -13,8 +13,11 @@ MODULE ?= StoreBuffer
 ifeq ($(MODULE), StoreBuffer)
 	TEST := StoreBuffer
 	TESTBENCH := store_buffer_tb
-	MODULES := 
 	WAVE := store_buffer.vcd
+else ifeq ($(MODULE), MemAccessUnit)
+	TEST := MemAccessUnit
+	TESTBENCH := mem_access_unit_tb
+	WAVE := mem_access_unit_tb.vcd
 endif
 
 VIGNOREW 	:= 

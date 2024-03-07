@@ -24,6 +24,7 @@ make -j -C testbench/verilator/SW sim MODULE=RSAlu
 # Execute Stage Modules
 echo "Running Execute Stage Modules tests..."
 make -j -C testbench/verilator/EX sim MODULE=StoreBuffer
+make -j -C testbench/verilator/EX sim MODULE=MemAccessUnit
 
 
 # Stage 2: Run the pipeline stage tests.
