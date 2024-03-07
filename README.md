@@ -6,6 +6,8 @@
 
 Design Docs | [设计文档](docs/HeliosXCore.md)
 
+Design Docs | [设计文档](docs/HeliosXCore.md)
+
 ## Directory Organization
 - **3rd-party**: The third-party library code.
 - **HeliosXEmulator**: Emulator submodule used for differential testing to verify correctness.
