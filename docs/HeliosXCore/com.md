@@ -30,12 +30,6 @@
 `bhr`：表示该 ROB entry 对应的指令的branch history register。  
 `index`：表示该 ROB entry 对应的指令在 ROB 中的位置，即 ROB 的编号同时也是rrf的编号。（注意：index的编号是从1开始的）
 
-
-
-
-
-
-
 ### 写入ROB：
 
 当有输入信号`dp1_i = 1`或者 `dp2_i = 1` 时,会立即将这两条指令写入ROB对应的entry
