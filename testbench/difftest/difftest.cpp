@@ -10,8 +10,35 @@
 
 using namespace heliosxsimulator;
 
+#if 0
 #define FILE_PATH "testcase/rv32ui-p-add.txt"
 #define ARRAY_SIZE 328
+#endif
+
+#if 0
+#define FILE_PATH "testcase/rv32ui-p-addi.txt"
+#define ARRAY_SIZE 199
+#endif
+
+#if 0
+#define FILE_PATH "testcase/rv32ui-p-add_addi.txt"
+#define ARRAY_SIZE 524
+#endif
+
+#if 0
+#define FILE_PATH "testcase/rv32ui-p-and.txt"
+#define ARRAY_SIZE 328
+#endif
+
+#if 0
+#define FILE_PATH "testcase/rv32ui-p-andi.txt"
+#define ARRAY_SIZE 158
+#endif
+
+#if 1
+#define FILE_PATH "testcase/rv32ui-p-auipc.txt"
+#define ARRAY_SIZE 78
+#endif
 
 int read_file_to_array(const char *file_path, uint32_t *arr, int arr_size) {
     FILE *file;
