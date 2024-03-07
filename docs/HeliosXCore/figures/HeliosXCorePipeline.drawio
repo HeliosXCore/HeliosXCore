@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2024-03-07T02:56:24.108Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.1.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="mVv5-86p8gDx6PStseHK" version="23.1.5" type="device">
+<mxfile host="Electron" modified="2024-03-07T02:59:50.453Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.1.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="laSkXUf6Gpb7cK0OdfRE" version="23.1.5" type="device">
   <diagram name="第 1 页" id="7WxxI-3yv8MiAGJ4hWDf">
     <mxGraphModel dx="2074" dy="1267" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -227,16 +227,22 @@
         <mxCell id="SoVPN5979x1wGRdldneU-86" value="&lt;span style=&quot;font-size: 20px;&quot;&gt;&lt;b&gt;Execute&lt;/b&gt;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1170" y="110" width="140" height="50" as="geometry" />
         </mxCell>
+        <mxCell id="SoVPN5979x1wGRdldneU-95" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="1" source="SoVPN5979x1wGRdldneU-87">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1450" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="SoVPN5979x1wGRdldneU-87" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffcc99;strokeColor=#36393d;strokeWidth=3;" vertex="1" parent="1">
-          <mxGeometry x="1430" y="195" width="40" height="490" as="geometry" />
+          <mxGeometry x="1430" y="180" width="40" height="505" as="geometry" />
         </mxCell>
         <mxCell id="SoVPN5979x1wGRdldneU-89" value="&lt;span style=&quot;font-size: 15px;&quot;&gt;Reorder Buffer&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=90;" vertex="1" parent="1">
-          <mxGeometry x="1385" y="410" width="130" height="30" as="geometry" />
+          <mxGeometry x="1385" y="400" width="130" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SoVPN5979x1wGRdldneU-90" value="" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;entryX=-0.05;entryY=0.122;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="SoVPN5979x1wGRdldneU-87">
+        <mxCell id="SoVPN5979x1wGRdldneU-90" value="" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;entryX=-0.05;entryY=0.152;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="SoVPN5979x1wGRdldneU-87">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="1260" y="254.5" as="sourcePoint" />
-            <mxPoint x="1330" y="255.5" as="targetPoint" />
+            <mxPoint x="1370" y="190" as="targetPoint" />
+            <Array as="points" />
           </mxGeometry>
         </mxCell>
         <mxCell id="SoVPN5979x1wGRdldneU-91" value="" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;" edge="1" parent="1">
@@ -246,7 +252,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="SoVPN5979x1wGRdldneU-92" value="&lt;span style=&quot;font-size: 20px;&quot;&gt;&lt;b&gt;Commit&lt;/b&gt;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="1410" y="110" width="140" height="50" as="geometry" />
+          <mxGeometry x="1380" y="110" width="140" height="50" as="geometry" />
         </mxCell>
         <mxCell id="SoVPN5979x1wGRdldneU-93" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;" edge="1" parent="1" source="SoVPN5979x1wGRdldneU-87" target="SoVPN5979x1wGRdldneU-14">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
