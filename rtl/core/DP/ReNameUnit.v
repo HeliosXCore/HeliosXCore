@@ -8,7 +8,8 @@ module ReNameUnit (
     input wire [`REG_SEL-1:0] rs1_decoder_out_arf_in_i,
     input wire [`REG_SEL-1:0] rs2_decoder_out_arf_in_i,
 
-    input wire stall_dp_i,
+    input  wire stall_dp_i,
+    output wire stall_if_o,
 
     output wire rrf_allocatable_o,
     output wire [`RRF_SEL:0] freenum_RrfEntryAllocate_out_rob_in_o,
@@ -20,6 +21,7 @@ module ReNameUnit (
 
     input wire [1:0] com_inst_num_rob_out_RrfEntryAllocate_in_i,
     input wire [`REG_SEL-1:0] completed_dstnum_rob_out_arf_in_i,
+    // 提交的时候是否需要写回arf，也就是是否需要写回目的寄存器
     input wire completed_we_rob_out_arf_in_i,
     input wire [`RRF_SEL-1:0] completed_dst_rrftag_rob_out_arfANDrrf_in,
 
@@ -140,14 +142,19 @@ module ReNameUnit (
     output wire [`ADDR_LEN-1:0] debug_pc_o,
     output wire [`REG_SEL-1:0] debug_reg_id_o,
     output wire [`DATA_LEN-1:0] debug_reg_wdata_o,
-    output wire debug_reg_wen_o
+    // 当前指令是否需要写回目的寄存器
+    output wire debug_reg_wen_o,
+    // 当前指令是否可提交
+    output wire debug_commit_en_o
 );
 
+    reg debug_commit_en_reg;
     reg [`ADDR_LEN-1:0] completed_pc_reg;
     reg [`REG_SEL-1:0] debug_reg_id_reg;
     reg [`DATA_LEN-1:0] debug_reg_wdata_reg;
     reg debug_reg_wen_reg;
 
+    assign debug_commit_en_o = debug_commit_en_reg;
     assign debug_pc_o = completed_pc_reg;
     assign debug_reg_id_o = debug_reg_id_reg;
     assign debug_reg_wdata_o = debug_reg_wdata_reg;
@@ -156,6 +163,7 @@ module ReNameUnit (
     // 将idunit阶段的信号暂存一个周期
     always @(posedge clk_i) begin
 
+        debug_commit_en_reg <= com_inst_num_rob_out_RrfEntryAllocate_in_i[0:0];
         completed_pc_reg <= completed_pc_i;
         debug_reg_id_reg <= completed_dstnum_rob_out_arf_in_i;
         debug_reg_wdata_reg <= from_rrfdata_rrf_out_arf_in;
@@ -185,6 +193,7 @@ module ReNameUnit (
 
     reg  rrf_allocatable_reg;
     wire rrf_allocatable_wire;
+    assign stall_if_o = ~rrf_allocatable_wire;
     assign rrf_allocatable_o = rrf_allocatable_reg;
 
     reg  [`RRF_SEL-1:0] dst_rrftag_reg;
@@ -366,6 +375,7 @@ module ReNameUnit (
         .allocate_rrf_en_i(allocate_rrf_en_i),
         .allocate_rrftag_i(allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in),
 
+        .completed_en_i(completed_we_rob_out_arf_in_i),
         .completed_dst_rrftag_i(completed_dst_rrftag_rob_out_arfANDrrf_in),
         .data_to_arfdata_o(from_rrfdata_rrf_out_arf_in)
     );
@@ -392,6 +402,13 @@ module ReNameUnit (
         .ready_o(rdy2_srcopmanager_out_srcmanager_in_wire)
     );
 
+    wire nextrrfcyc_wire;
+    reg  nextrrfcyc_reg;
+    assign nextrrfcyc_o = nextrrfcyc_reg;
+    always @(posedge clk_i) begin
+        nextrrfcyc_reg <= nextrrfcyc_wire;
+    end
+
     RrfEntryAllocate rrf_alloc (
         .clk_i(clk_i),
         .reset_i(reset_i),
@@ -402,7 +419,7 @@ module ReNameUnit (
         .freenum_o(freenum_RrfEntryAllocate_out_rob_in_o),
         .dst_rename_rrftag_o(allocate_rrftag_AllocateRrfEntry_out_rrfANDarf_in),
         .rrfptr_o(rrfptr_RrfEntryAllocate_out_rob_in_o),
-        .nextrrfcyc_o(nextrrfcyc_o)
+        .nextrrfcyc_o(nextrrfcyc_wire)
     );
 
     RSRequestGen rs_request_gen (
