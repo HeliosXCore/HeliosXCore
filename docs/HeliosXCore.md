@@ -11,12 +11,12 @@ HeliosXCore 是一个单发射乱序执行超标量 RISC-V 处理器，HeliosXCo
 ![](HeliosXCore/figures/HeliosXCorePipeline.png)
 
 ## 流水线架构
-- [Fetch]()
-- [Decode]()
+- [Fetch](HeliosXCore/if.md)
+- [Decode](HeliosXCore/id.md)
 - [Dispatch/Rename]()
 - [Select and WakeUp](HeliosXCore/sw.md)
 - [Execute](HeliosXCore/ex.md)
-- [Commit]()
+- [Commit](HeliosXCore/com.md)
 
 ## 差分测试框架
 在本项目中我们实现了 [HeliosXSimulator](https://github.com/HeliosXCore/HeliosXSimulator) 以及 [HeliosXEmulator](https://github.com/HeliosXCore/HeliosXEmulator) 用于实现了一个简单的差分测试框架。
