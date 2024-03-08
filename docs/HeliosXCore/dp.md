@@ -1,12 +1,22 @@
-# 1. DP整体模块分析
+# 1. DP整体模块概述
 
 DP模块的核心部件有：arf , rrf , reservation request gen , rrf entry allocate , src operand manager , syncRAM。
 
+![dp](figures/image.png)
+
 > arf、rrf、rrf entry allocate 三者共同构成了HeliosXCore 重命名机制，也即对Tomasulo算法的实现。
 
-![1709722033051](image/dp/1709722033051.png)
+# 2. ARF
+
+ARF，在本项目中有时候也称 arf、通用寄存器、结构寄存器。为了实现Tomasulo算法，相较于通俗理解的通用寄存器，HeliosXcore对其进行了字段拓展，拓展的字段包括 busy位、rrftag位。后两者共同构成了重命名算法中的重命名表。
+
+# 3. RRF
+
+RRF，在本项目中，也称为物理寄存器，重命名寄存器，共有64个表项。RRF的索引在本项目中被称为rrftag，其中索引为0的表项保留，不允许使用。
 
 **arf和rrf模块：**
+
+![1709722033051](figures/1709722033051.png)
 
 首先arf接受指令的译码信号，根据接受到的源操作数读取通用寄存器的值，如果arf.busy=0，说明当前通用寄存器的值可用，直接读取即可；通用寄存器的当前值不可用，也即arf.busy=1,就去查RRF重命名表中的data域,如果rrf.valid=1，说明可用，就用rrf.data,如果rrf.valid=0，说明不可用，就将当前寄存器对应的arf.rrftag传给保留站。
 
@@ -86,16 +96,21 @@ ROB部件选择出可以提交的指令以后，会传给DP阶段的arf和rrf模
     end
 ```
 
-**然后是对reservation request gen模块的分析。**
+# 4. RrfEntryAllocate
+
+负责RRF和ROB表项的分配，从1开始分配，0保留；当63分配出去以后，会循环到rrftag=1继续分配。RrfEntryAllocate主要输出两种信号，一个是当前分配出去的目的寄存器的rrftag,还有一个是下一条可分配的rrftag。
+
+# 5. RSRequestGen
 
 reservation request gen模块用来产生对保留站的请求信号，主要是根据译码阶段传来的指令需要的保留站的类型，向保留站输出需要的保留站选择信号。HeliosXCore有四种保留站，所以会输出四种选择信号。
 
-**src operand manager模块：**
+# 6. SrcOprManager
 
 该模块用来综合选择从arf和rrf模块中读取到的数据，并将选择出来的源操作数的值传递给保留站。该模块输出的源操作数有以下几种可能：
 1. arf.data可用，该模块输出的是寄存器的值
 2. rrf.data可用，该模块输出的是寄存器的值
 3. arf.data和rrf.data都不可用，该模块输出的是源寄存器对应的rrftag
+
 
 **下面对重命名的过程进行更进一步的分析：**
 
@@ -107,7 +122,7 @@ reservation request gen模块用来产生对保留站的请求信号，主要是
 
 读取rs源寄存器对应的数据时，源操作数还可能来自于RRF.data域，所以还需要从RRF结构中读取数据。我们可以根据ARF entry.rrftag找到RRF中对应的entry,进行对rrf.data 和 rrf.valod 进行读取。读出的数据可以送给source operand manager 进行综合判断，确定最终需要送给保留站的源操作数。
 
-首先分析一下arf模块的接口：
+分析一下arf模块的接口：
 
 ```verilog
     // 读源寄存器
