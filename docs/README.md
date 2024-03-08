@@ -12,7 +12,7 @@ HeliosXCore 是一个单发射乱序执行超标量 RISC-V 处理器，HeliosXCo
 ## 流水线架构
 - [Fetch](HeliosXCore/if.md)
 - [Decode](HeliosXCore/id.md)
-- [Dispatch/Rename]()
+- [Dispatch/Rename](HeliosXCore/dp.md)
 - [Select and WakeUp](HeliosXCore/sw.md)
 - [Execute](HeliosXCore/ex.md)
 - [Commit](HeliosXCore/com.md)
