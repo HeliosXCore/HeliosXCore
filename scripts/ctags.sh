@@ -1,0 +1,1 @@
+ctags -R --fields=+nKz --langmap=Verilog:+.vh -R rtl

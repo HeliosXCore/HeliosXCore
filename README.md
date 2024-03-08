@@ -4,7 +4,7 @@
 
 **HeliosXCore** is a Superscalar Out-of-order RISC-V Processor Core.
 
-Design Docs | [设计文档](docs/HeliosXCore.md)
+Design Docs | [设计文档](docs/README.md)
 
 ## Directory Organization
 - **3rd-party**: The third-party library code.
