@@ -4,9 +4,9 @@ module MemAccessUnit (
     (* IO_BUFFER_TYPE = "none" *) input wire clk_i,
     (* IO_BUFFER_TYPE = "none" *) input wire reset_i,
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] src1_i,
-    (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] src2_i, // 写入数据
+    (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] src2_i,  // 写入数据
     (* IO_BUFFER_TYPE = "none" *) input wire [`DATA_LEN-1:0] imm_i,
-    (* IO_BUFFER_TYPE = "none" *) input wire if_write_rrf_i, // 如果是 load 指令，则应置 1
+    (* IO_BUFFER_TYPE = "none" *) input wire if_write_rrf_i,  // 如果是 load 指令，则应置 1
     (* IO_BUFFER_TYPE = "none" *) input wire issue_i,
     (* IO_BUFFER_TYPE = "none" *) input wire complete_i,
 

@@ -41,10 +41,12 @@ module SingleInstROB (
 
     assign pc_com_o = inst_pc[commit_ptr_1_o];
 
-    wire [`ROB_SEL-1:0] tmp;
-    wire [`ROB_SEL-1:0] tmp1;
-    assign tmp = ((commit_ptr_1_o + {5'b0, commit_1}) & 6'b111111);
-    assign tmp1 = (tmp == 0) ? 1 : tmp;
+    wire [`ROB_SEL-1:0] commit_ptr;
+    wire [`ROB_SEL-1:0] commit_ptr_1;
+    // 循环计算下一条可提交的rrftag
+    assign commit_ptr = ((commit_ptr_1_o + {5'b0, commit_1}) & 6'b111111);
+    // 如果开始从头循环，开始的rrftag应该是1,而不是0
+    assign commit_ptr_1 = (commit_ptr == 0) ? 1 : commit_ptr;
 
     //当commit_1 和 dstvalid同时为1时,允许写回寄存器
     assign arfwe_1_o = dstValid[commit_ptr_1_o] & commit_1;
@@ -57,7 +59,7 @@ module SingleInstROB (
         end else begin
             //更新提交指针
             //等价于commit_ptr_1_o = (commit_ptr_1_o + commit_1) % `ROB_NUM;
-            commit_ptr_1_o <= tmp1;
+            commit_ptr_1_o <= commit_ptr_1;
             // commit_ptr_1_o <= commit_ptr_1_o + {5'b0, commit_1};
             //当执行单元完成时,更新完成标志
             if (finish_ex_alu1_i) begin

@@ -36,9 +36,6 @@ module HeliosX (
     assign stall_ID = stall_IF;
     assign stall_DP = stall_IF;
 
-    assign stall_IF = 1'b0;
-    assign stall_ID = 1'b0;
-    assign stall_DP = 1'b0;
     assign kill_IF  = 1'b0;
     assign kill_ID  = 1'b0;
     assign kill_DP  = 1'b0;
